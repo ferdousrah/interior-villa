@@ -258,7 +258,7 @@ export const FeaturedProjectSection = (): JSX.Element => {
         } catch (error) {
           console.error("Error initializing Fancybox:", error);
         }
-      }, 1000); // Increased delay to 1000ms to give DOM more time to stabilize
+      }, 100); // Increased delay to 1000ms to give DOM more time to stabilize
     };
 
     initializeFancybox();
