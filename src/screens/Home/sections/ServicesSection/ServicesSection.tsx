@@ -257,16 +257,23 @@ export const ServicesSection = (): JSX.Element => {
                 <CardContent className="p-11 pt-11 bg-white relative z-10 transition-all duration-500 group-hover:bg-white/95">
                   <div className="flex gap-6">
                     <div
-                      className="w-[82px] h-[82px] rounded-full border border-solid border-black flex items-center justify-center overflow-hidden"
-                      style={{ backgroundColor: service.iconBg }}
+                      className="w-[82px] h-[82px] rounded-full border border-solid border-black flex items-center justify-center overflow-hidden flex-shrink-0"
+                      style={{ 
+                        backgroundColor: service.iconBg,
+                        aspectRatio: '1 / 1',
+                        minWidth: '82px',
+                        maxWidth: '82px',
+                        minHeight: '82px',
+                        maxHeight: '82px'
+                      }}
                     >
                       <img
-                        className="w-11 h-11 object-contain rounded-full"
+                        className="w-11 h-11 object-contain"
                         alt={`${service.title} icon`}
                         src={service.icon}
                       />
                     </div>
-                    <div className="mt-[6px]">
+                    <div className="mt-[6px] flex-1">
                       <h3 className="[font-family:'Fahkwang',Helvetica] font-medium text-[#010212] text-xl leading-9">
                         {service.title}
                       </h3>
