@@ -206,11 +206,12 @@ export const ServicesSection = (): JSX.Element => {
         {/* Section Header */}
         <div 
           ref={headerRef}
-          className="flex flex-col items-center text-center mb-8 will-change-transform"
+          className="flex flex-col items-center text-center will-change-transform"
           style={{
             transformOrigin: 'center center',
             backfaceVisibility: 'hidden',
-            transform: 'translate3d(0, 0, 0)'
+            transform: 'translate3d(0, 0, 0)',
+            marginBottom: '130px'
           }}
         >
           <h2 className="font-medium text-[40px] leading-[55px] tracking-normal [font-family:'Fahkwang',Helvetica]">
@@ -284,7 +285,7 @@ export const ServicesSection = (): JSX.Element => {
                     
                     <Button
                       variant="ghost"
-                      className="[font-family:'Inter',Helvetica] font-semibold text-base text-[#000000] hover:text-[#010212] hover:bg-transparent transition-all duration-500 hover:scale-105 relative z-10 group-hover:text-[#010212]"
+                      className="[font-family:'Fahkwang',Helvetica] text-base text-[#000000] hover:text-[#010212] hover:bg-transparent transition-all duration-500 hover:scale-105 relative z-10 group-hover:text-[#010212]"
                     >
                       Read More
                       <ArrowRightIcon className="ml-2 w-[22px] h-[22px] transition-all duration-500 group-hover:translate-x-1 group-hover:scale-110" />
