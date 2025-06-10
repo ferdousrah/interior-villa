@@ -206,7 +206,7 @@ export const ServicesSection = (): JSX.Element => {
         {/* Section Header */}
         <div 
           ref={headerRef}
-          className="flex flex-col items-center text-center mb-16 will-change-transform"
+          className="flex flex-col items-center text-center mb-8 will-change-transform"
           style={{
             transformOrigin: 'center center',
             backfaceVisibility: 'hidden',
@@ -216,9 +216,6 @@ export const ServicesSection = (): JSX.Element => {
           <h2 className="font-medium text-[40px] leading-[55px] tracking-normal [font-family:'Fahkwang',Helvetica]">
             Services We Offer
           </h2>
-          <p className="font-bold text-secondary text-[25px] leading-[30px] tracking-normal [font-family:'Darker_Grotesque',Helvetica]">
-            Bringing Your Dream Spaces to Life
-          </p>
         </div>
 
         {/* Service Cards */}
@@ -235,7 +232,7 @@ export const ServicesSection = (): JSX.Element => {
             <div
               key={index}
               ref={el => cardRefs.current[index] = el}
-              className="will-change-transform"
+              className="will-change-transform group"
               style={{
                 transformOrigin: 'center center',
                 backfaceVisibility: 'hidden',
@@ -243,15 +240,27 @@ export const ServicesSection = (): JSX.Element => {
                 transformStyle: 'preserve-3d'
               }}
             >
-              <Card className="rounded-[5px] overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
-                <CardContent className="p-11 pt-11">
+              <Card className="rounded-[5px] overflow-hidden transition-all duration-500 hover:shadow-2xl relative">
+                {/* Color filling animation overlay */}
+                <div className="absolute inset-0 bg-[#A9F577] opacity-0 transition-all duration-700 ease-out group-hover:opacity-10 z-0"></div>
+                
+                {/* Animated border effect */}
+                <div className="absolute inset-0 border-2 border-transparent group-hover:border-[#A9F577] transition-all duration-500 rounded-[5px] z-0"></div>
+                
+                {/* Gradient wave effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#A9F577] to-transparent opacity-0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full group-hover:opacity-20 transition-all duration-1000 ease-out z-0"></div>
+                
+                {/* Radial glow effect */}
+                <div className="absolute inset-0 bg-radial-gradient from-[#A9F577] via-transparent to-transparent opacity-0 group-hover:opacity-15 transition-all duration-700 ease-out scale-0 group-hover:scale-150 z-0"></div>
+
+                <CardContent className="p-11 pt-11 bg-white relative z-10 transition-all duration-500 group-hover:bg-white/95">
                   <div className="flex gap-6">
                     <div
-                      className="w-[82px] h-[82px] rounded-full border border-solid border-black flex items-center justify-center transition-transform duration-300 hover:scale-110"
+                      className="w-[82px] h-[82px] rounded-full border border-solid border-black flex items-center justify-center overflow-hidden"
                       style={{ backgroundColor: service.iconBg }}
                     >
                       <img
-                        className="w-11 h-[37px] object-cover"
+                        className="w-11 h-11 object-contain rounded-full"
                         alt={`${service.title} icon`}
                         src={service.icon}
                       />
@@ -268,14 +277,17 @@ export const ServicesSection = (): JSX.Element => {
                     </p>
                   </div>
                 </CardContent>
-                <CardFooter className="p-0">
-                  <div className="w-full h-[49px] bg-primary flex items-center justify-center transition-all duration-300 hover:bg-primary-hover group">
+                <CardFooter className="p-0 relative z-10">
+                  <div className="w-full h-[49px] bg-[#EEEEEE] hover:bg-[#A9F577] rounded-[5px] flex items-center justify-center transition-all duration-500 group relative overflow-hidden">
+                    {/* Sliding fill effect for read more button */}
+                    <div className="absolute inset-0 bg-[#A9F577] transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
+                    
                     <Button
                       variant="ghost"
-                      className="[font-family:'Inter',Helvetica] font-semibold text-base text-white hover:text-white transition-transform duration-300 hover:scale-105"
+                      className="[font-family:'Inter',Helvetica] font-semibold text-base text-[#000000] hover:text-[#010212] hover:bg-transparent transition-all duration-500 hover:scale-105 relative z-10 group-hover:text-[#010212]"
                     >
                       Read More
-                      <ArrowRightIcon className="ml-2 w-[22px] h-[22px] transition-transform duration-300 group-hover:translate-x-1" />
+                      <ArrowRightIcon className="ml-2 w-[22px] h-[22px] transition-all duration-500 group-hover:translate-x-1 group-hover:scale-110" />
                     </Button>
                   </div>
                 </CardFooter>
@@ -318,6 +330,12 @@ export const ServicesSection = (): JSX.Element => {
       <div className="absolute top-20 left-10 w-4 h-4 bg-primary rounded-full opacity-20 animate-pulse" />
       <div className="absolute bottom-32 right-16 w-6 h-6 bg-secondary rounded-full opacity-15 animate-pulse" style={{ animationDelay: '1s' }} />
       <div className="absolute top-1/2 left-1/4 w-2 h-2 bg-primary rounded-full opacity-25 animate-pulse" style={{ animationDelay: '2s' }} />
+
+      <style jsx>{`
+        .bg-radial-gradient {
+          background: radial-gradient(circle at center, var(--tw-gradient-stops));
+        }
+      `}</style>
     </section>
   );
 };

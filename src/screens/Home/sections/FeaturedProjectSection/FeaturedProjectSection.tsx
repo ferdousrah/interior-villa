@@ -229,55 +229,56 @@ export const FeaturedProjectSection = (): JSX.Element => {
     let timeoutId: NodeJS.Timeout;
 
     const initializeFancybox = () => {
-      // Destroy any existing instances
-      Fancybox.destroy();
-      
       // Wait for DOM to be ready and then initialize
       timeoutId = setTimeout(() => {
         try {
-          Fancybox.bind("[data-fancybox='gallery']", {
-            // Basic configuration
-            animated: true,
-            showClass: "fancybox-fadeIn",
-            hideClass: "fancybox-fadeOut",
-            dragToClose: false,
-            
-            // Image specific settings
-            Image: {
-              zoom: true,
-              fit: "contain",
-              preload: 2
-            },
-            
-            // Toolbar configuration
-            Toolbar: {
-              display: [
-                "prev",
-                "counter",
-                "next", 
-                "zoom",
-                "slideshow",
-                "fullscreen",
-                "close"
-              ]
-            },
-            
-            // Event handlers
-            on: {
-              reveal: (fancybox: any, slide: any) => {
-                console.log("Fancybox revealed:", slide.src);
-              },
-              error: (fancybox: any, slide: any) => {
-                console.error("Fancybox error loading:", slide.src);
-              }
-            }
-          });
+          // Check if there are gallery elements to bind to
+          const galleryElements = document.querySelectorAll("[data-fancybox='gallery']");
           
-          console.log("Fancybox initialized successfully");
+          if (galleryElements.length > 0) {
+            Fancybox.bind("[data-fancybox='gallery']", {
+              // Basic configuration
+              animated: true,
+              showClass: "fancybox-fadeIn",
+              hideClass: "fancybox-fadeOut",
+              dragToClose: false,
+              
+              // Image specific settings
+              Image: {
+                zoom: true,
+                fit: "contain"
+              },
+              
+              // Toolbar configuration
+              Toolbar: {
+                display: [
+                  "prev",
+                  "counter",
+                  "next", 
+                  "zoom",
+                  "slideshow",
+                  "fullscreen",
+                  "close"
+                ]
+              },
+              
+              // Event handlers
+              on: {
+                reveal: (fancybox: any, slide: any) => {
+                  console.log("Fancybox revealed:", slide.src);
+                },
+                error: (fancybox: any, slide: any) => {
+                  console.error("Fancybox error loading:", slide.src);
+                }
+              }
+            });
+            
+            console.log("Fancybox initialized successfully");
+          }
         } catch (error) {
           console.error("Error initializing Fancybox:", error);
         }
-      }, 500); // Increased delay to ensure DOM is ready
+      }, 1000); // Increased delay to 1000ms to give DOM more time to stabilize
     };
 
     initializeFancybox();
@@ -343,20 +344,6 @@ export const FeaturedProjectSection = (): JSX.Element => {
     default: 3,
     1100: 2,
     700: 1
-  };
-
-  // Handle image click for lightbox
-  const handleImageClick = (e: React.MouseEvent, project: Project) => {
-    e.preventDefault();
-    
-    // Create a temporary link element for Fancybox
-    const link = document.createElement('a');
-    link.href = project.image;
-    link.setAttribute('data-fancybox', 'gallery');
-    link.setAttribute('data-caption', `${project.title} - ${project.description}`);
-    
-    // Trigger click programmatically
-    link.click();
   };
 
   return (
@@ -554,13 +541,11 @@ export const FeaturedProjectSection = (): JSX.Element => {
                       height: index % 3 === 0 ? '400px' : index % 3 === 1 ? '300px' : '350px'
                     }}
                   >
-                    {/* Use div with click handler instead of anchor tag */}
-                    <div
-                      className="block w-full h-full cursor-pointer"
-                      onClick={(e) => handleImageClick(e, project)}
+                    <a
+                      href={project.image}
                       data-fancybox="gallery"
-                      data-src={project.image}
                       data-caption={`${project.title} - ${project.description}`}
+                      className="block w-full h-full"
                     >
                       <div className="relative w-full h-full overflow-hidden rounded-2xl">
                         <img
@@ -577,11 +562,25 @@ export const FeaturedProjectSection = (): JSX.Element => {
                           }}
                         />
                         
-                        {/* Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                        {/* Gradient Overlay with Low Opacity */}
+                        <div 
+                          className="absolute inset-0 transition-all duration-500"
+                          style={{
+                            background: hoveredProject === project.id 
+                              ? 'linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.6) 100%)'
+                              : 'transparent',
+                            opacity: hoveredProject === project.id ? 1 : 0
+                          }}
+                        />
                         
-                        {/* Content */}
-                        <div className="absolute inset-0 flex flex-col justify-end p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+                        {/* Project Information Overlay */}
+                        <div 
+                          className="absolute inset-0 flex flex-col justify-end p-6 text-white transition-all duration-500"
+                          style={{
+                            transform: hoveredProject === project.id ? 'translateY(0)' : 'translateY(100%)',
+                            opacity: hoveredProject === project.id ? 1 : 0
+                          }}
+                        >
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ 
@@ -607,7 +606,7 @@ export const FeaturedProjectSection = (): JSX.Element => {
                           </motion.div>
                         </div>
                       </div>
-                    </div>
+                    </a>
                   </motion.div>
                 ))}
               </Masonry>

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Card, CardContent } from "../../../../components/ui/card";
+import { BeforeAfterSlider } from "../../../../components/ui/before-after-slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
@@ -10,8 +11,8 @@ export const AboutSection = (): JSX.Element => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const headingWrapperRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const imageContainerRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const sliderContainerRef = useRef<HTMLDivElement>(null);
   const experienceCircleRef = useRef<HTMLDivElement>(null);
   const featuresCardRef = useRef<HTMLDivElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -107,38 +108,29 @@ export const AboutSection = (): JSX.Element => {
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    // Parallax effect for main image
-    if (imageRef.current && imageContainerRef.current) {
-      gsap.to(imageRef.current, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: imageContainerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1,
-          invalidateOnRefresh: true
-        }
-      });
-
-      // Scale effect on scroll
-      gsap.fromTo(imageRef.current, 
-        { scale: 1.1 },
+    // Simple entrance animation for slider (NO PARALLAX)
+    if (sliderRef.current && sliderContainerRef.current) {
+      gsap.fromTo(sliderRef.current,
         {
-          scale: 1,
-          ease: "none",
+          opacity: 0,
+          y: 60
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1.5,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: imageContainerRef.current,
-            start: "top bottom",
-            end: "center center",
-            scrub: 1,
-            invalidateOnRefresh: true
+            trigger: sliderContainerRef.current,
+            start: "top 85%",
+            end: "top 55%",
+            toggleActions: "play none none reverse"
           }
         }
       );
     }
 
-    // Parallax effect for experience circle
+    // Parallax effect for experience circle (KEEP PARALLAX)
     if (experienceCircleRef.current) {
       gsap.to(experienceCircleRef.current, {
         yPercent: 30,
@@ -154,7 +146,7 @@ export const AboutSection = (): JSX.Element => {
       });
     }
 
-    // Parallax effect for features card
+    // Parallax effect for features card (KEEP PARALLAX)
     if (featuresCardRef.current) {
       gsap.to(featuresCardRef.current, {
         yPercent: -15,
@@ -169,7 +161,7 @@ export const AboutSection = (): JSX.Element => {
       });
     }
 
-    // Fade in animation for description
+    // Fade in animation for description (KEEP PARALLAX)
     if (descriptionRef.current) {
       gsap.fromTo(descriptionRef.current,
         { 
@@ -228,15 +220,15 @@ export const AboutSection = (): JSX.Element => {
     >
       <div className="container mx-auto max-w-[1276px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
+          <div className="flex flex-col">
             <div 
               ref={headingWrapperRef}
-              className="perspective-[1000px] cursor-default"
+              className="perspective-[1000px] cursor-default mb-12"
               style={{ transformStyle: 'preserve-3d' }}
             >
               <h2 
                 ref={headingRef}
-                className="font-['Fahkwang',Helvetica] font-semibold text-[#01190c] text-[40px] tracking-[-1.00px] leading-[49.9px] mb-12"
+                className="font-['Fahkwang',Helvetica] font-semibold text-[#01190c] text-[40px] tracking-[-1.00px] leading-[49.9px]"
                 style={{ 
                   transformStyle: 'preserve-3d',
                   transform: 'translateZ(0)',
@@ -246,31 +238,42 @@ export const AboutSection = (): JSX.Element => {
               </h2>
             </div>
 
-            <div className="relative mt-10">
+            <div className="relative flex-1">
               <div 
-                ref={imageContainerRef}
-                className="relative overflow-hidden rounded-md"
+                ref={sliderContainerRef}
+                className="relative overflow-hidden h-full"
                 style={{
                   transformStyle: 'preserve-3d',
                   perspective: '1000px'
                 }}
               >
-                <img
-                  ref={imageRef}
-                  className="w-full h-auto max-w-[730px] object-cover rounded-md will-change-transform"
-                  alt="Interior design showcase"
-                  src="/create-an-image-for-interior-design-about-us-section.png"
+                <div
+                  ref={sliderRef}
+                  className="h-full"
                   style={{
                     transformOrigin: 'center center',
-                    backfaceVisibility: 'hidden',
-                    transform: 'translate3d(0, 0, 0)'
+                    backfaceVisibility: 'hidden'
                   }}
-                />
+                >
+                  <BeforeAfterSlider
+                    beforeImage="/before.jpg"
+                    afterImage="/after.jpg"
+                    beforeLabel="BEFORE"
+                    afterLabel="AFTER"
+                    height="100%"
+                    className="w-full max-w-[730px] h-full"
+                    style={{
+                      borderRadius: '15px',
+                      overflow: 'hidden',
+                      minHeight: '500px'
+                    }}
+                  />
+                </div>
               </div>
 
               <div 
                 ref={experienceCircleRef}
-                className="relative w-[238px] h-[252px] lg:absolute lg:bottom-10 lg:right-0 translate-x-1/2 mt-4 lg:mt-0 will-change-transform"
+                className="absolute bottom-10 right-0 translate-x-1/2 w-[238px] h-[252px] will-change-transform"
                 style={{
                   transformOrigin: 'center center',
                   backfaceVisibility: 'hidden',
@@ -315,14 +318,14 @@ export const AboutSection = (): JSX.Element => {
 
             <Card 
               ref={featuresCardRef}
-              className="w-full bg-[#f6f8fa] rounded-[15px] border-none shadow-none mt-auto will-change-transform"
+              className="w-full bg-[#f6f8fa] rounded-[15px] border-none shadow-none flex-1 will-change-transform"
               style={{
                 transformOrigin: 'center center',
                 backfaceVisibility: 'hidden',
                 transform: 'translate3d(0, 0, 0)'
               }}
             >
-              <CardContent className="p-12 space-y-10">
+              <CardContent className="p-12 space-y-10 h-full flex flex-col justify-center">
                 {features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-8">
                     <div className="flex-shrink-0 w-[60px] h-[57px] bg-primary rounded-[11px] flex items-center justify-center">
