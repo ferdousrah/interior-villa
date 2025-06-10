@@ -29,43 +29,31 @@ export const OurProcessSection = (): JSX.Element => {
   useEffect(() => {
     if (!headingRef.current || !sectionRef.current) return;
 
-    // Split text animation for heading
-    const splitText = new SplitText(headingRef.current, { 
-      type: "words,chars",
-      charsClass: "char",
-      wordsClass: "word"
-    });
-
-    // Initial state for heading
-    gsap.set(splitText.chars, {
-      opacity: 0,
-      y: 100,
-      rotationX: -90,
-      transformOrigin: "50% 50% -50px"
-    });
-
-    // Heading reveal animation
-    gsap.to(splitText.chars, {
-      duration: 1.2,
-      opacity: 1,
-      y: 0,
-      rotationX: 0,
-      stagger: {
-        amount: 0.8,
-        from: "start"
+    // Enhanced heading animation similar to Services section
+    gsap.fromTo(headingRef.current,
+      {
+        opacity: 0,
+        y: 60,
+        scale: 0.95
       },
-      ease: "power4.out",
-      scrollTrigger: {
-        trigger: headingRef.current,
-        start: "top 85%",
-        end: "top 50%",
-        toggleActions: "play none none reverse"
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: headingRef.current,
+          start: "top 85%",
+          end: "top 50%",
+          toggleActions: "play none none reverse"
+        }
       }
-    });
+    );
 
-    // Parallax effect for heading
+    // Subtle parallax for heading
     gsap.to(headingRef.current, {
-      yPercent: -15,
+      yPercent: -10,
       ease: "none",
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -76,25 +64,8 @@ export const OurProcessSection = (): JSX.Element => {
       }
     });
 
-    // Scale effect on scroll
-    gsap.fromTo(headingRef.current, 
-      { scale: 0.95 },
-      {
-        scale: 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: "top 90%",
-          end: "top 60%",
-          scrub: 1,
-          invalidateOnRefresh: true
-        }
-      }
-    );
-
     // Cleanup function
     return () => {
-      splitText.revert();
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
