@@ -131,20 +131,7 @@ export const AboutSection = (): JSX.Element => {
     }
 
     // Parallax effect for experience circle (KEEP PARALLAX)
-    if (experienceCircleRef.current) {
-      gsap.to(experienceCircleRef.current, {
-        yPercent: 30,
-        rotation: 180,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-          invalidateOnRefresh: true
-        }
-      });
-    }
+    
 
     // Parallax effect for features card (KEEP PARALLAX)
     if (featuresCardRef.current) {
@@ -244,7 +231,8 @@ export const AboutSection = (): JSX.Element => {
                 className="relative overflow-hidden h-full"
                 style={{
                   transformStyle: 'preserve-3d',
-                  perspective: '1000px'
+                  perspective: '1000px',
+                  maxHeight: '460px',
                 }}
               >
                 <div
@@ -265,7 +253,7 @@ export const AboutSection = (): JSX.Element => {
                     style={{
                       borderRadius: '15px',
                       overflow: 'hidden',
-                      minHeight: '500px'
+                      minHeight: '460px'
                     }}
                   />
                 </div>
@@ -273,20 +261,20 @@ export const AboutSection = (): JSX.Element => {
 
               <div 
                 ref={experienceCircleRef}
-                className="absolute bottom-10 right-0 translate-x-1/2 w-[238px] h-[252px] will-change-transform"
+                className="absolute bottom-0 right-20 translate-x-1/2 w-[180px] h-[192px] "
                 style={{
                   transformOrigin: 'center center',
                   backfaceVisibility: 'hidden',
                   
                 }}
               >
-                <div className="absolute w-[194px] h-[207px] top-[27px] left-1 bg-primary rounded-[97.21px/103.29px]" />
+                <div className="absolute w-[154px] h-[164px] top-[27px] left-1 bg-primary rounded-[97.21px/103.29px]" />
                 <img
-                  className="absolute w-[238px] h-[252px] top-0 left-0"
+                  className="absolute w-[188px] h-[200px] top-0 left-0"
                   alt="Ellipse"
                   src="/ellipse-141.svg"
                 />
-                <div className="absolute w-[139px] top-[126px] left-[38px] font-['Fahkwang',Helvetica] font-normal text-primary text-lg text-center tracking-[0] leading-[26px]">
+                <div className="absolute w-[139px] top-[126px] left-[38px] font-['Fahkwang',Helvetica] font-normal text-primary text-base text-center tracking-[0] leading-[26px]">
                   <span className="font-medium">
                     YEARS
                     <br />
@@ -297,7 +285,7 @@ export const AboutSection = (): JSX.Element => {
                     <br />
                   </span>
                 </div>
-                <div className="absolute w-[103px] top-[74px] left-[61px] font-['Fahkwang',Helvetica] font-bold text-primary text-5xl text-center tracking-[0] leading-[50px] whitespace-nowrap">
+                <div className="absolute w-[103px] top-[74px] left-[61px] font-['Fahkwang',Helvetica] font-bold text-primary text-4xl text-center tracking-[0] leading-[50px] whitespace-nowrap">
                   9+
                 </div>
               </div>
@@ -322,14 +310,15 @@ export const AboutSection = (): JSX.Element => {
               style={{
                 transformOrigin: 'center center',
                 backfaceVisibility: 'hidden',
-                transform: 'translate3d(0, 0, 0)'
+                transform: 'translate3d(0, 0, 0)',
+                marginTop: '30px',
               }}
             >
               <CardContent className="p-12 space-y-10 h-full flex flex-col justify-center">
                 {features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-8">
                     <div className="flex-shrink-0 w-[60px] h-[57px] bg-primary rounded-[11px] flex items-center justify-center">
-                      <div className="font-['DM_Sans',Helvetica] font-bold text-[#01190c] text-xl">
+                      <div className="font-['Fahkwang',Helvetica] font-bold text-[#01190c] text-xl">
                         {feature.id}
                       </div>
                     </div>
