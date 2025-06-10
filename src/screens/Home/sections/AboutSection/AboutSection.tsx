@@ -273,11 +273,11 @@ export const AboutSection = (): JSX.Element => {
 
               <div 
                 ref={experienceCircleRef}
-                className="absolute bottom-10 right-0 translate-x-1/2 w-[238px] h-[252px]"
+                className="absolute bottom-10 right-0 translate-x-1/2 w-[238px] h-[252px] will-change-transform"
                 style={{
                   transformOrigin: 'center center',
                   backfaceVisibility: 'hidden',
-                  transform: 'translate3d(0, 0, 0)'
+                  
                 }}
               >
                 <div className="absolute w-[194px] h-[207px] top-[27px] left-1 bg-primary rounded-[97.21px/103.29px]" />
