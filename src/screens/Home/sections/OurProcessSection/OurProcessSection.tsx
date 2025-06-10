@@ -3,9 +3,8 @@ import { Card, CardContent } from "../../../../components/ui/card";
 import { useInView } from "react-intersection-observer";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 interface TimelineStep {
   id: number;
@@ -226,6 +225,16 @@ export const OurProcessSection = (): JSX.Element => {
                         className="w-full h-full object-contain"
                         loading="eager"
                         decoding="sync"
+                        onError={(e) => {
+                          console.error(`Failed to load icon: ${step.iconSrc}`);
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          // Show fallback icon or text
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.innerHTML = `<div class="w-full h-full flex items-center justify-center text-primary text-2xl font-bold">${step.id}</div>`;
+                          }
+                        }}
                       />
                     </div>
                   </div>
@@ -276,6 +285,16 @@ export const OurProcessSection = (): JSX.Element => {
                         className="w-full h-full object-contain"
                         loading="eager"
                         decoding="sync"
+                        onError={(e) => {
+                          console.error(`Failed to load icon: ${step.iconSrc}`);
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          // Show fallback icon or text
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.innerHTML = `<div class="w-full h-full flex items-center justify-center text-primary text-2xl font-bold">${step.id}</div>`;
+                          }
+                        }}
                       />
                     </div>
                   </div>
@@ -292,6 +311,16 @@ export const OurProcessSection = (): JSX.Element => {
                       className="w-full h-full object-contain"
                       loading="eager"
                       decoding="sync"
+                      onError={(e) => {
+                        console.error(`Failed to load icon: ${step.iconSrc}`);
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        // Show fallback icon or text
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = `<div class="w-full h-full flex items-center justify-center text-primary text-xl font-bold">${step.id}</div>`;
+                        }
+                      }}
                     />
                   </div>
                 </div>
