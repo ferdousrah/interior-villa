@@ -8,9 +8,8 @@ import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 interface Project {
   id: number;
@@ -57,57 +56,38 @@ export const FeaturedProjectSection = (): JSX.Element => {
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    // Split text animation for heading - FIXED VERSION
+    // Enhanced heading animation similar to Services section
     if (headingRef.current) {
-      const splitText = new SplitText(headingRef.current, { 
-        type: "words,chars",
-        charsClass: "char",
-        wordsClass: "word"
-      });
-
-      // Set initial state to be visible but slightly transformed
-      gsap.set(splitText.chars, {
-        opacity: 1, // Changed from 0 to 1 to ensure visibility
-        y: 0, // Changed from 50 to 0
-        rotationX: 0, // Changed from -45 to 0
-        transformOrigin: "50% 50%"
-      });
-
-      // Create a subtle reveal animation instead of hiding the text
-      gsap.fromTo(splitText.chars,
+      gsap.fromTo(headingRef.current,
         {
-          opacity: 0.3,
-          y: 20,
+          opacity: 0,
+          y: 60,
           scale: 0.95
         },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 0.8,
-          stagger: {
-            amount: 0.4,
-            from: "start"
-          },
-          ease: "power2.out",
+          duration: 1.2,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: headingRef.current,
-            start: "top 95%",
-            end: "top 70%",
+            start: "top 85%",
+            end: "top 50%",
             toggleActions: "play none none reverse"
           }
         }
       );
 
-      // Subtle parallax effect for heading
+      // Subtle parallax for heading
       gsap.to(headingRef.current, {
-        yPercent: -5, // Reduced from -10
+        yPercent: -10,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top bottom",
           end: "bottom top",
-          scrub: 0.5,
+          scrub: 1,
           invalidateOnRefresh: true
         }
       });

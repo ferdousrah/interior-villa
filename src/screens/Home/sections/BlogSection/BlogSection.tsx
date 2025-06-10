@@ -6,9 +6,8 @@ import { Card, CardContent } from "../../../../components/ui/card";
 import VanillaTilt from 'vanilla-tilt';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 export const BlogSection = (): JSX.Element => {
   const imageRef = useRef<HTMLImageElement>(null);
@@ -46,53 +45,32 @@ export const BlogSection = (): JSX.Element => {
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    // Split text animation for heading
+    // Enhanced heading animation similar to Services section
     if (headingRef.current) {
-      const splitText = new SplitText(headingRef.current, { 
-        type: "words,chars",
-        charsClass: "char",
-        wordsClass: "word"
-      });
-
-      // Set initial state to be visible
-      gsap.set(splitText.chars, {
-        opacity: 1,
-        y: 0,
-        rotationX: 0,
-        transformOrigin: "50% 50%"
-      });
-
-      // Create a subtle reveal animation
-      gsap.fromTo(splitText.chars,
+      gsap.fromTo(headingRef.current,
         {
-          opacity: 0.2,
-          y: 40,
-          scale: 0.9,
-          rotationY: -20
+          opacity: 0,
+          y: 60,
+          scale: 0.95
         },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          rotationY: 0,
           duration: 1.2,
-          stagger: {
-            amount: 0.8,
-            from: "start"
-          },
           ease: "power3.out",
           scrollTrigger: {
             trigger: headingRef.current,
-            start: "top 90%",
-            end: "top 60%",
+            start: "top 85%",
+            end: "top 50%",
             toggleActions: "play none none reverse"
           }
         }
       );
 
-      // Parallax effect for heading
+      // Subtle parallax for heading
       gsap.to(headingRef.current, {
-        yPercent: -12,
+        yPercent: -10,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
