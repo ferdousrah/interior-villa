@@ -9,6 +9,7 @@ import { Blog } from './screens/Blog';
 import { BlogDetails } from './screens/BlogDetails';
 import { FAQ } from './screens/FAQ';
 import { BookAppointment } from './screens/BookAppointment';
+import { Contact } from './screens/Contact';
 import { WebsiteLoader } from './components/ui/loader';
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/blog-details" element={<BlogDetails />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/book-appointment" element={<BookAppointment />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </div>
     </Router>

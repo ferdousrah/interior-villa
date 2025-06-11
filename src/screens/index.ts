@@ -7,3 +7,4 @@ export { Blog } from "./Blog";
 export { BlogDetails } from "./BlogDetails";
 export { FAQ } from "./FAQ";
 export { BookAppointment } from "./BookAppointment";
+export { Contact } from "./Contact";
