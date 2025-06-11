@@ -272,7 +272,7 @@ export const HeroSection = (): JSX.Element => {
           ref={heroImageRef}
           className="w-full h-full object-cover will-change-transform"
           alt="Residential Interior Hero"
-          src="/a-residential-interior-image.png"
+          src="/image.png"
           style={{
             transformOrigin: 'center center',
             backfaceVisibility: 'hidden',
@@ -570,52 +570,27 @@ export const HeroSection = (): JSX.Element => {
       {/* Hero Content Overlay - Left Aligned */}
       <div className="absolute inset-0 bg-black/40 flex items-center justify-start">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <div className="text-left text-white max-w-3xl">
+          <div className="text-left text-white max-w-2xl">
             {/* Page Title - Responsive Font Size */}
             <motion.h1 
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[56px] font-bold [font-family:'Fahkwang',Helvetica] mb-6 sm:mb-8 leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-[48px] font-bold [font-family:'Fahkwang',Helvetica] mb-4 sm:mb-6 leading-tight"
               style={{
-                fontSize: 'clamp(2rem, 6vw, 56px)',
+                fontSize: 'clamp(2rem, 5vw, 48px)', // Responsive font size with 48px max
                 lineHeight: '1.1'
               }}
             >
-              Residential Interior Design
+              Residential Interior
             </motion.h1>
 
-            {/* Subtitle */}
-            <motion.p 
+            {/* Breadcrumb - Positioned after title */}
+            <motion.div 
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-lg sm:text-xl md:text-2xl [font-family:'Fahkwang',Helvetica] mb-8 sm:mb-10 leading-relaxed opacity-90"
-            >
-              Transform your house into a dream home with our expert residential interior design services
-            </motion.p>
-
-            {/* CTA Buttons */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
-              className="flex flex-col sm:flex-row gap-4 sm:gap-6"
-            >
-              <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-4 rounded-full text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                GET STARTED
-              </Button>
-              <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 rounded-full text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105">
-                VIEW PORTFOLIO
-              </Button>
-            </motion.div>
-
-            {/* Breadcrumb - Positioned after buttons */}
-            <motion.div 
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 1.4 }}
-              className="flex items-center space-x-2 mt-8"
+              className="flex items-center space-x-2"
             >
               <button 
                 onClick={() => handleNavigation("/")}
