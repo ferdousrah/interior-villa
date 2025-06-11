@@ -152,66 +152,72 @@ export const ApproachSection = (): JSX.Element => {
               key={index}
               className="bg-white border-none rounded-[5px] p-6 md:p-8 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group relative overflow-hidden"
             >
-              {/* Liquid filling animation layers */}
+              {/* Paint brush filling animation */}
               <div className="absolute inset-0 overflow-hidden rounded-[5px]">
-                {/* Base liquid layer */}
+                {/* Main paint stroke - horizontal sweep */}
                 <div 
-                  className="absolute inset-0 bg-gradient-to-br from-[#E9FFDA] via-[#D4F7B8] to-[#C0F096] opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-out transform translate-y-full group-hover:translate-y-0"
+                  className="absolute inset-0 bg-gradient-to-br from-[#E9FFDA] via-[#D4F7B8] to-[#C0F096] opacity-0 group-hover:opacity-100 transition-all duration-1200 ease-out transform -translate-x-full group-hover:translate-x-0"
                   style={{
-                    clipPath: 'polygon(0% 100%, 100% 100%, 100% 85%, 95% 80%, 85% 85%, 75% 80%, 65% 85%, 55% 80%, 45% 85%, 35% 80%, 25% 85%, 15% 80%, 5% 85%, 0% 80%)',
+                    clipPath: 'polygon(0% 0%, 85% 0%, 95% 15%, 100% 30%, 95% 45%, 100% 60%, 90% 75%, 100% 90%, 85% 100%, 0% 100%)',
                     animationDelay: '0ms'
                   }}
                 />
                 
-                {/* Second wave layer */}
+                {/* Secondary paint layer - vertical brush strokes */}
                 <div 
-                  className="absolute inset-0 bg-gradient-to-br from-[#D4F7B8] via-[#C0F096] to-[#ACEB74] opacity-0 group-hover:opacity-80 transition-all duration-1200 ease-out transform translate-y-full group-hover:translate-y-0"
+                  className="absolute inset-0 bg-gradient-to-b from-[#D4F7B8] via-[#C0F096] to-[#ACEB74] opacity-0 group-hover:opacity-80 transition-all duration-1400 ease-out transform translate-y-full group-hover:translate-y-0"
                   style={{
-                    clipPath: 'polygon(0% 100%, 100% 100%, 100% 90%, 90% 85%, 80% 90%, 70% 85%, 60% 90%, 50% 85%, 40% 90%, 30% 85%, 20% 90%, 10% 85%, 0% 90%)',
-                    animationDelay: '100ms'
-                  }}
-                />
-                
-                {/* Third wave layer */}
-                <div 
-                  className="absolute inset-0 bg-gradient-to-br from-[#C0F096] via-[#ACEB74] to-[#98E652] opacity-0 group-hover:opacity-60 transition-all duration-1400 ease-out transform translate-y-full group-hover:translate-y-0"
-                  style={{
-                    clipPath: 'polygon(0% 100%, 100% 100%, 100% 95%, 85% 90%, 75% 95%, 65% 90%, 55% 95%, 45% 90%, 35% 95%, 25% 90%, 15% 95%, 5% 90%, 0% 95%)',
+                    clipPath: 'polygon(0% 0%, 20% 5%, 15% 20%, 25% 35%, 20% 50%, 30% 65%, 25% 80%, 35% 95%, 100% 100%, 100% 0%)',
                     animationDelay: '200ms'
                   }}
                 />
+                
+                {/* Texture overlay - paint brush texture */}
+                <div 
+                  className="absolute inset-0 bg-gradient-to-tr from-[#C0F096] via-[#ACEB74] to-[#98E652] opacity-0 group-hover:opacity-60 transition-all duration-1600 ease-out transform scale-110 group-hover:scale-100"
+                  style={{
+                    clipPath: 'polygon(0% 10%, 15% 0%, 30% 8%, 45% 2%, 60% 12%, 75% 5%, 90% 15%, 100% 8%, 100% 100%, 0% 100%)',
+                    animationDelay: '400ms'
+                  }}
+                />
 
-                {/* Bubble effects */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-300">
-                  <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
-                  <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '0.8s' }} />
-                  <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.1s' }} />
-                  <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '1.4s' }} />
+                {/* Paint drips effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-600">
+                  <div className="absolute top-0 left-1/4 w-1 h-8 bg-[#ACEB74] rounded-full animate-pulse" style={{ animationDelay: '0.8s' }} />
+                  <div className="absolute top-0 right-1/3 w-0.5 h-6 bg-[#C0F096] rounded-full animate-pulse" style={{ animationDelay: '1.2s' }} />
+                  <div className="absolute top-0 left-2/3 w-1.5 h-10 bg-[#D4F7B8] rounded-full animate-pulse" style={{ animationDelay: '1.6s' }} />
                 </div>
 
-                {/* Shimmer effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1500 ease-out delay-500" />
+                {/* Paint splatter dots */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1200 delay-800">
+                  <div className="absolute top-1/4 left-1/5 w-2 h-2 bg-[#98E652] rounded-full animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }} />
+                  <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-[#ACEB74] rounded-full animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
+                  <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-[#C0F096] rounded-full animate-bounce" style={{ animationDelay: '1s', animationDuration: '3s' }} />
+                  <div className="absolute top-2/3 right-1/5 w-1 h-1 bg-[#D4F7B8] rounded-full animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '2s' }} />
+                </div>
+
+                {/* Brush stroke highlight */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1800 ease-out delay-300" />
               </div>
 
               <CardContent className="p-0 text-justify relative z-10">
                 <img
                   src={approach.icon}
-                  className="w-8 h-8 mb-4 transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+                  className="w-8 h-8 mb-4 transition-all duration-500 group-hover:scale-110 group-hover:brightness-110 group-hover:drop-shadow-lg"
                 />
-                <h3 className="text-base md:text-1xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 text-left transition-all duration-500 group-hover:text-[#2D5016]">
+                <h3 className="text-base md:text-1xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 text-left transition-all duration-500 group-hover:text-[#2D5016] group-hover:drop-shadow-sm">
                   {approach.title}
                 </h3>
-                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base md:text-base leading-relaxed transition-all duration-500 group-hover:text-[#4A6B2A]">
+                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base md:text-base leading-relaxed transition-all duration-500 group-hover:text-[#4A6B2A] group-hover:drop-shadow-sm">
                   {approach.description}
                 </p>
               </CardContent>
 
-              {/* Floating particles effect */}
-              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-700">
-                <div className="absolute top-1/4 left-1/6 w-1 h-1 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }} />
-                <div className="absolute top-1/2 right-1/5 w-0.5 h-0.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
-                <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '1s', animationDuration: '3s' }} />
-                <div className="absolute top-3/4 right-1/3 w-0.5 h-0.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '1.5s', animationDuration: '2s' }} />
+              {/* Paint brush cursor effect */}
+              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-1000">
+                <div className="absolute top-1/4 left-1/6 w-3 h-1 bg-[#75bf44] rounded-full transform rotate-45 animate-pulse" style={{ animationDelay: '0s', animationDuration: '2s' }} />
+                <div className="absolute top-1/2 right-1/5 w-2 h-0.5 bg-[#75bf44] rounded-full transform -rotate-12 animate-pulse" style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
+                <div className="absolute bottom-1/3 left-1/3 w-4 h-1.5 bg-[#75bf44] rounded-full transform rotate-30 animate-pulse" style={{ animationDelay: '1s', animationDuration: '3s' }} />
               </div>
             </Card>
           ))}
@@ -219,86 +225,107 @@ export const ApproachSection = (): JSX.Element => {
       </div>
 
       <style jsx>{`
-        @keyframes liquidFill {
+        @keyframes paintFill {
           0% {
-            transform: translateY(100%) scale(1);
+            transform: translateX(-100%) scale(1.1);
+            opacity: 0;
+          }
+          30% {
+            transform: translateX(-50%) scale(1.05);
+            opacity: 0.6;
+          }
+          70% {
+            transform: translateX(0%) scale(1.02);
+            opacity: 0.9;
+          }
+          100% {
+            transform: translateX(0%) scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes brushStroke {
+          0% {
+            clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+          }
+          25% {
+            clip-path: polygon(0% 0%, 30% 5%, 25% 95%, 0% 100%);
+          }
+          50% {
+            clip-path: polygon(0% 0%, 60% 8%, 55% 92%, 0% 100%);
+          }
+          75% {
+            clip-path: polygon(0% 0%, 85% 12%, 80% 88%, 0% 100%);
+          }
+          100% {
+            clip-path: polygon(0% 0%, 100% 15%, 100% 85%, 0% 100%);
+          }
+        }
+
+        .group:hover .paint-stroke-1 {
+          animation: paintFill 1.2s ease-out forwards;
+        }
+
+        .group:hover .paint-stroke-2 {
+          animation: brushStroke 1.4s ease-out forwards 0.2s;
+        }
+
+        .group:hover .paint-stroke-3 {
+          animation: paintFill 1.6s ease-out forwards 0.4s;
+        }
+
+        /* Paint drip animation */
+        @keyframes paintDrip {
+          0% {
+            height: 0;
             opacity: 0;
           }
           50% {
-            transform: translateY(50%) scale(1.05);
+            height: 20px;
+            opacity: 1;
+          }
+          100% {
+            height: 40px;
             opacity: 0.8;
           }
-          100% {
-            transform: translateY(0%) scale(1);
+        }
+
+        .group:hover .paint-drip {
+          animation: paintDrip 2s ease-out infinite;
+        }
+
+        /* Splatter effect */
+        @keyframes splatter {
+          0% {
+            transform: scale(0) rotate(0deg);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.2) rotate(180deg);
             opacity: 1;
+          }
+          100% {
+            transform: scale(1) rotate(360deg);
+            opacity: 0.8;
           }
         }
 
-        @keyframes waveMotion {
+        .group:hover .paint-splatter {
+          animation: splatter 1.5s ease-out infinite;
+        }
+
+        /* Brush texture effect */
+        @keyframes brushTexture {
           0%, 100% {
-            clip-path: polygon(0% 100%, 100% 100%, 100% 85%, 95% 80%, 85% 85%, 75% 80%, 65% 85%, 55% 80%, 45% 85%, 35% 80%, 25% 85%, 15% 80%, 5% 85%, 0% 80%);
+            transform: translateY(0) scaleY(1);
           }
           50% {
-            clip-path: polygon(0% 100%, 100% 100%, 100% 80%, 95% 85%, 85% 80%, 75% 85%, 65% 80%, 55% 85%, 45% 80%, 35% 85%, 25% 80%, 15% 85%, 5% 80%, 0% 85%);
+            transform: translateY(-2px) scaleY(1.1);
           }
         }
 
-        .group:hover .liquid-wave-1 {
-          animation: waveMotion 3s ease-in-out infinite;
-        }
-
-        .group:hover .liquid-wave-2 {
-          animation: waveMotion 3s ease-in-out infinite 0.5s;
-        }
-
-        .group:hover .liquid-wave-3 {
-          animation: waveMotion 3s ease-in-out infinite 1s;
-        }
-
-        /* Enhanced bubble animations */
-        @keyframes bubbleFloat {
-          0% {
-            transform: translateY(0) scale(0);
-            opacity: 0;
-          }
-          50% {
-            transform: translateY(-20px) scale(1);
-            opacity: 1;
-          }
-          100% {
-            transform: translateY(-40px) scale(0);
-            opacity: 0;
-          }
-        }
-
-        .group:hover .bubble {
-          animation: bubbleFloat 2s ease-out infinite;
-        }
-
-        /* Ripple effect */
-        @keyframes ripple {
-          0% {
-            transform: scale(0);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(4);
-            opacity: 0;
-          }
-        }
-
-        .group:hover::before {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 10px;
-          height: 10px;
-          background: rgba(117, 191, 68, 0.3);
-          border-radius: 50%;
-          transform: translate(-50%, -50%);
-          animation: ripple 1.5s ease-out infinite;
-          z-index: 1;
+        .group:hover .brush-texture {
+          animation: brushTexture 3s ease-in-out infinite;
         }
       `}</style>
     </section>
