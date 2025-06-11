@@ -152,51 +152,66 @@ export const ApproachSection = (): JSX.Element => {
               key={index}
               className="bg-white border-none rounded-[5px] p-6 md:p-8 h-full transition-all duration-700 hover:-translate-y-3 cursor-pointer group relative overflow-hidden"
             >
-              {/* Liquid filling animation layers */}
+              {/* Round bubble filling animation */}
               <div className="absolute inset-0 overflow-hidden rounded-[5px]">
-                {/* Base liquid layer */}
+                {/* Main bubble that expands from bottom-left corner */}
                 <div 
-                  className="absolute inset-0 bg-gradient-to-br from-[#E9FFDA] via-[#D4F7B8] to-[#C0F096] opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-out transform translate-y-full group-hover:translate-y-0"
+                  className="absolute w-0 h-0 bg-gradient-to-br from-[#E9FFDA] via-[#D4F7B8] to-[#C0F096] opacity-0 group-hover:opacity-100 transition-all duration-1200 ease-out group-hover:w-[200%] group-hover:h-[200%] rounded-full"
                   style={{
-                    clipPath: 'polygon(0% 100%, 100% 100%, 100% 85%, 95% 80%, 85% 85%, 75% 80%, 65% 85%, 55% 80%, 45% 85%, 35% 80%, 25% 85%, 15% 80%, 5% 85%, 0% 80%)',
-                    animationDelay: '0ms'
+                    bottom: '-50%',
+                    left: '-50%',
+                    transformOrigin: 'center center',
+                    transform: 'scale(0)',
+                    transition: 'all 1200ms cubic-bezier(0.25, 0.46, 0.45, 0.94)'
                   }}
                 />
                 
-                {/* Second wave layer */}
+                {/* Secondary bubble layer for depth */}
                 <div 
-                  className="absolute inset-0 bg-gradient-to-br from-[#D4F7B8] via-[#C0F096] to-[#ACEB74] opacity-0 group-hover:opacity-80 transition-all duration-1200 ease-out transform translate-y-full group-hover:translate-y-0"
+                  className="absolute w-0 h-0 bg-gradient-to-br from-[#D4F7B8] via-[#C0F096] to-[#ACEB74] opacity-0 group-hover:opacity-80 transition-all duration-1400 ease-out group-hover:w-[180%] group-hover:h-[180%] rounded-full"
                   style={{
-                    clipPath: 'polygon(0% 100%, 100% 100%, 100% 90%, 90% 85%, 80% 90%, 70% 85%, 60% 90%, 50% 85%, 40% 90%, 30% 85%, 20% 90%, 10% 85%, 0% 90%)',
-                    animationDelay: '100ms'
-                  }}
-                />
-                
-                {/* Third wave layer */}
-                <div 
-                  className="absolute inset-0 bg-gradient-to-br from-[#C0F096] via-[#ACEB74] to-[#98E652] opacity-0 group-hover:opacity-60 transition-all duration-1400 ease-out transform translate-y-full group-hover:translate-y-0"
-                  style={{
-                    clipPath: 'polygon(0% 100%, 100% 100%, 100% 95%, 85% 90%, 75% 95%, 65% 90%, 55% 95%, 45% 90%, 35% 95%, 25% 90%, 15% 95%, 5% 90%, 0% 95%)',
-                    animationDelay: '200ms'
+                    bottom: '-40%',
+                    left: '-40%',
+                    transformOrigin: 'center center',
+                    transform: 'scale(0)',
+                    transition: 'all 1400ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    transitionDelay: '100ms'
                   }}
                 />
 
-                {/* Bubble effects */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-300">
-                  <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
-                  <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '0.8s' }} />
-                  <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.1s' }} />
-                  <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '1.4s' }} />
+                {/* Third bubble layer for smooth gradient */}
+                <div 
+                  className="absolute w-0 h-0 bg-gradient-to-br from-[#C0F096] via-[#ACEB74] to-[#98E652] opacity-0 group-hover:opacity-60 transition-all duration-1600 ease-out group-hover:w-[160%] group-hover:h-[160%] rounded-full"
+                  style={{
+                    bottom: '-30%',
+                    left: '-30%',
+                    transformOrigin: 'center center',
+                    transform: 'scale(0)',
+                    transition: 'all 1600ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                    transitionDelay: '200ms'
+                  }}
+                />
+
+                {/* Floating bubbles effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-500">
+                  <div className="absolute bottom-1/4 left-1/4 w-3 h-3 bg-white rounded-full animate-ping" style={{ animationDelay: '0.5s', animationDuration: '2s' }} />
+                  <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDelay: '0.8s', animationDuration: '2.5s' }} />
+                  <div className="absolute bottom-2/3 left-1/2 w-2.5 h-2.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.1s', animationDuration: '3s' }} />
+                  <div className="absolute bottom-1/2 left-2/3 w-1.5 h-1.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.4s', animationDuration: '2s' }} />
+                  <div className="absolute bottom-3/4 left-3/4 w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDelay: '1.7s', animationDuration: '2.8s' }} />
                 </div>
 
                 {/* Shimmer effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1500 ease-out delay-500" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1800 ease-out delay-700" />
+
+                {/* Ripple effect from center */}
+                <div className="absolute top-1/2 left-1/2 w-0 h-0 border-2 border-white opacity-0 group-hover:opacity-100 rounded-full transform -translate-x-1/2 -translate-y-1/2 group-hover:w-20 group-hover:h-20 transition-all duration-1000 ease-out delay-800" />
               </div>
 
               <CardContent className="p-0 text-justify relative z-10">
                 <img
                   src={approach.icon}
-                  className="w-8 h-8 mb-4 transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+                  className="w-8 h-8 mb-4 transition-all duration-500 group-hover:scale-110 group-hover:brightness-110 group-hover:drop-shadow-lg"
                 />
                 <h3 className="text-base md:text-1xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 text-left transition-all duration-500 group-hover:text-[#2D5016]">
                   {approach.title}
@@ -207,7 +222,7 @@ export const ApproachSection = (): JSX.Element => {
               </CardContent>
 
               {/* Floating particles effect */}
-              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-700">
+              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-1000">
                 <div className="absolute top-1/4 left-1/6 w-1 h-1 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0s', animationDuration: '2s' }} />
                 <div className="absolute top-1/2 right-1/5 w-0.5 h-0.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '2.5s' }} />
                 <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '1s', animationDuration: '3s' }} />
@@ -219,44 +234,36 @@ export const ApproachSection = (): JSX.Element => {
       </div>
 
       <style jsx>{`
-        @keyframes liquidFill {
+        /* Enhanced bubble scaling animation */
+        .group:hover div[style*="bottom: -50%"] {
+          transform: scale(1) !important;
+        }
+
+        .group:hover div[style*="bottom: -40%"] {
+          transform: scale(1) !important;
+        }
+
+        .group:hover div[style*="bottom: -30%"] {
+          transform: scale(1) !important;
+        }
+
+        /* Smooth bubble expansion */
+        @keyframes bubbleExpand {
           0% {
-            transform: translateY(100%) scale(1);
+            transform: scale(0);
             opacity: 0;
           }
           50% {
-            transform: translateY(50%) scale(1.05);
             opacity: 0.8;
           }
           100% {
-            transform: translateY(0%) scale(1);
+            transform: scale(1);
             opacity: 1;
           }
         }
 
-        @keyframes waveMotion {
-          0%, 100% {
-            clip-path: polygon(0% 100%, 100% 100%, 100% 85%, 95% 80%, 85% 85%, 75% 80%, 65% 85%, 55% 80%, 45% 85%, 35% 80%, 25% 85%, 15% 80%, 5% 85%, 0% 80%);
-          }
-          50% {
-            clip-path: polygon(0% 100%, 100% 100%, 100% 80%, 95% 85%, 85% 80%, 75% 85%, 65% 80%, 55% 85%, 45% 80%, 35% 85%, 25% 80%, 15% 85%, 5% 80%, 0% 85%);
-          }
-        }
-
-        .group:hover .liquid-wave-1 {
-          animation: waveMotion 3s ease-in-out infinite;
-        }
-
-        .group:hover .liquid-wave-2 {
-          animation: waveMotion 3s ease-in-out infinite 0.5s;
-        }
-
-        .group:hover .liquid-wave-3 {
-          animation: waveMotion 3s ease-in-out infinite 1s;
-        }
-
-        /* Enhanced bubble animations */
-        @keyframes bubbleFloat {
+        /* Floating bubble animation */
+        @keyframes floatUp {
           0% {
             transform: translateY(0) scale(0);
             opacity: 0;
@@ -271,34 +278,40 @@ export const ApproachSection = (): JSX.Element => {
           }
         }
 
-        .group:hover .bubble {
-          animation: bubbleFloat 2s ease-out infinite;
+        .group:hover .floating-bubble {
+          animation: floatUp 2s ease-out infinite;
         }
 
         /* Ripple effect */
         @keyframes ripple {
           0% {
-            transform: scale(0);
+            transform: translate(-50%, -50%) scale(0);
             opacity: 1;
           }
           100% {
-            transform: scale(4);
+            transform: translate(-50%, -50%) scale(4);
             opacity: 0;
           }
         }
 
+        /* Enhanced glow effect */
         .group:hover::before {
           content: '';
           position: absolute;
           top: 50%;
           left: 50%;
-          width: 10px;
-          height: 10px;
-          background: rgba(117, 191, 68, 0.3);
+          width: 20px;
+          height: 20px;
+          background: radial-gradient(circle, rgba(117, 191, 68, 0.4) 0%, transparent 70%);
           border-radius: 50%;
           transform: translate(-50%, -50%);
-          animation: ripple 1.5s ease-out infinite;
+          animation: ripple 2s ease-out infinite;
           z-index: 1;
+        }
+
+        /* Smooth transitions for all elements */
+        .group * {
+          transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
       `}</style>
     </section>
