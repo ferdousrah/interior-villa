@@ -4,6 +4,7 @@ import { Home } from './screens/Home';
 import { About } from './screens/About';
 import { ResidentialInterior } from './screens/ResidentialInterior';
 import { Portfolio } from './screens/Portfolio';
+import { ProjectDetails } from './screens/ProjectDetails';
 import { WebsiteLoader } from './components/ui/loader';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/residential-interior" element={<ResidentialInterior />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/project-details" element={<ProjectDetails />} />
         </Routes>
       </div>
     </Router>
