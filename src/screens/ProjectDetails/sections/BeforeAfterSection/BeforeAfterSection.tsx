@@ -69,7 +69,7 @@ export const BeforeAfterSection = (): JSX.Element => {
   return (
     <section 
       ref={sectionRef}
-      className="py-16 md:py-24 bg-[#f7f9fb]"
+      className="py-16 md:py-24 bg-white"
     >
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Before/After Slider */}
@@ -83,7 +83,7 @@ export const BeforeAfterSection = (): JSX.Element => {
             beforeLabel="BEFORE"
             afterLabel="AFTER"
             height="500px"
-            className="w-full rounded-2xl overflow-hidden shadow-2xl"
+            className="w-full overflow-hidden"
           />
         </div>
 
