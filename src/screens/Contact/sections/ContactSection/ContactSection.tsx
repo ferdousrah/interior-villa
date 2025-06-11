@@ -145,27 +145,21 @@ export const ContactSection = (): JSX.Element => {
   const contactInfo = [
     {
       icon: MapPin,
-      title: "Our Address",
-      content: "123 Design Street, Creative District, Dhaka 1000, Bangladesh",
-      color: "bg-blue-50 text-blue-600"
+      title: "Visit Our Office",
+      content: "18/10-A, Block-F, Ring Road, Mohammadpur, Dhaka-1207.",
+      iconBg: "bg-primary"
     },
     {
       icon: Phone,
-      title: "Phone Number",
-      content: "+880 1234 567890",
-      color: "bg-green-50 text-green-600"
+      title: "Have Any Question",
+      content: "+88 01748981590",
+      iconBg: "bg-primary"
     },
     {
       icon: Mail,
       title: "Email Address",
-      content: "info@interiorvilla.com",
-      color: "bg-purple-50 text-purple-600"
-    },
-    {
-      icon: Clock,
-      title: "Working Hours",
-      content: "Mon - Fri: 9:00 AM - 6:00 PM",
-      color: "bg-orange-50 text-orange-600"
+      content: "info@interiorvillabd.com",
+      iconBg: "bg-primary"
     }
   ];
 
@@ -188,25 +182,25 @@ export const ContactSection = (): JSX.Element => {
           </p>
         </div>
 
-        {/* Contact Info Cards */}
+        {/* Contact Info Cards - Updated to match design */}
         <div 
           ref={contactInfoRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
         >
           {contactInfo.map((info, index) => {
             const IconComponent = info.icon;
             return (
               <motion.div
                 key={index}
-                className="bg-white border border-gray-200 rounded-2xl p-6 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2"
+                className="bg-[#f7f9fb] rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border border-gray-100"
               >
-                <div className={`w-16 h-16 ${info.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                  <IconComponent className="w-8 h-8" />
+                <div className={`w-16 h-16 ${info.iconBg} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                  <IconComponent className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-lg font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-2">
+                <h3 className="text-xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4">
                   {info.title}
                 </h3>
-                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm leading-relaxed">
+                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
                   {info.content}
                 </p>
               </motion.div>
@@ -295,8 +289,8 @@ export const ContactSection = (): JSX.Element => {
                       Interior Villa Office
                     </h5>
                     <p className="text-sm text-[#626161] [font-family:'Fahkwang',Helvetica]">
-                      123 Design Street, Creative District<br />
-                      Dhaka 1000, Bangladesh
+                      18/10-A, Block-F, Ring Road<br />
+                      Mohammadpur, Dhaka-1207
                     </p>
                   </div>
                 </div>
