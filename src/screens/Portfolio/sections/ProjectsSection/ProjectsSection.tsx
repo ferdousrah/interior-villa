@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Maximize2 } from "lucide-react";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import gsap from "gsap";
@@ -399,34 +399,83 @@ export const ProjectsSection = (): JSX.Element => {
                       loading="lazy"
                     />
                     
-                    {/* Dark overlay for better contrast */}
-                    <div className="absolute inset-0 bg-black/20" />
-                    
-                    {/* Project Information Overlay - Always visible at bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                      <motion.div
-                        initial={{ opacity: 1, y: 0 }}
-                        className="space-y-2"
-                      >
-                        <h3 className="text-2xl font-semibold [font-family:'Fahkwang',Helvetica]">
-                          {project.title}
-                        </h3>
-                        <p className="text-sm opacity-90 [font-family:'Fahkwang',Helvetica]">
-                          {project.subtitle}
-                        </p>
-                      </motion.div>
-                    </div>
-
-                    {/* Hover overlay with enhanced contrast */}
+                    {/* ONLY show overlay and content on hover */}
                     <AnimatePresence>
                       {hoveredProject === project.id && (
-                        <motion.div 
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="absolute inset-0 bg-black/40"
-                        />
+                        <>
+                          {/* Dark overlay for better contrast - Only on hover */}
+                          <motion.div 
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="absolute inset-0 bg-black/50"
+                          />
+                          
+                          {/* White Overlay Bar at Bottom - Only on hover */}
+                          <motion.div 
+                            initial={{ opacity: 0, y: 100 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 100 }}
+                            transition={{ duration: 0.4, ease: "easeOut" }}
+                            className="absolute bottom-0 left-0 right-0 bg-white flex items-center justify-between px-8 py-6"
+                            style={{
+                              borderRadius: '0 0 24px 24px' // Match the card's border radius
+                            }}
+                          >
+                            {/* Project Information on the left */}
+                            <motion.div
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: -20 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                              className="flex-1"
+                            >
+                              <h3 className="text-black font-semibold text-xl [font-family:'Fahkwang',Helvetica] mb-1">
+                                {project.title}
+                              </h3>
+                              <p className="text-gray-600 text-sm [font-family:'Fahkwang',Helvetica]">
+                                {project.subtitle}
+                              </p>
+                            </motion.div>
+                            
+                            {/* Details Button on the right */}
+                            <motion.div
+                              initial={{ opacity: 0, x: 20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              exit={{ opacity: 0, x: 20 }}
+                              transition={{ duration: 0.3, delay: 0.1 }}
+                            >
+                              <div className="bg-black text-white px-6 py-3 rounded-lg flex items-center space-x-3 transition-all duration-300 hover:bg-gray-800 hover:scale-105 shadow-md">
+                                <span className="text-sm font-medium [font-family:'Fahkwang',Helvetica]">
+                                  Details
+                                </span>
+                                <Maximize2 className="w-4 h-4" />
+                              </div>
+                            </motion.div>
+                          </motion.div>
+
+                          {/* Corner Brackets - Top Left and Bottom Right */}
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ duration: 0.3, delay: 0.2 }}
+                            className="absolute top-8 left-8"
+                          >
+                            <div className="w-8 h-8 border-l-2 border-t-2 border-white"></div>
+                          </motion.div>
+                          
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            transition={{ duration: 0.3, delay: 0.2 }}
+                            className="absolute bottom-24 right-8"
+                          >
+                            <div className="w-8 h-8 border-r-2 border-b-2 border-white"></div>
+                          </motion.div>
+                        </>
                       )}
                     </AnimatePresence>
                   </div>
