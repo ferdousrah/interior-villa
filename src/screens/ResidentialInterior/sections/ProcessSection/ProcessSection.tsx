@@ -74,35 +74,17 @@ export const ProcessSection = (): JSX.Element => {
     {
       step: "01",
       title: "Discovery & Concept",
-      description: "We begin by understanding your needs, preferences, and lifestyle to create a tailored design plan.",
-      details: [
-        "Initial Consultation",
-        "Space Assessment", 
-        "Lifestyle Analysis",
-        "Budget Planning"
-      ]
+      description: "We Start By Understanding Your Lifestyle And Vision To Create A Personalized Design.",
     },
     {
-      step: "02",
+      step: "02", 
       title: "Design & Material Selection",
-      description: "Our team develops detailed designs, including material selections, layouts, and 3D visualizations.",
-      details: [
-        "Concept Development",
-        "Material Selection",
-        "3D Visualization",
-        "Design Refinement"
-      ]
+      description: "We Craft A Personalized Design And Choose Sustainable, Premium Materials To Make It A Reality.",
     },
     {
       step: "03",
-      title: "Execution & Finishing Touches",
-      description: "We manage all aspects of the project, from sourcing materials to overseeing construction and installation.",
-      details: [
-        "Project Management",
-        "Quality Control",
-        "Installation Oversight",
-        "Final Styling"
-      ]
+      title: "Execution & Finishing Touches", 
+      description: "our team handles every detail, delivering a seamless transformation into a beautiful, functional space.",
     }
   ];
 
@@ -111,62 +93,65 @@ export const ProcessSection = (): JSX.Element => {
       ref={sectionRef}
       className="py-16 md:py-24 bg-[#f7f9fb]"
     >
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-12 md:mb-16">
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="text-center mb-12 md:mb-20">
           <h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4"
           >
             Our Approach
           </h2>
-          <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-2xl mx-auto leading-relaxed">
-            A step-by-step process designed to bring your vision to life
+          <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed">
+            A Clear Path to Your Dream Interior
           </p>
         </div>
 
         <div 
           ref={stepsContainerRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 relative"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative"
         >
-          {/* Connection Lines */}
-          <div className="hidden md:block absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-4xl">
-            <div className="flex justify-between items-center px-16">
-              <div className="w-16 h-0.5 bg-primary"></div>
-              <div className="w-16 h-0.5 bg-primary"></div>
+          {/* Arrow connectors - only visible on desktop */}
+          <div className="hidden md:block absolute top-20 left-0 right-0 z-10">
+            <div className="flex justify-between items-center px-[20%]">
+              {/* First arrow between step 1 and 2 */}
+              <img 
+                src="/approach-arrow-one.svg" 
+                alt="Arrow" 
+                className="w-16 h-8 object-contain"
+              />
+              {/* Second arrow between step 2 and 3 */}
+              <img 
+                src="/approach-arrow-two.svg" 
+                alt="Arrow" 
+                className="w-16 h-8 object-contain"
+              />
             </div>
           </div>
 
           {processSteps.map((step, index) => (
             <div 
               key={index}
-              className="relative bg-white rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
+              className="relative bg-white border-2 border-[#E5E5E5] rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
             >
-              {/* Step Number Circle */}
-              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
-                <span className="text-white font-bold [font-family:'Fahkwang',Helvetica] text-xl">
-                  {step.step}
-                </span>
+              {/* Step Number Circle with dotted border */}
+              <div className="relative w-20 h-20 mx-auto mb-8">
+                {/* Dotted border circle */}
+                <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
+                {/* Inner solid circle */}
+                <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
+                  <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-xl">
+                    {step.step}
+                  </span>
+                </div>
               </div>
 
-              <h3 className="text-xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4">
+              <h3 className="text-xl md:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6 leading-tight">
                 {step.title}
               </h3>
               
-              <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm leading-relaxed mb-6">
+              <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
                 {step.description}
               </p>
-
-              {/* Details List */}
-              <div className="space-y-2">
-                {step.details.map((detail, detailIndex) => (
-                  <div key={detailIndex} className="flex items-center justify-center space-x-2">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                    <span className="text-xs [font-family:'Fahkwang',Helvetica] text-[#626161]">
-                      {detail}
-                    </span>
-                  </div>
-                ))}
-              </div>
             </div>
           ))}
         </div>
