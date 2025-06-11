@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../../../../components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
 import gsap from "gsap";
@@ -305,7 +305,7 @@ export const ProjectsSection = (): JSX.Element => {
                               <span className="text-sm font-medium [font-family:'Fahkwang',Helvetica]">
                                 Details
                               </span>
-                              <ArrowRight className="w-4 h-4" />
+                              <ArrowUpRight className="w-4 h-4" />
                             </div>
                           </motion.div>
                         </motion.div>
@@ -318,7 +318,7 @@ export const ProjectsSection = (): JSX.Element => {
           ))}
         </div>
 
-        {/* Explore More Button with Water Drop Animation */}
+        {/* Explore More Button with Orange Water Drop Animation */}
         <div className="text-center">
           <button 
             ref={exploreButtonRef}
@@ -326,7 +326,7 @@ export const ProjectsSection = (): JSX.Element => {
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
           >
-            {/* Water Drop Filling Animation */}
+            {/* Orange Water Drop Filling Animation */}
             <div className="absolute inset-0 rounded-full overflow-hidden">
               {/* Main water drop that expands from bottom-left corner */}
               <div 
@@ -334,7 +334,7 @@ export const ProjectsSection = (): JSX.Element => {
                 style={{
                   bottom: '-100%',
                   left: '-100%',
-                  background: 'radial-gradient(circle at center, #75BF44 0%, #68AB3C 40%, #5FA032 80%, #4A7D2A 100%)',
+                  background: 'radial-gradient(circle at center, #EE5428 0%, #DC3F1A 40%, #B83318 80%, #972D1A 100%)',
                   transform: 'scale(0)',
                   transformOrigin: 'center center',
                   transition: 'all 1500ms cubic-bezier(0.25, 0.46, 0.45, 0.94)'
@@ -347,7 +347,7 @@ export const ProjectsSection = (): JSX.Element => {
                 style={{
                   bottom: '-90%',
                   left: '-90%',
-                  background: 'radial-gradient(circle at center, #A9F577 0%, #75BF44 50%, #68AB3C 100%)',
+                  background: 'radial-gradient(circle at center, #F2886C 0%, #EE5428 50%, #DC3F1A 100%)',
                   transform: 'scale(0)',
                   transformOrigin: 'center center',
                   transition: 'all 1700ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -361,7 +361,7 @@ export const ProjectsSection = (): JSX.Element => {
                 style={{
                   bottom: '-80%',
                   left: '-80%',
-                  background: 'radial-gradient(circle at center, #E9FFDA 0%, #A9F577 30%, #75BF44 70%, #68AB3C 100%)',
+                  background: 'radial-gradient(circle at center, #FEF4F2 0%, #F2886C 30%, #EE5428 70%, #DC3F1A 100%)',
                   transform: 'scale(0)',
                   transformOrigin: 'center center',
                   transition: 'all 1900ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
@@ -398,14 +398,14 @@ export const ProjectsSection = (): JSX.Element => {
             <span className="relative z-10 transition-all duration-500 group-hover:text-white group-hover:drop-shadow-lg">
               Explore more
             </span>
-            <div className="relative z-10 w-6 h-6 bg-primary rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-white group-hover:scale-125 group-hover:rotate-45">
-              <ArrowRight className="w-3 h-3 text-white group-hover:text-primary transition-all duration-500" />
+            <div className="relative z-10 w-6 h-6 bg-secondary rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-white group-hover:scale-125 group-hover:rotate-12">
+              <ArrowUpRight className="w-3 h-3 text-white group-hover:text-secondary transition-all duration-500" />
             </div>
 
             {/* Subtle glow effect */}
             <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-500" 
                  style={{
-                   boxShadow: '0 0 30px rgba(117, 191, 68, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)'
+                   boxShadow: '0 0 30px rgba(238, 84, 40, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)'
                  }} 
             />
           </button>
@@ -413,7 +413,7 @@ export const ProjectsSection = (): JSX.Element => {
       </div>
 
       <style jsx global>{`
-        /* Enhanced Water Drop Animation */
+        /* Enhanced Orange Water Drop Animation */
         .group:hover div[style*="bottom: -100%"] {
           transform: scale(1) !important;
         }
@@ -435,7 +435,7 @@ export const ProjectsSection = (): JSX.Element => {
         .group:hover {
           transform: scale(1.05) translateY(-2px);
           box-shadow: 
-            0 15px 35px rgba(117, 191, 68, 0.4),
+            0 15px 35px rgba(238, 84, 40, 0.4),
             0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
@@ -477,7 +477,7 @@ export const ProjectsSection = (): JSX.Element => {
 
         .fancybox__toolbar {
           --fancybox-color: #fff;
-          --fancybox-hover-color: #75bf44;
+          --fancybox-hover-color: #EE5428;
         }
 
         .fancybox__content {
