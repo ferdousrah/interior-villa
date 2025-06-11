@@ -45,96 +45,129 @@ export const CTASection = (): JSX.Element => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-20 md:py-32 overflow-hidden"
+      className="relative py-24 md:py-32 overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 50%, #F0E1D2 100%)'
+        background: 'linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 30%, #F0E1D2 70%, #F5E6D3 100%)'
       }}
     >
-      {/* Decorative Background Circles */}
+      {/* Decorative Background Circles - Matching the exact design */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Large circle - top left */}
+        {/* Large main circle - bottom left, very light */}
         <div 
-          className="absolute rounded-full opacity-20"
+          className="absolute rounded-full"
+          style={{
+            width: '600px',
+            height: '600px',
+            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.4) 0%, rgba(245, 230, 211, 0.2) 50%, rgba(245, 230, 211, 0.1) 80%, transparent 100%)',
+            bottom: '-300px',
+            left: '-200px',
+            opacity: 0.6
+          }}
+        />
+        
+        {/* Medium circle - top right area */}
+        <div 
+          className="absolute rounded-full"
           style={{
             width: '400px',
             height: '400px',
-            background: 'radial-gradient(circle, rgba(238, 84, 40, 0.15) 0%, rgba(238, 84, 40, 0.05) 70%, transparent 100%)',
-            top: '-200px',
-            left: '-200px'
+            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.5) 0%, rgba(240, 225, 210, 0.3) 50%, rgba(240, 225, 210, 0.1) 80%, transparent 100%)',
+            top: '-150px',
+            right: '-100px',
+            opacity: 0.7
           }}
         />
         
-        {/* Medium circle - top right */}
+        {/* Small circle - top left */}
         <div 
-          className="absolute rounded-full opacity-25"
+          className="absolute rounded-full"
           style={{
-            width: '300px',
-            height: '300px',
-            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.8) 0%, rgba(245, 230, 211, 0.3) 70%, transparent 100%)',
-            top: '-100px',
-            right: '-150px'
-          }}
-        />
-        
-        {/* Small circle - bottom left */}
-        <div 
-          className="absolute rounded-full opacity-30"
-          style={{
-            width: '200px',
-            height: '200px',
-            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.6) 0%, rgba(240, 225, 210, 0.2) 70%, transparent 100%)',
-            bottom: '-100px',
-            left: '10%'
+            width: '250px',
+            height: '250px',
+            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.6) 0%, rgba(245, 230, 211, 0.3) 50%, rgba(245, 230, 211, 0.1) 80%, transparent 100%)',
+            top: '-80px',
+            left: '10%',
+            opacity: 0.5
           }}
         />
         
         {/* Medium circle - bottom right */}
         <div 
-          className="absolute rounded-full opacity-20"
+          className="absolute rounded-full"
           style={{
             width: '350px',
             height: '350px',
-            background: 'radial-gradient(circle, rgba(238, 84, 40, 0.1) 0%, rgba(238, 84, 40, 0.03) 70%, transparent 100%)',
-            bottom: '-175px',
-            right: '-100px'
+            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.4) 0%, rgba(240, 225, 210, 0.2) 50%, rgba(240, 225, 210, 0.1) 80%, transparent 100%)',
+            bottom: '-100px',
+            right: '5%',
+            opacity: 0.6
           }}
         />
         
-        {/* Additional small decorative circles */}
+        {/* Additional small decorative circles for depth */}
         <div 
-          className="absolute rounded-full opacity-40"
+          className="absolute rounded-full"
+          style={{
+            width: '180px',
+            height: '180px',
+            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.7) 0%, rgba(245, 230, 211, 0.4) 50%, rgba(245, 230, 211, 0.1) 80%, transparent 100%)',
+            top: '25%',
+            left: '20%',
+            opacity: 0.4
+          }}
+        />
+        
+        <div 
+          className="absolute rounded-full"
           style={{
             width: '120px',
             height: '120px',
-            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.7) 0%, rgba(245, 230, 211, 0.2) 70%, transparent 100%)',
-            top: '20%',
-            left: '15%'
+            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.8) 0%, rgba(240, 225, 210, 0.4) 50%, rgba(240, 225, 210, 0.1) 80%, transparent 100%)',
+            top: '60%',
+            right: '25%',
+            opacity: 0.5
+          }}
+        />
+
+        {/* Very subtle additional circles for organic feel */}
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '300px',
+            height: '300px',
+            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.3) 0%, rgba(245, 230, 211, 0.15) 50%, transparent 80%)',
+            top: '40%',
+            left: '60%',
+            opacity: 0.3
           }}
         />
         
         <div 
-          className="absolute rounded-full opacity-35"
+          className="absolute rounded-full"
           style={{
-            width: '80px',
-            height: '80px',
-            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.8) 0%, rgba(240, 225, 210, 0.3) 70%, transparent 100%)',
-            top: '60%',
-            right: '20%'
+            width: '200px',
+            height: '200px',
+            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.4) 0%, rgba(240, 225, 210, 0.2) 50%, transparent 80%)',
+            bottom: '30%',
+            left: '70%',
+            opacity: 0.4
           }}
         />
       </div>
 
       <div className="container mx-auto px-4 max-w-4xl text-center relative z-10">
         <div ref={contentRef}>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium [font-family:'Fahkwang',Helvetica] text-[#2D2D2D] mb-12 leading-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-medium [font-family:'Fahkwang',Helvetica] mb-16 leading-tight"
+              style={{ color: '#2D2D2D' }}>
             Ready to transform your space?
           </h2>
           
-          {/* Orange Button - Simple Design */}
+          {/* Orange Button - Exact match to design */}
           <button 
-            className="relative text-white px-12 py-4 rounded-lg [font-family:'Fahkwang',Helvetica] font-medium text-lg transition-all duration-300 hover:scale-105 overflow-hidden group shadow-lg"
+            className="relative text-white px-12 py-4 rounded-lg [font-family:'Fahkwang',Helvetica] font-semibold text-lg transition-all duration-300 hover:scale-105 overflow-hidden group shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #EE5428 0%, #DC3F1A 100%)'
+              background: '#EE5428',
+              borderRadius: '8px'
             }}
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
