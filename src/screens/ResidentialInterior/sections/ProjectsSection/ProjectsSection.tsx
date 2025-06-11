@@ -256,26 +256,45 @@ export const ProjectsSection = (): JSX.Element => {
                     loading="lazy"
                   />
                   
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                  
-                  {/* Project Information Overlay - Bottom Left */}
-                  <div className="absolute bottom-6 left-6 right-6">
-                    {/* Green Project Title Badge */}
-                    <div className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium mb-4 inline-block [font-family:'Fahkwang',Helvetica]">
-                      Project Title
-                    </div>
-                    
-                    {/* Details Button */}
-                    <div className="flex items-center justify-between">
-                      <div className="bg-white text-black px-6 py-2 rounded-full flex items-center space-x-2 transition-all duration-300 hover:bg-gray-100 group-hover:scale-105">
-                        <span className="text-sm font-medium [font-family:'Fahkwang',Helvetica]">
-                          Details
-                        </span>
-                        <ArrowRight className="w-4 h-4" />
-                      </div>
-                    </div>
-                  </div>
+                  {/* ONLY show overlay and content on hover */}
+                  <AnimatePresence>
+                    {hoveredProject === project.id && (
+                      <>
+                        {/* Gradient Overlay - Only on hover */}
+                        <motion.div 
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
+                        />
+                        
+                        {/* Project Information Overlay - Only on hover */}
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 20 }}
+                          transition={{ duration: 0.3, delay: 0.1 }}
+                          className="absolute bottom-6 left-6 right-6"
+                        >
+                          {/* Green Project Title Badge */}
+                          <div className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium mb-4 inline-block [font-family:'Fahkwang',Helvetica]">
+                            Project Title
+                          </div>
+                          
+                          {/* Details Button */}
+                          <div className="flex items-center justify-between">
+                            <div className="bg-white text-black px-6 py-2 rounded-full flex items-center space-x-2 transition-all duration-300 hover:bg-gray-100 hover:scale-105">
+                              <span className="text-sm font-medium [font-family:'Fahkwang',Helvetica]">
+                                Details
+                              </span>
+                              <ArrowRight className="w-4 h-4" />
+                            </div>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
                 </div>
               </a>
             </motion.div>
