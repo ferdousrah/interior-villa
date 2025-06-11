@@ -48,44 +48,23 @@ export const CTASection = (): JSX.Element => {
       className="py-16 md:py-24 bg-white"
     >
       <div className="container mx-auto px-4 max-w-6xl">
-        {/* Rounded Container with Beige Background and Three Circle.svg Shapes */}
+        {/* Rounded Container with Beige Background and Two Circle.svg Shapes */}
         <div 
           className="relative overflow-hidden rounded-[40px] py-20 md:py-28"
           style={{
             background: 'linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 30%, #F0E1D2 70%, #F5E6D3 100%)'
           }}
         >
-          {/* Three Decorative Circle.svg Shapes - Positioned as in your design */}
+          {/* Two Decorative Circle.svg Shapes - Positioned exactly as in your design */}
           <div className="absolute inset-0 overflow-hidden">
-            {/* Large Circle - Bottom Left */}
+            {/* Large Circle - Lower Left (extending off left edge) */}
             <div 
               className="absolute"
               style={{
-                width: '400px',
-                height: '400px',
-                bottom: '-200px',
-                left: '-150px',
-                opacity: 0.3
-              }}
-            >
-              <img 
-                src="/circle.svg" 
-                alt="Decorative Circle" 
-                className="w-full h-full object-contain"
-                style={{
-                  filter: 'brightness(0.9) contrast(1.1)'
-                }}
-              />
-            </div>
-            
-            {/* Medium Circle - Top Right */}
-            <div 
-              className="absolute"
-              style={{
-                width: '300px',
-                height: '300px',
-                top: '-100px',
-                right: '-80px',
+                width: '500px',
+                height: '500px',
+                bottom: '-150px',
+                left: '-200px',
                 opacity: 0.25
               }}
             >
@@ -94,20 +73,19 @@ export const CTASection = (): JSX.Element => {
                 alt="Decorative Circle" 
                 className="w-full h-full object-contain"
                 style={{
-                  filter: 'brightness(0.85) contrast(1.2)'
+                  filter: 'brightness(0.8) contrast(1.2)'
                 }}
               />
             </div>
             
-            {/* Small Circle - Center Right */}
+            {/* Medium Circle - Upper Right (extending off right edge) */}
             <div 
               className="absolute"
               style={{
-                width: '200px',
-                height: '200px',
-                top: '50%',
-                right: '10%',
-                transform: 'translateY(-50%)',
+                width: '400px',
+                height: '400px',
+                top: '-120px',
+                right: '-150px',
                 opacity: 0.2
               }}
             >
@@ -116,13 +94,13 @@ export const CTASection = (): JSX.Element => {
                 alt="Decorative Circle" 
                 className="w-full h-full object-contain"
                 style={{
-                  filter: 'brightness(0.8) contrast(1.3)'
+                  filter: 'brightness(0.75) contrast(1.3)'
                 }}
               />
             </div>
           </div>
 
-          {/* Content */}
+          {/* Content - Positioned in the center space between circles */}
           <div className="relative z-10 text-center px-6 md:px-12">
             <div ref={contentRef}>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] mb-12 leading-tight"
