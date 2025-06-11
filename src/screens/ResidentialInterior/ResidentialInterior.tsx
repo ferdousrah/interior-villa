@@ -4,10 +4,8 @@ import { FooterSection } from "../Home/sections/FooterSection/FooterSection";
 import {
   HeroSection,
   AboutSection,
-  ServicesSection,
   ProcessSection,
   ProjectsSection,
-  TestimonialsSection,
   CTASection
 } from "./sections";
 
@@ -25,17 +23,11 @@ const ResidentialInterior = (): JSX.Element => {
         {/* About Residential Interior Section */}
         <AboutSection />
         
-        {/* Our Services Section */}
-        <ServicesSection />
-        
         {/* Our Process Section */}
         <ProcessSection />
         
         {/* Featured Projects Section */}
         <ProjectsSection />
-        
-        {/* Testimonials Section */}
-        <TestimonialsSection />
         
         {/* CTA Section */}
         <CTASection />

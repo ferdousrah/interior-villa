@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { Card, CardContent } from "../../../../components/ui/card";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -74,97 +73,101 @@ export const ProcessSection = (): JSX.Element => {
   const processSteps = [
     {
       step: "01",
-      title: "Initial Consultation",
-      description: "We start with a detailed consultation to understand your needs, preferences, lifestyle, and budget requirements.",
-      icon: "/create-a-svg-icon-of-chat-between-two-users.svg"
+      title: "Discovery & Concept",
+      description: "We begin by understanding your needs, preferences, and lifestyle to create a tailored design plan.",
+      details: [
+        "Initial Consultation",
+        "Space Assessment", 
+        "Lifestyle Analysis",
+        "Budget Planning"
+      ]
     },
     {
       step: "02",
-      title: "Design Concept",
-      description: "Our team creates initial design concepts and mood boards that capture your vision and style preferences.",
-      icon: "/design--tools-pen-tool.png"
+      title: "Design & Material Selection",
+      description: "Our team develops detailed designs, including material selections, layouts, and 3D visualizations.",
+      details: [
+        "Concept Development",
+        "Material Selection",
+        "3D Visualization",
+        "Design Refinement"
+      ]
     },
     {
       step: "03",
-      title: "3D Visualization",
-      description: "We provide detailed 3D renderings and virtual walkthroughs so you can visualize your space before implementation.",
-      icon: "/create-a-svg-geometry-icon.png"
-    },
-    {
-      step: "04",
-      title: "Material Selection",
-      description: "Together, we select high-quality materials, finishes, furniture, and accessories that align with your design and budget.",
-      icon: "/create-a-svg-tic-mark-icon.png"
-    },
-    {
-      step: "05",
-      title: "Project Execution",
-      description: "Our experienced team manages the entire implementation process, ensuring quality workmanship and timely completion.",
-      icon: "/create-a-svg-icon-for-interior-deployment-process--transparent-a.png"
-    },
-    {
-      step: "06",
-      title: "Final Styling",
-      description: "We add the finishing touches with carefully selected accessories and styling to bring your vision to life.",
-      icon: "/create-an-line-icon-of-happy-customer.png"
+      title: "Execution & Finishing Touches",
+      description: "We manage all aspects of the project, from sourcing materials to overseeing construction and installation.",
+      details: [
+        "Project Management",
+        "Quality Control",
+        "Installation Oversight",
+        "Final Styling"
+      ]
     }
   ];
 
   return (
     <section 
       ref={sectionRef}
-      className="py-16 md:py-24 bg-white"
+      className="py-16 md:py-24 bg-[#f7f9fb]"
     >
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-12 md:mb-16">
           <h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
-            Our Design Process
+            Our Approach
           </h2>
-          <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-3xl mx-auto leading-relaxed">
-            We follow a systematic approach to ensure your residential interior design project is completed to perfection, on time and within budget.
+          <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-2xl mx-auto leading-relaxed">
+            A step-by-step process designed to bring your vision to life
           </p>
         </div>
 
         <div 
           ref={stepsContainerRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 relative"
         >
+          {/* Connection Lines */}
+          <div className="hidden md:block absolute top-20 left-1/2 transform -translate-x-1/2 w-full max-w-4xl">
+            <div className="flex justify-between items-center px-16">
+              <div className="w-16 h-0.5 bg-primary"></div>
+              <div className="w-16 h-0.5 bg-primary"></div>
+            </div>
+          </div>
+
           {processSteps.map((step, index) => (
-            <Card 
+            <div 
               key={index}
-              className="bg-[#f7f9fb] border-none rounded-2xl p-8 hover:shadow-xl transition-all duration-500 hover:-translate-y-2 group relative overflow-hidden"
+              className="relative bg-white rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2"
             >
-              {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-full transform translate-x-8 -translate-y-8 group-hover:scale-150 transition-transform duration-700"></div>
+              {/* Step Number Circle */}
+              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6 relative z-10">
+                <span className="text-white font-bold [font-family:'Fahkwang',Helvetica] text-xl">
+                  {step.step}
+                </span>
+              </div>
+
+              <h3 className="text-xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4">
+                {step.title}
+              </h3>
               
-              <CardContent className="p-0 relative z-10">
-                <div className="flex items-start space-x-4 mb-6">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold [font-family:'Fahkwang',Helvetica] text-lg">
-                      {step.step}
+              <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm leading-relaxed mb-6">
+                {step.description}
+              </p>
+
+              {/* Details List */}
+              <div className="space-y-2">
+                {step.details.map((detail, detailIndex) => (
+                  <div key={detailIndex} className="flex items-center justify-center space-x-2">
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
+                    <span className="text-xs [font-family:'Fahkwang',Helvetica] text-[#626161]">
+                      {detail}
                     </span>
                   </div>
-                  <div className="w-12 h-12 bg-primary-light rounded-full flex items-center justify-center flex-shrink-0">
-                    <img
-                      src={step.icon}
-                      alt={step.title}
-                      className="w-6 h-6 object-contain"
-                    />
-                  </div>
-                </div>
-
-                <h3 className="text-xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 group-hover:text-primary transition-colors duration-300">
-                  {step.title}
-                </h3>
-                
-                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm leading-relaxed">
-                  {step.description}
-                </p>
-              </CardContent>
-            </Card>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>

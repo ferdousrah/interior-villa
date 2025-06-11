@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "../../../../components/ui/button";
 import { ZoomIn } from "lucide-react";
 import { Fancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
@@ -127,69 +128,55 @@ export const ProjectsSection = (): JSX.Element => {
   const projects = [
     {
       id: 1,
-      title: "Modern Living Room",
+      title: "Project Title",
       category: "Living Room",
       image: "/a-residential-interior-image.png",
       description: "Contemporary living space with clean lines and natural lighting"
     },
     {
       id: 2,
-      title: "Luxury Master Bedroom",
+      title: "Project Title",
       category: "Bedroom",
       image: "/create-an-image-where-a-beautiful-girl-shows-her-bedroom-interio.png",
       description: "Elegant bedroom design with premium finishes and comfort"
     },
     {
       id: 3,
-      title: "Gourmet Kitchen",
+      title: "Project Title",
       category: "Kitchen",
-      image: "/create-an-image-where-a-women-showing-her-kitchen-interior.svg",
+      image: "/dining-interior.png",
       description: "Functional kitchen design with modern appliances and storage"
     },
     {
       id: 4,
-      title: "Spa-like Bathroom",
+      title: "Project Title",
       category: "Bathroom",
       image: "/rectangle-8.png",
       description: "Luxurious bathroom with spa-inspired design elements"
-    },
-    {
-      id: 5,
-      title: "Elegant Dining Room",
-      category: "Dining Room",
-      image: "/dining-interior.png",
-      description: "Sophisticated dining space perfect for entertaining"
-    },
-    {
-      id: 6,
-      title: "Home Office",
-      category: "Office",
-      image: "/rectangle-9.png",
-      description: "Productive workspace with ergonomic design and storage"
     }
   ];
 
   return (
     <section 
       ref={sectionRef}
-      className="py-16 md:py-24 bg-[#f7f9fb]"
+      className="py-16 md:py-24 bg-white"
     >
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-12 md:mb-16">
           <h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
-            Featured Residential Projects
+            Featured Projects
           </h2>
-          <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-3xl mx-auto leading-relaxed">
-            Explore our portfolio of stunning residential interior design projects that showcase our expertise and attention to detail.
+          <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-2xl mx-auto leading-relaxed">
+            Explore our most recent projects that showcase our expertise and attention to detail.
           </p>
         </div>
 
         <div 
           ref={projectsGridRef}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12"
         >
           {projects.map((project, index) => (
             <motion.div
@@ -203,7 +190,7 @@ export const ProjectsSection = (): JSX.Element => {
               onMouseEnter={() => setHoveredProject(project.id)}
               onMouseLeave={() => setHoveredProject(null)}
               style={{
-                height: index % 3 === 0 ? '400px' : index % 3 === 1 ? '300px' : '350px'
+                height: '350px'
               }}
             >
               <a
@@ -221,57 +208,38 @@ export const ProjectsSection = (): JSX.Element => {
                   />
                   
                   {/* Gradient Overlay */}
-                  <div 
-                    className="absolute inset-0 transition-all duration-500"
-                    style={{
-                      background: hoveredProject === project.id 
-                        ? 'linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.7) 100%)'
-                        : 'linear-gradient(135deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%)',
-                      opacity: 1
-                    }}
-                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                   
                   {/* Project Information Overlay */}
-                  <div 
-                    className="absolute inset-0 flex flex-col justify-end p-6 text-white transition-all duration-500"
-                    style={{
-                      transform: hoveredProject === project.id ? 'translateY(0)' : 'translateY(20px)',
-                      opacity: hoveredProject === project.id ? 1 : 0.8
-                    }}
-                  >
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ 
-                        opacity: hoveredProject === project.id ? 1 : 0.8,
-                        y: hoveredProject === project.id ? 0 : 10
-                      }}
-                      transition={{ duration: 0.3, delay: 0.1 }}
-                    >
-                      <div className="mb-2">
-                        <span className="text-xs uppercase tracking-wider opacity-75 [font-family:'Fahkwang',Helvetica] bg-primary px-2 py-1 rounded-full">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                    <div className="bg-primary text-white px-3 py-1 rounded-full text-xs font-medium mb-3 inline-block">
+                      Project Title
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold [font-family:'Fahkwang',Helvetica] mb-1">
                           {project.category}
-                        </span>
+                        </h3>
+                        <p className="text-sm opacity-90 [font-family:'Fahkwang',Helvetica]">
+                          View Details
+                        </p>
                       </div>
-                      <h3 className="text-xl font-semibold mb-2 [font-family:'Fahkwang',Helvetica]">
-                        {project.title}
-                      </h3>
-                      <p className="text-sm opacity-90 mb-4 [font-family:'Fahkwang',Helvetica]">
-                        {project.description}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs uppercase tracking-wider opacity-75 [font-family:'Fahkwang',Helvetica]">
-                          View Project
-                        </span>
-                        <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                          <ZoomIn className="w-5 h-5" />
-                        </div>
+                      <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                        <ZoomIn className="w-5 h-5" />
                       </div>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               </a>
             </motion.div>
           ))}
+        </div>
+
+        {/* View More Button */}
+        <div className="text-center">
+          <Button className="bg-primary hover:bg-primary-hover text-white px-8 py-3 rounded-full [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105">
+            View More
+          </Button>
         </div>
       </div>
 
