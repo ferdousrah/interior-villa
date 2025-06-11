@@ -205,7 +205,7 @@ export const ApproachSection = (): JSX.Element => {
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1800 ease-out delay-700" />
 
                 {/* Ripple effect from center */}
-                <div className="absolute top-1/2 left-1/2 w-0 h-0 border-2 border-white opacity-0 group-hover:opacity-100 rounded-full transform -translate-x-1/2 -translate-y-1/2 group-hover:w-20 group-hover:h-20 transition-all duration-1000 ease-out delay-800" />
+                {/*<div className="absolute top-1/2 left-1/2 w-0 h-0 border-2 border-white opacity-0 group-hover:opacity-100 rounded-full transform -translate-x-1/2 -translate-y-1/2 group-hover:w-20 group-hover:h-20 transition-all duration-1000 ease-out delay-800" />*/}
               </div>
 
               <CardContent className="p-0 text-justify relative z-10">
@@ -302,7 +302,7 @@ export const ApproachSection = (): JSX.Element => {
           left: 50%;
           width: 20px;
           height: 20px;
-          background: radial-gradient(circle, rgba(117, 191, 68, 0.4) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(238, 84, 40, 0.4) 0%, transparent 70%);
           border-radius: 50%;
           transform: translate(-50%, -50%);
           animation: ripple 2s ease-out infinite;
