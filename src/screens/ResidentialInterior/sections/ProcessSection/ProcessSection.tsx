@@ -111,38 +111,51 @@ export const ProcessSection = (): JSX.Element => {
           className="relative"
         >
           {/* Desktop Layout - Flex with fixed card widths and NO GAPS */}
-          <div className="hidden md:flex justify-center items-center">
+          <div className="hidden md:flex justify-center items-stretch">
             {processSteps.map((step, index) => (
               <React.Fragment key={index}>
-                {/* Process Step Card - Fixed 340px width */}
+                {/* Process Step Card - Fixed 340px width with equal height */}
                 <div 
-                  className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl p-8 lg:p-12 xl:p-16 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 min-h-[500px] lg:min-h-[550px] xl:min-h-[600px] flex flex-col justify-center"
-                  style={{ width: '340px' }}
+                  className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 flex flex-col justify-center"
+                  style={{ 
+                    width: '340px',
+                    height: '400px', // Fixed equal height
+                    padding: '40px 30px' // Reduced padding for smaller content
+                  }}
                 >
-                  {/* Step Number Circle with dotted border */}
-                  <div className="relative w-24 h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 mx-auto mb-8 lg:mb-10 xl:mb-12">
+                  {/* Step Number Circle with dotted border - Smaller */}
+                  <div className="relative w-16 h-16 mx-auto mb-6">
                     {/* Dotted border circle */}
                     <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
                     {/* Inner solid circle */}
-                    <div className="absolute inset-3 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
-                      <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-2xl lg:text-3xl xl:text-4xl">
+                    <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
+                      <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-lg">
                         {step.step}
                       </span>
                     </div>
                   </div>
 
-                  <h3 className="text-2xl lg:text-3xl xl:text-4xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6 lg:mb-8 xl:mb-10 leading-tight">
+                  <h3 className="text-xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 leading-tight">
                     {step.title}
                   </h3>
                   
-                  <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base lg:text-lg xl:text-xl leading-relaxed">
+                  <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm leading-relaxed">
                     {step.description}
                   </p>
                 </div>
 
                 {/* Arrow between steps (only if not the last step) - EXACT 118.47px width, NO GAPS */}
                 {index < processSteps.length - 1 && (
-                  <div className="flex justify-center items-center flex-shrink-0">
+                  <div 
+                    className="flex items-center flex-shrink-0"
+                    style={{
+                      // First arrow positioned at top with gap from top
+                      // Second arrow positioned at bottom with gap from bottom
+                      alignItems: index === 0 ? 'flex-start' : 'flex-end',
+                      paddingTop: index === 0 ? '60px' : '0',
+                      paddingBottom: index === 1 ? '60px' : '0'
+                    }}
+                  >
                     <img 
                       src={index === 0 ? "/approach-arrow-one.svg" : "/approach-arrow-two.svg"}
                       alt="Process Arrow" 
@@ -163,34 +176,38 @@ export const ProcessSection = (): JSX.Element => {
             {processSteps.map((step, index) => (
               <div 
                 key={index}
-                className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl p-10 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 min-h-[450px] flex flex-col justify-center"
-                style={{ width: '340px' }}
+                className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 flex flex-col justify-center"
+                style={{ 
+                  width: '340px',
+                  height: '350px', // Fixed equal height for mobile
+                  padding: '30px 25px' // Reduced padding for mobile
+                }}
               >
-                {/* Step Number Circle with dotted border */}
-                <div className="relative w-28 h-28 mx-auto mb-10">
+                {/* Step Number Circle with dotted border - Smaller for mobile */}
+                <div className="relative w-16 h-16 mx-auto mb-6">
                   {/* Dotted border circle */}
                   <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
                   {/* Inner solid circle */}
-                  <div className="absolute inset-3 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
-                    <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-3xl">
+                  <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
+                    <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-lg">
                       {step.step}
                     </span>
                   </div>
                 </div>
 
-                <h3 className="text-2xl md:text-3xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-8 leading-tight">
+                <h3 className="text-xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 leading-tight">
                   {step.title}
                 </h3>
                 
-                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-lg leading-relaxed">
+                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm leading-relaxed">
                   {step.description}
                 </p>
 
                 {/* Mobile arrow (only if not the last step) */}
                 {index < processSteps.length - 1 && (
-                  <div className="flex justify-center mt-10">
-                    <div className="w-12 h-12 border-2 border-primary rounded-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex justify-center mt-8">
+                    <div className="w-10 h-10 border-2 border-primary rounded-full flex items-center justify-center">
+                      <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                       </svg>
                     </div>
