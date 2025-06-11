@@ -152,32 +152,32 @@ export const ApproachSection = (): JSX.Element => {
               key={index}
               className="bg-white border-none rounded-[5px] p-6 md:p-8 h-full shadow-lg transition-all duration-700 hover:shadow-2xl hover:-translate-y-3 cursor-pointer group relative overflow-hidden"
             >
-              {/* Circular paint filling animation from left bottom corner */}
+              {/* Full card circular paint filling animation from left bottom corner */}
               <div className="absolute inset-0 overflow-hidden rounded-[5px]">
-                {/* Main circular paint fill - starts from left bottom corner */}
+                {/* Main circular paint fill - covers entire card */}
                 <div 
-                  className="absolute w-[400%] h-[400%] -bottom-[300%] -left-[300%] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-2500 ease-out transform scale-0 group-hover:scale-100"
+                  className="absolute w-[500%] h-[500%] -bottom-[400%] -left-[400%] rounded-full opacity-0 group-hover:opacity-100 transition-all duration-2500 ease-out transform scale-0 group-hover:scale-100"
                   style={{
-                    background: 'radial-gradient(circle at center, #F0FDF4 0%, #DCFCE7 20%, #BBF7D0 40%, #86EFAC 60%, #4ADE80 80%, #22C55E 100%)',
+                    background: 'radial-gradient(circle at center, #F0FDF4 0%, #DCFCE7 15%, #BBF7D0 30%, #86EFAC 45%, #4ADE80 60%, #22C55E 75%, #16A34A 90%, #15803D 100%)',
                     transformOrigin: 'bottom left',
                   }}
                 />
                 
-                {/* Secondary lighter circle for depth */}
+                {/* Secondary lighter circle for smooth blending */}
                 <div 
-                  className="absolute w-[350%] h-[350%] -bottom-[275%] -left-[275%] rounded-full opacity-0 group-hover:opacity-80 transition-all duration-2200 ease-out transform scale-0 group-hover:scale-100"
+                  className="absolute w-[450%] h-[450%] -bottom-[375%] -left-[375%] rounded-full opacity-0 group-hover:opacity-85 transition-all duration-2200 ease-out transform scale-0 group-hover:scale-100"
                   style={{
-                    background: 'radial-gradient(circle at center, #F7FEF7 0%, #ECFDF5 30%, #D1FAE5 60%, #A7F3D0 90%)',
+                    background: 'radial-gradient(circle at center, #F7FEF7 0%, #ECFDF5 20%, #D1FAE5 40%, #A7F3D0 60%, #6EE7B7 80%, #34D399 100%)',
                     transformOrigin: 'bottom left',
                     animationDelay: '200ms'
                   }}
                 />
 
-                {/* Tertiary ultra-light circle for smooth blending */}
+                {/* Tertiary ultra-light circle for gentle transition */}
                 <div 
-                  className="absolute w-[300%] h-[300%] -bottom-[250%] -left-[250%] rounded-full opacity-0 group-hover:opacity-60 transition-all duration-2000 ease-out transform scale-0 group-hover:scale-100"
+                  className="absolute w-[400%] h-[400%] -bottom-[350%] -left-[350%] rounded-full opacity-0 group-hover:opacity-70 transition-all duration-2000 ease-out transform scale-0 group-hover:scale-100"
                   style={{
-                    background: 'radial-gradient(circle at center, #FEFFFE 0%, #F9FDF9 40%, #F0FDF4 80%)',
+                    background: 'radial-gradient(circle at center, #FEFFFE 0%, #F9FDF9 25%, #F0FDF4 50%, #DCFCE7 75%, #BBF7D0 100%)',
                     transformOrigin: 'bottom left',
                     animationDelay: '400ms'
                   }}
@@ -185,38 +185,48 @@ export const ApproachSection = (): JSX.Element => {
 
                 {/* Paint brush texture overlay */}
                 <div 
-                  className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-all duration-3000 ease-out"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-25 transition-all duration-3000 ease-out"
                   style={{
                     background: `
                       repeating-linear-gradient(
-                        30deg,
+                        25deg,
                         transparent,
                         transparent 1px,
-                        rgba(255, 255, 255, 0.1) 1px,
-                        rgba(255, 255, 255, 0.1) 2px
+                        rgba(255, 255, 255, 0.15) 1px,
+                        rgba(255, 255, 255, 0.15) 2px
                       ),
                       repeating-linear-gradient(
-                        -30deg,
+                        -25deg,
                         transparent,
                         transparent 2px,
-                        rgba(255, 255, 255, 0.05) 2px,
-                        rgba(255, 255, 255, 0.05) 4px
+                        rgba(255, 255, 255, 0.08) 2px,
+                        rgba(255, 255, 255, 0.08) 4px
                       )
                     `,
                     animationDelay: '800ms'
                   }}
                 />
 
-                {/* Gentle shimmer effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-15 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-2500 ease-out delay-1000" />
+                {/* Enhanced shimmer effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-2800 ease-out delay-1000" />
 
-                {/* Soft glow effect from bottom left */}
+                {/* Soft glow effect from bottom left corner */}
                 <div 
-                  className="absolute w-32 h-32 -bottom-16 -left-16 rounded-full opacity-0 group-hover:opacity-30 transition-all duration-2000 ease-out"
+                  className="absolute w-40 h-40 -bottom-20 -left-20 rounded-full opacity-0 group-hover:opacity-40 transition-all duration-2200 ease-out"
                   style={{
-                    background: 'radial-gradient(circle, rgba(34, 197, 94, 0.3) 0%, transparent 70%)',
-                    filter: 'blur(20px)',
+                    background: 'radial-gradient(circle, rgba(34, 197, 94, 0.4) 0%, rgba(74, 222, 128, 0.2) 50%, transparent 80%)',
+                    filter: 'blur(25px)',
                     animationDelay: '1200ms'
+                  }}
+                />
+
+                {/* Additional corner highlight */}
+                <div 
+                  className="absolute w-20 h-20 -bottom-10 -left-10 rounded-full opacity-0 group-hover:opacity-60 transition-all duration-1800 ease-out"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(220, 252, 231, 0.4) 60%, transparent 100%)',
+                    filter: 'blur(15px)',
+                    animationDelay: '1500ms'
                   }}
                 />
               </div>
@@ -234,20 +244,22 @@ export const ApproachSection = (): JSX.Element => {
                 </p>
               </CardContent>
 
-              {/* Floating paint droplets */}
+              {/* Enhanced floating paint droplets */}
               <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-2500 delay-1500">
-                <div className="absolute top-1/4 left-1/6 w-1 h-1 bg-white rounded-full animate-float-gentle" style={{ animationDelay: '0s', animationDuration: '5s' }} />
-                <div className="absolute top-1/2 right-1/5 w-0.5 h-0.5 bg-green-100 rounded-full animate-float-gentle" style={{ animationDelay: '1s', animationDuration: '6s' }} />
-                <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-float-gentle" style={{ animationDelay: '2s', animationDuration: '7s' }} />
-                <div className="absolute top-3/4 right-1/3 w-0.5 h-0.5 bg-green-50 rounded-full animate-float-gentle" style={{ animationDelay: '3s', animationDuration: '5s' }} />
-                <div className="absolute top-1/3 left-2/3 w-1 h-1 bg-white rounded-full animate-float-gentle" style={{ animationDelay: '4s', animationDuration: '6s' }} />
+                <div className="absolute top-1/4 left-1/6 w-1.5 h-1.5 bg-white rounded-full animate-float-gentle" style={{ animationDelay: '0s', animationDuration: '5s' }} />
+                <div className="absolute top-1/2 right-1/5 w-1 h-1 bg-green-100 rounded-full animate-float-gentle" style={{ animationDelay: '1s', animationDuration: '6s' }} />
+                <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-white rounded-full animate-float-gentle" style={{ animationDelay: '2s', animationDuration: '7s' }} />
+                <div className="absolute top-3/4 right-1/3 w-1 h-1 bg-green-50 rounded-full animate-float-gentle" style={{ animationDelay: '3s', animationDuration: '5s' }} />
+                <div className="absolute top-1/3 left-2/3 w-1.5 h-1.5 bg-white rounded-full animate-float-gentle" style={{ animationDelay: '4s', animationDuration: '6s' }} />
+                <div className="absolute bottom-1/4 right-1/4 w-1 h-1 bg-green-200 rounded-full animate-float-gentle" style={{ animationDelay: '2.5s', animationDuration: '5.5s' }} />
               </div>
 
-              {/* Subtle ripple effect from bottom left */}
-              <div className="absolute -bottom-4 -left-4 w-8 h-8 opacity-0 group-hover:opacity-100 transition-all duration-2000 ease-out">
+              {/* Enhanced ripple effect from bottom left */}
+              <div className="absolute -bottom-6 -left-6 w-12 h-12 opacity-0 group-hover:opacity-100 transition-all duration-2000 ease-out">
                 <div className="absolute inset-0 rounded-full border-2 border-green-200 animate-ripple" style={{ animationDelay: '1500ms' }} />
                 <div className="absolute inset-0 rounded-full border-2 border-green-100 animate-ripple" style={{ animationDelay: '1800ms' }} />
                 <div className="absolute inset-0 rounded-full border-2 border-green-50 animate-ripple" style={{ animationDelay: '2100ms' }} />
+                <div className="absolute inset-0 rounded-full border border-white animate-ripple" style={{ animationDelay: '2400ms' }} />
               </div>
             </Card>
           ))}
@@ -258,19 +270,19 @@ export const ApproachSection = (): JSX.Element => {
         @keyframes float-gentle {
           0%, 100% {
             transform: translateY(0px) translateX(0px);
-            opacity: 0.6;
+            opacity: 0.7;
           }
           25% {
-            transform: translateY(-8px) translateX(3px);
+            transform: translateY(-10px) translateX(4px);
             opacity: 1;
           }
           50% {
-            transform: translateY(-4px) translateX(-2px);
-            opacity: 0.8;
+            transform: translateY(-6px) translateX(-3px);
+            opacity: 0.9;
           }
           75% {
-            transform: translateY(-12px) translateX(5px);
-            opacity: 0.9;
+            transform: translateY(-14px) translateX(6px);
+            opacity: 0.95;
           }
         }
 
@@ -280,7 +292,7 @@ export const ApproachSection = (): JSX.Element => {
             opacity: 1;
           }
           100% {
-            transform: scale(4);
+            transform: scale(5);
             opacity: 0;
           }
         }
@@ -290,36 +302,7 @@ export const ApproachSection = (): JSX.Element => {
         }
 
         .animate-ripple {
-          animation: ripple 2s ease-out infinite;
-        }
-
-        /* Smooth circular expansion from bottom left */
-        @keyframes circularPaintFill {
-          0% {
-            transform: scale(0);
-            opacity: 0;
-            transform-origin: bottom left;
-          }
-          20% {
-            transform: scale(0.3);
-            opacity: 0.4;
-          }
-          40% {
-            transform: scale(0.6);
-            opacity: 0.7;
-          }
-          60% {
-            transform: scale(0.8);
-            opacity: 0.9;
-          }
-          80% {
-            transform: scale(0.95);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(1);
-            opacity: 1;
-          }
+          animation: ripple 2.5s ease-out infinite;
         }
 
         /* Enhanced hover effects with gentle breathing */
@@ -328,7 +311,7 @@ export const ApproachSection = (): JSX.Element => {
             transform: scale(1) translateY(0);
           }
           50% {
-            transform: scale(1.01) translateY(-2px);
+            transform: scale(1.02) translateY(-3px);
           }
         }
 
@@ -344,9 +327,9 @@ export const ApproachSection = (): JSX.Element => {
         /* Enhanced shadow effects with light green tint */
         .group:hover {
           box-shadow: 
-            0 25px 50px -12px rgba(34, 197, 94, 0.15),
-            0 0 30px rgba(74, 222, 128, 0.1),
-            inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            0 30px 60px -12px rgba(34, 197, 94, 0.2),
+            0 0 40px rgba(74, 222, 128, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         /* Subtle border glow on hover */
@@ -355,8 +338,8 @@ export const ApproachSection = (): JSX.Element => {
           position: absolute;
           inset: 0;
           border-radius: 5px;
-          padding: 1px;
-          background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(74, 222, 128, 0.1));
+          padding: 2px;
+          background: linear-gradient(135deg, rgba(34, 197, 94, 0.3), rgba(74, 222, 128, 0.15), rgba(187, 247, 208, 0.1));
           mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
           mask-composite: exclude;
           opacity: 0;
@@ -365,6 +348,39 @@ export const ApproachSection = (): JSX.Element => {
 
         .group:hover::before {
           opacity: 1;
+        }
+
+        /* Full card coverage animation */
+        @keyframes fullCardPaintFill {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+            transform-origin: bottom left;
+          }
+          15% {
+            transform: scale(0.2);
+            opacity: 0.3;
+          }
+          30% {
+            transform: scale(0.4);
+            opacity: 0.6;
+          }
+          50% {
+            transform: scale(0.7);
+            opacity: 0.8;
+          }
+          70% {
+            transform: scale(0.9);
+            opacity: 0.95;
+          }
+          85% {
+            transform: scale(0.98);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
         }
       `}</style>
     </section>
