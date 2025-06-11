@@ -110,29 +110,29 @@ export const ExperienceSection = (): JSX.Element => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left Column - Title and Description */}
           <div ref={leftColumnRef} className="space-y-6">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] leading-tight">
+            <h2 className="text-3xl md:text-3xl lg:text-4xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] leading-tight">
               Experience Interior Villa: Where Design Meets Lifestyle
             </h2>
             
-            <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed">
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
               At Interior Villa, we believe that your home should be a reflection of your unique personality and lifestyle. We are a leading interior design firm in Bangladesh, passionate about creating spaces that are not only beautiful but also functional, comfortable, and inspiring.
             </p>
 
             {/* Intro Video Button */}
             <button 
               ref={playButtonRef}
-              className="flex items-center space-x-3 group transition-all duration-300 hover:scale-105"
+              className="flex items-center space-x-1.5 group transition-all duration-300 hover:scale-105"
             >
-              <div className="w-12 h-12 bg-[#1a1a2e] rounded-full flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
+              <div className="w-8 h-8 bg-[#1a1a2e] rounded-full flex items-center justify-center group-hover:bg-[#EE5428] transition-colors duration-300">
                 <svg 
-                  className="w-5 h-5 text-white ml-0.5" 
+                  className="w-3 h-3 text-white ml-0.5" 
                   fill="currentColor" 
                   viewBox="0 0 24 24"
                 >
                   <path d="M8 5v14l11-7z"/>
                 </svg>
               </div>
-              <span className="text-[#1a1a2e] [font-family:'Fahkwang',Helvetica] font-medium group-hover:text-primary transition-colors duration-300">
+              <span className="text-xs text-[#1a1a2e] [font-family:'Fahkwang',Helvetica] font-medium group-hover:text-[#EE5428] transition-colors duration-300">
                 Intro Video
               </span>
             </button>
@@ -146,7 +146,7 @@ export const ExperienceSection = (): JSX.Element => {
               style={{ backgroundColor: '#EBF8F7' }}
             >
               <CardContent className="p-0 space-y-4">
-                <div className="text-4xl md:text-5xl lg:text-6xl font-bold [font-family:'Fahkwang',Helvetica] text-[#01190c]">
+                <div className="text-3xl md:text-4xl lg:text-5xl font-bold [font-family:'Fahkwang',Helvetica] text-[#01190c]">
                   <Counter 
                     end={1000} 
                     suffix="+" 
@@ -178,7 +178,7 @@ export const ExperienceSection = (): JSX.Element => {
               style={{ backgroundColor: '#FEFCEC' }}
             >
               <CardContent className="p-0 space-y-4">
-                <div className="text-4xl md:text-5xl lg:text-6xl font-bold [font-family:'Fahkwang',Helvetica] text-[#01190c]">
+                <div className="text-3xl md:text-4xl lg:text-5xl font-bold [font-family:'Fahkwang',Helvetica] text-[#01190c]">
                   <Counter 
                     end={100} 
                     suffix="+" 

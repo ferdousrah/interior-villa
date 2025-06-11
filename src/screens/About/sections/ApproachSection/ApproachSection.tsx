@@ -101,24 +101,24 @@ export const ApproachSection = (): JSX.Element => {
 
   const approaches = [
     {
-      icon: CheckCircle,
-      title: "Client-Centric Strategy",
-      description: "We start by understanding your lifestyle, preferences, and functional needs to create personalized design solutions that truly reflect your vision."
+      icon: 'search-icon.svg',
+      title: "Discovery & Planning",
+      description: "We begin by understanding your needs, preferences, and lifestyle to create a tailored design plan."
     },
     {
-      icon: MapPin,
-      title: "Innovation & Creativity",
-      description: "Our team combines creative vision with the latest design trends and technologies to deliver unique solutions that stand out."
+      icon: 'design-icon.svg',
+      title: "Design Development",
+      description: "Our team develops detailed designs, including material selections, layouts, and 3D visualizations."
     },
     {
-      icon: Award,
-      title: "Quality Craftsmanship",
-      description: "We work with skilled craftsmen and use premium materials to ensure lasting beauty, functionality, and exceptional quality."
+      icon: 'execute-icon.svg',
+      title: "Execution & Management",
+      description: "We manage all aspects of the project, from sourcing materials to overseeing construction and installation."
     },
     {
-      icon: Zap,
-      title: "Timely Delivery",
-      description: "Our streamlined process and expert project management ensure your project is completed on time and within budget."
+      icon: 'final-touch-icon.svg',
+      title: "Final Touches",
+      description: "We add the finishing touches to bring your vision to life, ensuring every detail is perfect."
     }
   ];
 
@@ -131,15 +131,15 @@ export const ApproachSection = (): JSX.Element => {
         <div className="text-center mb-8 md:mb-12 lg:mb-16">
           <motion.h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-3xl md:text-3xl lg:text-4xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
             Our Approach
           </motion.h2>
           <motion.p 
             ref={descriptionRef}
-            className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-4xl mx-auto leading-relaxed"
+            className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-5xl mx-auto leading-relaxed"
           >
-            We follow a comprehensive approach that ensures every project reflects our commitment to excellence and client satisfaction.
+            At Interior Villa, we believe that your home should be a reflection of your unique personality and lifestyle. We are a leading interior design firm in Bangladesh, passionate about creating spaces that are not only beautiful but also functional, comfortable, and inspiring.
           </motion.p>
         </div>
 
@@ -150,16 +150,17 @@ export const ApproachSection = (): JSX.Element => {
           {approaches.map((approach, index) => (
             <Card 
               key={index}
-              className="bg-white border-none rounded-3xl p-6 md:p-8 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
+              className="bg-white border-none rounded-[5px] p-6 md:p-8 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2 hover:bg-[#E9FFDA] cursor-pointer group"
             >
-              <CardContent className="p-0 text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <approach.icon className="w-8 h-8 text-primary" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4">
+              <CardContent className="p-0 text-justify">
+                <img
+                  src={approach.icon}
+                  className="w-8 h-8 mb-4"
+                />
+                <h3 className="text-base md:text-1xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 text-left transition-colors duration-300">
                   {approach.title}
                 </h3>
-                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm md:text-base leading-relaxed">
+                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base md:text-base leading-relaxed transition-colors duration-300">
                   {approach.description}
                 </p>
               </CardContent>
