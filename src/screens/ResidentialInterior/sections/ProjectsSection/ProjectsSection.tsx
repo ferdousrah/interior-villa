@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const ProjectsSection = (): JSX.Element => {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
@@ -317,21 +318,119 @@ export const ProjectsSection = (): JSX.Element => {
           ))}
         </div>
 
-        {/* Explore More Button */}
+        {/* Explore More Button with Ripple Effect */}
         <div className="text-center">
           <button 
             ref={exploreButtonRef}
-            className="bg-black text-white px-8 py-3 rounded-full [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105 hover:bg-gray-800 flex items-center space-x-3 mx-auto"
+            className="relative bg-black text-white px-8 py-3 rounded-full [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105 flex items-center space-x-3 mx-auto overflow-hidden group"
+            onMouseEnter={() => setIsButtonHovered(true)}
+            onMouseLeave={() => setIsButtonHovered(false)}
           >
-            <span>Explore more</span>
-            <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-              <ArrowRight className="w-3 h-3 text-white" />
+            {/* Multiple Ripple Layers for Rich Color Effect */}
+            <div className="absolute inset-0 rounded-full overflow-hidden">
+              {/* Primary Ripple - Green */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-r from-primary via-primary-hover to-primary opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out transform scale-0 group-hover:scale-150 rounded-full"
+                style={{
+                  transformOrigin: 'center center',
+                  animation: isButtonHovered ? 'ripple-primary 1.2s ease-out' : 'none'
+                }}
+              />
+              
+              {/* Secondary Ripple - Lighter Green */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-r from-primary-light via-primary to-primary-light opacity-0 group-hover:opacity-80 transition-all duration-900 ease-out transform scale-0 group-hover:scale-125 rounded-full"
+                style={{
+                  transformOrigin: 'center center',
+                  animation: isButtonHovered ? 'ripple-secondary 1.4s ease-out 0.1s' : 'none'
+                }}
+              />
+              
+              {/* Tertiary Ripple - Accent Color */}
+              <div 
+                className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary-hover to-secondary opacity-0 group-hover:opacity-60 transition-all duration-1100 ease-out transform scale-0 group-hover:scale-100 rounded-full"
+                style={{
+                  transformOrigin: 'center center',
+                  animation: isButtonHovered ? 'ripple-tertiary 1.6s ease-out 0.2s' : 'none'
+                }}
+              />
+
+              {/* Shimmer Effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out delay-300 rounded-full" />
+              
+              {/* Pulse Effect */}
+              <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-20 rounded-full animate-pulse" style={{ animationDuration: '2s' }} />
+            </div>
+
+            {/* Button Content */}
+            <span className="relative z-10 transition-all duration-300 group-hover:text-white">
+              Explore more
+            </span>
+            <div className="relative z-10 w-6 h-6 bg-primary rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:scale-110">
+              <ArrowRight className="w-3 h-3 text-white group-hover:text-primary transition-colors duration-300" />
+            </div>
+
+            {/* Floating Particles Effect */}
+            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-500">
+              <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '0.5s', animationDuration: '2s' }} />
+              <div className="absolute top-1/3 right-1/3 w-0.5 h-0.5 bg-white rounded-full animate-ping" style={{ animationDelay: '0.8s', animationDuration: '2.5s' }} />
+              <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.1s', animationDuration: '3s' }} />
+              <div className="absolute top-2/3 right-1/4 w-0.5 h-0.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.4s', animationDuration: '2s' }} />
             </div>
           </button>
         </div>
       </div>
 
       <style jsx global>{`
+        /* Ripple Animation Keyframes */
+        @keyframes ripple-primary {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          50% {
+            opacity: 1;
+          }
+          100% {
+            transform: scale(1.5);
+            opacity: 0;
+          }
+        }
+
+        @keyframes ripple-secondary {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          50% {
+            opacity: 0.8;
+          }
+          100% {
+            transform: scale(1.25);
+            opacity: 0;
+          }
+        }
+
+        @keyframes ripple-tertiary {
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          50% {
+            opacity: 0.6;
+          }
+          100% {
+            transform: scale(1);
+            opacity: 0;
+          }
+        }
+
+        /* Enhanced Button Hover Effects */
+        .group:hover {
+          box-shadow: 0 20px 40px rgba(117, 191, 68, 0.3), 0 0 30px rgba(238, 84, 40, 0.2);
+        }
+
+        /* Fancybox Styles */
         .fancybox__container {
           --fancybox-bg: rgba(0, 0, 0, 0.95);
         }
