@@ -47,9 +47,15 @@ export const CTASection = (): JSX.Element => {
       className="py-16 md:py-24 bg-[#f7f9fb]"
     >
       <div className="container mx-auto px-4 max-w-6xl">
-        {/* Rounded Container with Light Background */}
+        {/* Rounded Container with cta-bg.svg Background */}
         <div 
-          className="relative overflow-hidden rounded-[40px] py-20 md:py-28 bg-gradient-to-br from-[#FEF4F2] via-[#F9F1F0] to-[#F5EDE8]"
+          className="relative overflow-hidden rounded-[40px] py-20 md:py-28"
+          style={{
+            backgroundImage: 'url(/cta-bg.svg)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
         >
           {/* Content - Centered */}
           <div className="relative z-10 text-center px-6 md:px-12">
