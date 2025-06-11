@@ -91,17 +91,17 @@ export const ProcessSection = (): JSX.Element => {
   return (
     <section 
       ref={sectionRef}
-      className="py-16 md:py-24 bg-[#f7f9fb]"
+      className="py-20 md:py-32 bg-[#f7f9fb]"
     >
-      <div className="container mx-auto px-4 max-w-7xl">
-        <div className="text-center mb-12 md:mb-20">
+      <div className="container mx-auto px-4 max-w-[1400px]">
+        <div className="text-center mb-16 md:mb-24">
           <h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4"
+            className="text-4xl md:text-5xl lg:text-6xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
             Our Approach
           </h2>
-          <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed">
+          <p className="text-xl [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed max-w-2xl mx-auto">
             A Clear Path to Your Dream Interior
           </p>
         </div>
@@ -111,28 +111,28 @@ export const ProcessSection = (): JSX.Element => {
           className="relative"
         >
           {/* Desktop Grid Layout - 5 columns with proper arrow positioning */}
-          <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-8 items-center">
+          <div className="hidden md:grid md:grid-cols-5 gap-6 lg:gap-8 xl:gap-12 items-center">
             {processSteps.map((step, index) => (
               <React.Fragment key={index}>
                 {/* Process Step Card */}
-                <div className="relative bg-white border-2 border-[#E5E5E5] rounded-2xl p-6 lg:p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30 col-span-1">
+                <div className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl p-8 lg:p-12 xl:p-16 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 col-span-1 min-h-[500px] lg:min-h-[550px] xl:min-h-[600px] flex flex-col justify-center">
                   {/* Step Number Circle with dotted border */}
-                  <div className="relative w-16 h-16 lg:w-20 lg:h-20 mx-auto mb-6 lg:mb-8">
+                  <div className="relative w-24 h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 mx-auto mb-8 lg:mb-10 xl:mb-12">
                     {/* Dotted border circle */}
                     <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
                     {/* Inner solid circle */}
-                    <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
-                      <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-lg lg:text-xl">
+                    <div className="absolute inset-3 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
+                      <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-2xl lg:text-3xl xl:text-4xl">
                         {step.step}
                       </span>
                     </div>
                   </div>
 
-                  <h3 className="text-lg lg:text-xl xl:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 lg:mb-6 leading-tight">
+                  <h3 className="text-2xl lg:text-3xl xl:text-4xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6 lg:mb-8 xl:mb-10 leading-tight">
                     {step.title}
                   </h3>
                   
-                  <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm lg:text-base leading-relaxed">
+                  <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base lg:text-lg xl:text-xl leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -143,7 +143,7 @@ export const ProcessSection = (): JSX.Element => {
                     <img 
                       src={index === 0 ? "/approach-arrow-one.svg" : "/approach-arrow-two.svg"}
                       alt="Process Arrow" 
-                      className="w-12 h-6 lg:w-16 lg:h-8 object-contain"
+                      className="w-16 h-8 lg:w-20 lg:h-10 xl:w-24 xl:h-12 object-contain"
                     />
                   </div>
                 )}
@@ -152,37 +152,37 @@ export const ProcessSection = (): JSX.Element => {
           </div>
 
           {/* Mobile Layout - Single Column */}
-          <div className="md:hidden space-y-8">
+          <div className="md:hidden space-y-12">
             {processSteps.map((step, index) => (
               <div 
                 key={index}
-                className="relative bg-white border-2 border-[#E5E5E5] rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
+                className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl p-10 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 min-h-[450px] flex flex-col justify-center"
               >
                 {/* Step Number Circle with dotted border */}
-                <div className="relative w-20 h-20 mx-auto mb-8">
+                <div className="relative w-28 h-28 mx-auto mb-10">
                   {/* Dotted border circle */}
                   <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
                   {/* Inner solid circle */}
-                  <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
-                    <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-xl">
+                  <div className="absolute inset-3 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
+                    <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-3xl">
                       {step.step}
                     </span>
                   </div>
                 </div>
 
-                <h3 className="text-xl md:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6 leading-tight">
+                <h3 className="text-2xl md:text-3xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-8 leading-tight">
                   {step.title}
                 </h3>
                 
-                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
+                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-lg leading-relaxed">
                   {step.description}
                 </p>
 
                 {/* Mobile arrow (only if not the last step) */}
                 {index < processSteps.length - 1 && (
-                  <div className="flex justify-center mt-8">
-                    <div className="w-8 h-8 border-2 border-primary rounded-full flex items-center justify-center">
-                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex justify-center mt-10">
+                    <div className="w-12 h-12 border-2 border-primary rounded-full flex items-center justify-center">
+                      <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                       </svg>
                     </div>
