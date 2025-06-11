@@ -165,11 +165,13 @@ export const BlogContentSection = (): JSX.Element => {
           >
             {/* Featured Image */}
             <div className="mb-8">
-              <img
-                src="/a-residential-interior-image.png"
-                alt="Blog Featured Image"
-                className="w-full h-[400px] object-cover rounded-lg"
-              />
+              <div className="w-full h-[400px] bg-gray-200 rounded-lg overflow-hidden">
+                <img
+                  src="/a-residential-interior-image.png"
+                  alt="Blog Featured Image"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
 
             {/* Blog Meta */}
@@ -179,7 +181,7 @@ export const BlogContentSection = (): JSX.Element => {
                 <span>Admin</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Calendar className="w-4 h-4" />
+                <MessageCircle className="w-4 h-4" />
                 <span>15 Comments</span>
               </div>
             </div>
@@ -220,7 +222,7 @@ export const BlogContentSection = (): JSX.Element => {
               </p>
 
               <p className="mb-6">
-                In today's fast-paced business environment, leaders must be adaptable and resilient. They need to navigate uncertainty, manage diverse teams, and make strategic decisions that will position their organizations for long-term success.
+                There are many variations of passages of team members, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possunt, omnis voluptas assumenda est, omnis dolor repellendus.
               </p>
 
               {/* Team Leadership Section */}
@@ -235,6 +237,25 @@ export const BlogContentSection = (): JSX.Element => {
               <p className="mb-6">
                 Effective team leaders create psychological safety within their teams, encouraging open communication, innovation, and calculated risk-taking. They recognize and celebrate individual strengths while working to address areas for improvement through coaching and development opportunities.
               </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+                <div>
+                  <h3 className="text-lg font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-3">
+                    Leadership & Productivity
+                  </h3>
+                  <p className="text-sm text-[#626161] [font-family:'Fahkwang',Helvetica]">
+                    Great leaders understand that productivity comes from empowering their teams and creating the right environment for success.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-3">
+                    Project & Management
+                  </h3>
+                  <p className="text-sm text-[#626161] [font-family:'Fahkwang',Helvetica]">
+                    Effective project management requires strong leadership skills to coordinate teams and deliver results on time.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Tags */}
@@ -375,11 +396,13 @@ export const BlogContentSection = (): JSX.Element => {
                 <div className="space-y-6">
                   {recentPosts.map((post, index) => (
                     <div key={index} className="flex space-x-4 group cursor-pointer">
-                      <img
-                        src={post.image}
-                        alt={post.title}
-                        className="w-16 h-16 object-cover rounded-lg flex-shrink-0 group-hover:scale-105 transition-transform duration-300"
-                      />
+                      <div className="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0 overflow-hidden">
+                        <img
+                          src={post.image}
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      </div>
                       <div className="flex-1">
                         <h4 className="text-sm font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] leading-tight mb-2 group-hover:text-primary transition-colors duration-300">
                           {post.title}
