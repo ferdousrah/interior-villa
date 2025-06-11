@@ -142,30 +142,42 @@ export const ContactSection = (): JSX.Element => {
       ref={sectionRef}
       className="bg-white"
     >
-      {/* Contact Info Cards Section - Matching Design */}
-      <div className="bg-[#f7f9fb] py-16 md:py-20">
+      {/* Contact Info Cards Section - Matching Exact Design */}
+      <div className="bg-[#F5F3F0] py-16 md:py-20">
         <div className="container mx-auto px-4 max-w-6xl">
           <div 
             ref={contactInfoRef}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-3 gap-0 relative"
           >
             {contactInfo.map((info, index) => {
               const IconComponent = info.icon;
               return (
-                <motion.div
-                  key={index}
-                  className="bg-white rounded-2xl p-8 text-center hover:shadow-lg transition-all duration-300 hover:-translate-y-2 border border-gray-100"
-                >
-                  <div className={`w-16 h-16 ${info.iconBg} rounded-full flex items-center justify-center mx-auto mb-6`}>
-                    <IconComponent className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4">
-                    {info.title}
-                  </h3>
-                  <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
-                    {info.content}
-                  </p>
-                </motion.div>
+                <React.Fragment key={index}>
+                  <motion.div
+                    className="text-center py-12 px-8 relative"
+                  >
+                    {/* Green Circular Icon */}
+                    <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-6">
+                      <IconComponent className="w-8 h-8 text-white" />
+                    </div>
+                    
+                    {/* Title */}
+                    <h3 className="text-xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#2D2D2D] mb-4">
+                      {info.title}
+                    </h3>
+                    
+                    {/* Content */}
+                    <p className="text-[#666666] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
+                      {info.content}
+                    </p>
+                  </motion.div>
+                  
+                  {/* Vertical Divider Line - Only between columns, not after last */}
+                  {index < contactInfo.length - 1 && (
+                    <div className="hidden md:block absolute top-8 bottom-8 w-px bg-[#D0D0D0]" 
+                         style={{ left: `${((index + 1) * 100) / 3}%` }} />
+                  )}
+                </React.Fragment>
               );
             })}
           </div>
