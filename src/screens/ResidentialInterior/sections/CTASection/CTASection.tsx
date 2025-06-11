@@ -50,95 +50,95 @@ export const CTASection = (): JSX.Element => {
         background: 'linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 30%, #F0E1D2 70%, #F5E6D3 100%)'
       }}
     >
-      {/* Decorative Background Circles - Matching the exact design */}
+      {/* Decorative Background Circles - Warm beige/cream tones with subtle gradients */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Large main circle - bottom left, very light */}
+        {/* Large main circle - bottom left, very soft and warm */}
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '800px',
+            height: '800px',
+            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.6) 0%, rgba(240, 225, 210, 0.4) 30%, rgba(235, 220, 205, 0.2) 60%, transparent 100%)',
+            bottom: '-400px',
+            left: '-300px',
+            opacity: 0.8
+          }}
+        />
+        
+        {/* Large circle - top right area, overlapping for depth */}
         <div 
           className="absolute rounded-full"
           style={{
             width: '600px',
             height: '600px',
-            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.4) 0%, rgba(245, 230, 211, 0.2) 50%, rgba(245, 230, 211, 0.1) 80%, transparent 100%)',
-            bottom: '-300px',
-            left: '-200px',
-            opacity: 0.6
+            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.7) 0%, rgba(235, 220, 205, 0.5) 40%, rgba(230, 215, 200, 0.3) 70%, transparent 100%)',
+            top: '-250px',
+            right: '-200px',
+            opacity: 0.9
           }}
         />
         
-        {/* Medium circle - top right area */}
+        {/* Medium circle - center left for layering */}
         <div 
           className="absolute rounded-full"
           style={{
-            width: '400px',
-            height: '400px',
-            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.5) 0%, rgba(240, 225, 210, 0.3) 50%, rgba(240, 225, 210, 0.1) 80%, transparent 100%)',
-            top: '-150px',
-            right: '-100px',
+            width: '450px',
+            height: '450px',
+            background: 'radial-gradient(circle, rgba(250, 240, 230, 0.8) 0%, rgba(245, 230, 211, 0.6) 35%, rgba(240, 225, 210, 0.3) 70%, transparent 100%)',
+            top: '20%',
+            left: '-150px',
             opacity: 0.7
           }}
         />
         
-        {/* Small circle - top left */}
+        {/* Medium circle - bottom right for balance */}
         <div 
           className="absolute rounded-full"
           style={{
-            width: '250px',
-            height: '250px',
-            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.6) 0%, rgba(245, 230, 211, 0.3) 50%, rgba(245, 230, 211, 0.1) 80%, transparent 100%)',
-            top: '-80px',
-            left: '10%',
-            opacity: 0.5
+            width: '500px',
+            height: '500px',
+            background: 'radial-gradient(circle, rgba(245, 235, 220, 0.6) 0%, rgba(240, 225, 210, 0.4) 40%, rgba(235, 220, 205, 0.2) 75%, transparent 100%)',
+            bottom: '-200px',
+            right: '-150px',
+            opacity: 0.8
           }}
         />
         
-        {/* Medium circle - bottom right */}
-        <div 
-          className="absolute rounded-full"
-          style={{
-            width: '350px',
-            height: '350px',
-            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.4) 0%, rgba(240, 225, 210, 0.2) 50%, rgba(240, 225, 210, 0.1) 80%, transparent 100%)',
-            bottom: '-100px',
-            right: '5%',
-            opacity: 0.6
-          }}
-        />
-        
-        {/* Additional small decorative circles for depth */}
-        <div 
-          className="absolute rounded-full"
-          style={{
-            width: '180px',
-            height: '180px',
-            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.7) 0%, rgba(245, 230, 211, 0.4) 50%, rgba(245, 230, 211, 0.1) 80%, transparent 100%)',
-            top: '25%',
-            left: '20%',
-            opacity: 0.4
-          }}
-        />
-        
-        <div 
-          className="absolute rounded-full"
-          style={{
-            width: '120px',
-            height: '120px',
-            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.8) 0%, rgba(240, 225, 210, 0.4) 50%, rgba(240, 225, 210, 0.1) 80%, transparent 100%)',
-            top: '60%',
-            right: '25%',
-            opacity: 0.5
-          }}
-        />
-
-        {/* Very subtle additional circles for organic feel */}
+        {/* Smaller accent circles for organic feel */}
         <div 
           className="absolute rounded-full"
           style={{
             width: '300px',
             height: '300px',
-            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.3) 0%, rgba(245, 230, 211, 0.15) 50%, transparent 80%)',
-            top: '40%',
-            left: '60%',
-            opacity: 0.3
+            background: 'radial-gradient(circle, rgba(250, 245, 235, 0.9) 0%, rgba(245, 230, 211, 0.6) 45%, rgba(240, 225, 210, 0.3) 80%, transparent 100%)',
+            top: '15%',
+            right: '20%',
+            opacity: 0.6
+          }}
+        />
+        
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '350px',
+            height: '350px',
+            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.7) 0%, rgba(240, 225, 210, 0.5) 50%, rgba(235, 220, 205, 0.2) 85%, transparent 100%)',
+            top: '60%',
+            left: '15%',
+            opacity: 0.7
+          }}
+        />
+
+        {/* Additional layering circles for depth */}
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '250px',
+            height: '250px',
+            background: 'radial-gradient(circle, rgba(250, 240, 230, 0.8) 0%, rgba(245, 235, 220, 0.5) 50%, transparent 85%)',
+            bottom: '40%',
+            right: '30%',
+            opacity: 0.5
           }}
         />
         
@@ -147,10 +147,35 @@ export const CTASection = (): JSX.Element => {
           style={{
             width: '200px',
             height: '200px',
-            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.4) 0%, rgba(240, 225, 210, 0.2) 50%, transparent 80%)',
-            bottom: '30%',
-            left: '70%',
+            background: 'radial-gradient(circle, rgba(245, 230, 211, 0.9) 0%, rgba(240, 225, 210, 0.6) 45%, transparent 80%)',
+            top: '45%',
+            left: '60%',
+            opacity: 0.6
+          }}
+        />
+
+        {/* Very subtle background circles for texture */}
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '400px',
+            height: '400px',
+            background: 'radial-gradient(circle, rgba(250, 245, 235, 0.4) 0%, rgba(245, 235, 220, 0.2) 60%, transparent 90%)',
+            top: '30%',
+            left: '40%',
             opacity: 0.4
+          }}
+        />
+        
+        <div 
+          className="absolute rounded-full"
+          style={{
+            width: '180px',
+            height: '180px',
+            background: 'radial-gradient(circle, rgba(240, 225, 210, 0.8) 0%, rgba(235, 220, 205, 0.4) 55%, transparent 85%)',
+            bottom: '20%',
+            left: '70%',
+            opacity: 0.5
           }}
         />
       </div>
