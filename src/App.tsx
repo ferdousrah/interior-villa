@@ -7,6 +7,7 @@ import { Portfolio } from './screens/Portfolio';
 import { ProjectDetails } from './screens/ProjectDetails';
 import { Blog } from './screens/Blog';
 import { BlogDetails } from './screens/BlogDetails';
+import { FAQ } from './screens/FAQ';
 import { WebsiteLoader } from './components/ui/loader';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/project-details" element={<ProjectDetails />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog-details" element={<BlogDetails />} />
+          <Route path="/faq" element={<FAQ />} />
         </Routes>
       </div>
     </Router>

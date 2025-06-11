@@ -5,3 +5,4 @@ export { Portfolio } from "./Portfolio";
 export { ProjectDetails } from "./ProjectDetails";
 export { Blog } from "./Blog";
 export { BlogDetails } from "./BlogDetails";
+export { FAQ } from "./FAQ";
