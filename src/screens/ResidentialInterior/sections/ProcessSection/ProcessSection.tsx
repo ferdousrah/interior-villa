@@ -52,7 +52,7 @@ export const ProcessSection = (): JSX.Element => {
           y: 0,
           scale: 1,
           duration: 1,
-          stagger: 0.2,
+          stagger: 0.1,
           ease: "power3.out",
           scrollTrigger: {
             trigger: stepsContainerRef.current,
@@ -110,54 +110,45 @@ export const ProcessSection = (): JSX.Element => {
           ref={stepsContainerRef}
           className="relative"
         >
-          {/* Desktop Grid Layout */}
-          <div className="hidden md:grid md:grid-cols-3 gap-8 lg:gap-12">
+          {/* Desktop Grid Layout - 5 columns with proper arrow positioning */}
+          <div className="hidden md:grid md:grid-cols-5 gap-4 lg:gap-8 items-center">
             {processSteps.map((step, index) => (
-              <div 
-                key={index}
-                className="relative bg-white border-2 border-[#E5E5E5] rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
-              >
-                {/* Step Number Circle with dotted border */}
-                <div className="relative w-20 h-20 mx-auto mb-8">
-                  {/* Dotted border circle */}
-                  <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
-                  {/* Inner solid circle */}
-                  <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
-                    <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-xl">
-                      {step.step}
-                    </span>
+              <React.Fragment key={index}>
+                {/* Process Step Card */}
+                <div className="relative bg-white border-2 border-[#E5E5E5] rounded-2xl p-6 lg:p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30 col-span-1">
+                  {/* Step Number Circle with dotted border */}
+                  <div className="relative w-16 h-16 lg:w-20 lg:h-20 mx-auto mb-6 lg:mb-8">
+                    {/* Dotted border circle */}
+                    <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
+                    {/* Inner solid circle */}
+                    <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
+                      <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-lg lg:text-xl">
+                        {step.step}
+                      </span>
+                    </div>
                   </div>
+
+                  <h3 className="text-lg lg:text-xl xl:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 lg:mb-6 leading-tight">
+                    {step.title}
+                  </h3>
+                  
+                  <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-sm lg:text-base leading-relaxed">
+                    {step.description}
+                  </p>
                 </div>
 
-                <h3 className="text-xl md:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6 leading-tight">
-                  {step.title}
-                </h3>
-                
-                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
-                  {step.description}
-                </p>
-              </div>
+                {/* Arrow between steps (only if not the last step) */}
+                {index < processSteps.length - 1 && (
+                  <div className="col-span-1 flex justify-center items-center">
+                    <img 
+                      src={index === 0 ? "/approach-arrow-one.svg" : "/approach-arrow-two.svg"}
+                      alt="Process Arrow" 
+                      className="w-12 h-6 lg:w-16 lg:h-8 object-contain"
+                    />
+                  </div>
+                )}
+              </React.Fragment>
             ))}
-
-            {/* Arrow connectors positioned absolutely */}
-            <div className="absolute top-10 left-0 right-0 flex justify-between items-center pointer-events-none">
-              {/* First arrow between step 1 and 2 */}
-              <div className="flex-1 flex justify-center" style={{ marginLeft: '33.333%', marginRight: '-16.666%' }}>
-                <img 
-                  src="/approach-arrow-one.svg" 
-                  alt="Arrow" 
-                  className="w-16 h-8 object-contain"
-                />
-              </div>
-              {/* Second arrow between step 2 and 3 */}
-              <div className="flex-1 flex justify-center" style={{ marginLeft: '16.666%', marginRight: '-33.333%' }}>
-                <img 
-                  src="/approach-arrow-two.svg" 
-                  alt="Arrow" 
-                  className="w-16 h-8 object-contain"
-                />
-              </div>
-            </div>
           </div>
 
           {/* Mobile Layout - Single Column */}
@@ -186,6 +177,17 @@ export const ProcessSection = (): JSX.Element => {
                 <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
                   {step.description}
                 </p>
+
+                {/* Mobile arrow (only if not the last step) */}
+                {index < processSteps.length - 1 && (
+                  <div className="flex justify-center mt-8">
+                    <div className="w-8 h-8 border-2 border-primary rounded-full flex items-center justify-center">
+                      <svg className="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
