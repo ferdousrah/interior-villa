@@ -216,7 +216,7 @@ export const FeaturedProjectSection = (): JSX.Element => {
           const galleryElements = document.querySelectorAll("[data-fancybox='gallery']");
           
           if (galleryElements.length > 0) {
-            Fancybox.bind("[data-fancybox='gallery']", {
+            Fancybox.bind(Array.from(galleryElements), {
               // Basic configuration
               animated: true,
               showClass: "fancybox-fadeIn",

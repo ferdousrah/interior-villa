@@ -84,7 +84,7 @@ export const ProjectsSection = (): JSX.Element => {
           const galleryElements = document.querySelectorAll("[data-fancybox='residential-gallery']");
           
           if (galleryElements.length > 0) {
-            Fancybox.bind("[data-fancybox='residential-gallery']", {
+            Fancybox.bind(Array.from(galleryElements), {
               animated: true,
               showClass: "fancybox-fadeIn",
               hideClass: "fancybox-fadeOut",
