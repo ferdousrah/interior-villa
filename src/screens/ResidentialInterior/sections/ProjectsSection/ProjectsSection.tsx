@@ -318,7 +318,7 @@ export const ProjectsSection = (): JSX.Element => {
           ))}
         </div>
 
-        {/* Explore More Button with Ripple Effect */}
+        {/* Explore More Button with Color Filling Animation */}
         <div className="text-center">
           <button 
             ref={exploreButtonRef}
@@ -326,92 +326,103 @@ export const ProjectsSection = (): JSX.Element => {
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
           >
-            {/* Multiple Ripple Layers for Rich Color Effect */}
+            {/* Color Filling Layers */}
             <div className="absolute inset-0 rounded-full overflow-hidden">
-              {/* Primary Ripple - Green */}
+              {/* Primary Color Fill - Green from left */}
               <div 
-                className="absolute inset-0 bg-gradient-to-r from-primary via-primary-hover to-primary opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out transform scale-0 group-hover:scale-150 rounded-full"
+                className="absolute inset-0 bg-gradient-to-r from-primary via-primary-hover to-primary opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-out transform -translate-x-full group-hover:translate-x-0"
                 style={{
-                  transformOrigin: 'center center',
-                  animation: isButtonHovered ? 'ripple-primary 1.2s ease-out' : 'none'
+                  background: 'linear-gradient(45deg, #75BF44 0%, #68AB3C 50%, #75BF44 100%)'
                 }}
               />
               
-              {/* Secondary Ripple - Lighter Green */}
+              {/* Secondary Color Fill - Orange from right */}
               <div 
-                className="absolute inset-0 bg-gradient-to-r from-primary-light via-primary to-primary-light opacity-0 group-hover:opacity-80 transition-all duration-900 ease-out transform scale-0 group-hover:scale-125 rounded-full"
+                className="absolute inset-0 bg-gradient-to-l from-secondary via-secondary-hover to-secondary opacity-0 group-hover:opacity-80 transition-all duration-1200 ease-out transform translate-x-full group-hover:translate-x-0 delay-200"
                 style={{
-                  transformOrigin: 'center center',
-                  animation: isButtonHovered ? 'ripple-secondary 1.4s ease-out 0.1s' : 'none'
+                  background: 'linear-gradient(-45deg, #EE5428 0%, #D64C24 50%, #EE5428 100%)'
                 }}
               />
               
-              {/* Tertiary Ripple - Accent Color */}
+              {/* Tertiary Color Fill - Radial from center */}
               <div 
-                className="absolute inset-0 bg-gradient-to-r from-secondary via-secondary-hover to-secondary opacity-0 group-hover:opacity-60 transition-all duration-1100 ease-out transform scale-0 group-hover:scale-100 rounded-full"
+                className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-all duration-1400 ease-out transform scale-0 group-hover:scale-150 delay-400"
                 style={{
-                  transformOrigin: 'center center',
-                  animation: isButtonHovered ? 'ripple-tertiary 1.6s ease-out 0.2s' : 'none'
+                  background: 'radial-gradient(circle at center, #A9F577 0%, #75BF44 40%, #EE5428 80%, transparent 100%)',
+                  borderRadius: '50%'
                 }}
               />
 
-              {/* Shimmer Effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out delay-300 rounded-full" />
+              {/* Liquid Wave Effect */}
+              <div 
+                className="absolute inset-0 opacity-0 group-hover:opacity-70 transition-all duration-1600 ease-out transform translate-y-full group-hover:translate-y-0 delay-600"
+                style={{
+                  background: 'linear-gradient(0deg, #75BF44 0%, #A9F577 50%, transparent 100%)',
+                  clipPath: 'polygon(0% 100%, 100% 100%, 100% 70%, 90% 65%, 80% 70%, 70% 65%, 60% 70%, 50% 65%, 40% 70%, 30% 65%, 20% 70%, 10% 65%, 0% 70%)'
+                }}
+              />
+
+              {/* Shimmer Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-40 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out delay-800" />
               
-              {/* Pulse Effect */}
-              <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-20 rounded-full animate-pulse" style={{ animationDuration: '2s' }} />
+              {/* Pulsing Glow */}
+              <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-30 rounded-full blur-md animate-pulse" style={{ animationDuration: '2s' }} />
             </div>
 
             {/* Button Content */}
-            <span className="relative z-10 transition-all duration-300 group-hover:text-white">
+            <span className="relative z-10 transition-all duration-500 group-hover:text-white group-hover:drop-shadow-lg">
               Explore more
             </span>
-            <div className="relative z-10 w-6 h-6 bg-primary rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-white group-hover:scale-110">
-              <ArrowRight className="w-3 h-3 text-white group-hover:text-primary transition-colors duration-300" />
+            <div className="relative z-10 w-6 h-6 bg-primary rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-white group-hover:scale-125 group-hover:rotate-90">
+              <ArrowRight className="w-3 h-3 text-white group-hover:text-primary transition-all duration-500" />
             </div>
 
-            {/* Floating Particles Effect */}
-            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-500">
-              <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '0.5s', animationDuration: '2s' }} />
-              <div className="absolute top-1/3 right-1/3 w-0.5 h-0.5 bg-white rounded-full animate-ping" style={{ animationDelay: '0.8s', animationDuration: '2.5s' }} />
-              <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.1s', animationDuration: '3s' }} />
-              <div className="absolute top-2/3 right-1/4 w-0.5 h-0.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.4s', animationDuration: '2s' }} />
+            {/* Floating Color Particles */}
+            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-1000">
+              <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary rounded-full animate-ping" style={{ animationDelay: '0.5s', animationDuration: '2s' }} />
+              <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-secondary rounded-full animate-ping" style={{ animationDelay: '0.8s', animationDuration: '2.5s' }} />
+              <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-primary rounded-full animate-ping" style={{ animationDelay: '1.1s', animationDuration: '3s' }} />
+              <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-secondary rounded-full animate-ping" style={{ animationDelay: '1.4s', animationDuration: '2s' }} />
+              <div className="absolute bottom-1/4 right-1/3 w-2 h-2 bg-primary rounded-full animate-ping" style={{ animationDelay: '1.7s', animationDuration: '2.8s' }} />
             </div>
+
+            {/* Border Glow Effect */}
+            <div className="absolute inset-0 rounded-full border-2 border-transparent group-hover:border-primary opacity-0 group-hover:opacity-100 transition-all duration-1000 animate-pulse" />
           </button>
         </div>
       </div>
 
       <style jsx global>{`
-        /* Ripple Animation Keyframes */
-        @keyframes ripple-primary {
+        /* Enhanced Color Filling Animations */
+        @keyframes colorFillLeft {
           0% {
-            transform: scale(0);
+            transform: translateX(-100%);
             opacity: 0;
           }
           50% {
             opacity: 1;
           }
           100% {
-            transform: scale(1.5);
-            opacity: 0;
+            transform: translateX(0%);
+            opacity: 1;
           }
         }
 
-        @keyframes ripple-secondary {
+        @keyframes colorFillRight {
           0% {
-            transform: scale(0);
+            transform: translateX(100%);
             opacity: 0;
           }
           50% {
             opacity: 0.8;
           }
           100% {
-            transform: scale(1.25);
-            opacity: 0;
+            transform: translateX(0%);
+            opacity: 0.8;
           }
         }
 
-        @keyframes ripple-tertiary {
+        @keyframes radialExpand {
           0% {
             transform: scale(0);
             opacity: 0;
@@ -420,14 +431,62 @@ export const ProjectsSection = (): JSX.Element => {
             opacity: 0.6;
           }
           100% {
-            transform: scale(1);
+            transform: scale(1.5);
+            opacity: 0.6;
+          }
+        }
+
+        @keyframes liquidWave {
+          0% {
+            transform: translateY(100%);
             opacity: 0;
+          }
+          50% {
+            opacity: 0.7;
+          }
+          100% {
+            transform: translateY(0%);
+            opacity: 0.7;
           }
         }
 
         /* Enhanced Button Hover Effects */
         .group:hover {
-          box-shadow: 0 20px 40px rgba(117, 191, 68, 0.3), 0 0 30px rgba(238, 84, 40, 0.2);
+          box-shadow: 
+            0 20px 40px rgba(117, 191, 68, 0.4), 
+            0 0 30px rgba(238, 84, 40, 0.3),
+            inset 0 0 20px rgba(255, 255, 255, 0.1);
+          transform: scale(1.05) translateY(-2px);
+        }
+
+        /* Smooth color transitions */
+        .group * {
+          transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* Enhanced glow effect */
+        .group:hover::before {
+          content: '';
+          position: absolute;
+          top: -5px;
+          left: -5px;
+          right: -5px;
+          bottom: -5px;
+          background: linear-gradient(45deg, #75BF44, #EE5428, #A9F577, #D64C24);
+          border-radius: inherit;
+          z-index: -1;
+          opacity: 0.7;
+          filter: blur(10px);
+          animation: colorRotate 3s linear infinite;
+        }
+
+        @keyframes colorRotate {
+          0% {
+            filter: hue-rotate(0deg) blur(10px);
+          }
+          100% {
+            filter: hue-rotate(360deg) blur(10px);
+          }
         }
 
         /* Fancybox Styles */
