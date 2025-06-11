@@ -83,7 +83,11 @@ export const BeforeAfterSection = (): JSX.Element => {
             beforeLabel="BEFORE"
             afterLabel="AFTER"
             height="500px"
-            className="w-full overflow-hidden"
+            className="w-full"
+            style={{
+              borderRadius: '0px',
+              boxShadow: 'none'
+            }}
           />
         </div>
 

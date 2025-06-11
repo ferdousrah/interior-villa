@@ -13,8 +13,8 @@ interface BeforeAfterSliderProps {
 export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
   beforeImage,
   afterImage,
-  beforeLabel = 'BEFORE',
-  afterLabel = 'AFTER',
+  beforeLabel = 'Before',
+  afterLabel = 'After',
   height = '400px',
   className = '',
   style = {}
@@ -25,12 +25,12 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
-    updateSliderPosition(e);
+    updateSliderPosition(e.clientX);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
     if (isDragging) {
-      updateSliderPosition(e);
+      updateSliderPosition(e.clientX);
     }
   };
 
@@ -38,35 +38,52 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
     setIsDragging(false);
   };
 
-  const updateSliderPosition = (e: MouseEvent | React.MouseEvent) => {
-    if (!containerRef.current) return;
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsDragging(true);
+    updateSliderPosition(e.touches[0].clientX);
+  };
 
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    setSliderPosition(percentage);
+  const handleTouchMove = (e: TouchEvent) => {
+    if (isDragging) {
+      updateSliderPosition(e.touches[0].clientX);
+    }
+  };
+
+  const updateSliderPosition = (clientX: number) => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      const position = ((clientX - rect.left) / rect.width) * 100;
+      setSliderPosition(Math.max(0, Math.min(100, position)));
+    }
   };
 
   useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchmove', handleTouchMove);
+      document.addEventListener('touchend', handleMouseUp);
     }
 
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleMouseUp);
     };
   }, [isDragging]);
 
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden cursor-ew-resize select-none ${className}`}
-      style={{ height, ...style }}
-      onMouseDown={handleMouseDown}
+      className={`relative overflow-hidden select-none ${className}`}
+      style={{ 
+        height, 
+        cursor: isDragging ? 'grabbing' : 'grab',
+        ...style
+      }}
     >
-      {/* Before Image (Left Side) */}
+      {/* Before Image */}
       <div className="absolute inset-0">
         <img
           src={beforeImage}
@@ -74,18 +91,17 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
           className="w-full h-full object-cover"
           draggable={false}
         />
-        {/* Before Label */}
-        <div className="absolute top-4 left-4 bg-black/70 text-white px-3 py-1 rounded-md text-sm font-medium">
-          {beforeLabel}
-        </div>
+        {beforeLabel && (
+          <div className="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-3 py-1 text-sm font-medium">
+            {beforeLabel}
+          </div>
+        )}
       </div>
 
-      {/* After Image (Right Side) - Clipped based on slider position */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          clipPath: `inset(0 0 0 ${sliderPosition}%)`
-        }}
+      {/* After Image */}
+      <div
+        className="absolute inset-0 overflow-hidden"
+        style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
         <img
           src={afterImage}
@@ -93,32 +109,25 @@ export const BeforeAfterSlider: React.FC<BeforeAfterSliderProps> = ({
           className="w-full h-full object-cover"
           draggable={false}
         />
-        {/* After Label */}
-        <div className="absolute top-4 right-4 bg-black/70 text-white px-3 py-1 rounded-md text-sm font-medium">
-          {afterLabel}
-        </div>
-      </div>
-
-      {/* Slider Line and Handle */}
-      <div
-        className="absolute top-0 bottom-0 w-1 bg-white shadow-lg"
-        style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
-      >
-        {/* Slider Handle */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg border-2 border-gray-300 flex items-center justify-center cursor-ew-resize">
-          <div className="flex space-x-0.5">
-            <div className="w-0.5 h-4 bg-gray-400 rounded"></div>
-            <div className="w-0.5 h-4 bg-gray-400 rounded"></div>
+        {afterLabel && (
+          <div className="absolute top-4 right-4 bg-black bg-opacity-70 text-white px-3 py-1 text-sm font-medium">
+            {afterLabel}
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Hover Instructions */}
-      {!isDragging && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-3 py-1 rounded-md text-xs opacity-75 pointer-events-none">
-          Drag to compare
+      {/* Slider Handle */}
+      <div
+        className="absolute top-0 bottom-0 w-1 bg-white cursor-grab active:cursor-grabbing z-10"
+        style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
+        onMouseDown={handleMouseDown}
+        onTouchStart={handleTouchStart}
+      >
+        {/* Handle Circle */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white border-2 border-gray-300 rounded-full flex items-center justify-center shadow-lg">
+          <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
