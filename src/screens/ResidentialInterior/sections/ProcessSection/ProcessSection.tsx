@@ -108,52 +108,87 @@ export const ProcessSection = (): JSX.Element => {
 
         <div 
           ref={stepsContainerRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative"
+          className="relative"
         >
-          {/* Arrow connectors - only visible on desktop */}
-          <div className="hidden md:block absolute top-20 left-0 right-0 z-10">
-            <div className="flex justify-between items-center px-[20%]">
+          {/* Desktop Grid Layout */}
+          <div className="hidden md:grid md:grid-cols-3 gap-8 lg:gap-12">
+            {processSteps.map((step, index) => (
+              <div 
+                key={index}
+                className="relative bg-white border-2 border-[#E5E5E5] rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
+              >
+                {/* Step Number Circle with dotted border */}
+                <div className="relative w-20 h-20 mx-auto mb-8">
+                  {/* Dotted border circle */}
+                  <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
+                  {/* Inner solid circle */}
+                  <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
+                    <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-xl">
+                      {step.step}
+                    </span>
+                  </div>
+                </div>
+
+                <h3 className="text-xl md:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6 leading-tight">
+                  {step.title}
+                </h3>
+                
+                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+
+            {/* Arrow connectors positioned absolutely */}
+            <div className="absolute top-10 left-0 right-0 flex justify-between items-center pointer-events-none">
               {/* First arrow between step 1 and 2 */}
-              <img 
-                src="/approach-arrow-one.svg" 
-                alt="Arrow" 
-                className="w-16 h-8 object-contain"
-              />
+              <div className="flex-1 flex justify-center" style={{ marginLeft: '33.333%', marginRight: '-16.666%' }}>
+                <img 
+                  src="/approach-arrow-one.svg" 
+                  alt="Arrow" 
+                  className="w-16 h-8 object-contain"
+                />
+              </div>
               {/* Second arrow between step 2 and 3 */}
-              <img 
-                src="/approach-arrow-two.svg" 
-                alt="Arrow" 
-                className="w-16 h-8 object-contain"
-              />
+              <div className="flex-1 flex justify-center" style={{ marginLeft: '16.666%', marginRight: '-33.333%' }}>
+                <img 
+                  src="/approach-arrow-two.svg" 
+                  alt="Arrow" 
+                  className="w-16 h-8 object-contain"
+                />
+              </div>
             </div>
           </div>
 
-          {processSteps.map((step, index) => (
-            <div 
-              key={index}
-              className="relative bg-white border-2 border-[#E5E5E5] rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
-            >
-              {/* Step Number Circle with dotted border */}
-              <div className="relative w-20 h-20 mx-auto mb-8">
-                {/* Dotted border circle */}
-                <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
-                {/* Inner solid circle */}
-                <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
-                  <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-xl">
-                    {step.step}
-                  </span>
+          {/* Mobile Layout - Single Column */}
+          <div className="md:hidden space-y-8">
+            {processSteps.map((step, index) => (
+              <div 
+                key={index}
+                className="relative bg-white border-2 border-[#E5E5E5] rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-500 hover:-translate-y-2 hover:border-primary/30"
+              >
+                {/* Step Number Circle with dotted border */}
+                <div className="relative w-20 h-20 mx-auto mb-8">
+                  {/* Dotted border circle */}
+                  <div className="absolute inset-0 border-2 border-dashed border-[#CCCCCC] rounded-full"></div>
+                  {/* Inner solid circle */}
+                  <div className="absolute inset-2 bg-white border-2 border-[#333333] rounded-full flex items-center justify-center">
+                    <span className="text-[#333333] font-bold [font-family:'Fahkwang',Helvetica] text-xl">
+                      {step.step}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <h3 className="text-xl md:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6 leading-tight">
-                {step.title}
-              </h3>
-              
-              <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          ))}
+                <h3 className="text-xl md:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6 leading-tight">
+                  {step.title}
+                </h3>
+                
+                <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
