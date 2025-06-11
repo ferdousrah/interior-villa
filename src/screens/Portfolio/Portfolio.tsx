@@ -5,7 +5,7 @@ import {
   HeroSection,
   ProjectsSection,
   CTASection
-} from "./sections";
+} from "./sections/index";
 
 const Portfolio = (): JSX.Element => {
   return (
