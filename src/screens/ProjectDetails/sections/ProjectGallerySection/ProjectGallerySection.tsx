@@ -9,9 +9,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const ProjectGallerySection = (): JSX.Element => {
   const [hoveredImage, setHoveredImage] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState("photo-gallery");
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const tabsRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,6 +55,28 @@ export const ProjectGallerySection = (): JSX.Element => {
           ease: "power2.out",
           scrollTrigger: {
             trigger: descriptionRef.current,
+            start: "top 85%",
+            end: "top 65%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+
+    // Tabs animation
+    if (tabsRef.current) {
+      gsap.fromTo(tabsRef.current,
+        {
+          opacity: 0,
+          y: 30
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: tabsRef.current,
             start: "top 85%",
             end: "top 65%",
             toggleActions: "play none none reverse"
@@ -142,7 +166,7 @@ export const ProjectGallerySection = (): JSX.Element => {
       }
       Fancybox.destroy();
     };
-  }, []);
+  }, [activeTab]);
 
   const galleryImages = [
     {
@@ -177,6 +201,12 @@ export const ProjectGallerySection = (): JSX.Element => {
     }
   ];
 
+  const tabs = [
+    { id: "photo-gallery", label: "Photo Gallery", active: true },
+    { id: "video-tour", label: "Video Tour", active: false },
+    { id: "floor-plan", label: "Floor Plan", active: false }
+  ];
+
   return (
     <section 
       ref={sectionRef}
@@ -197,6 +227,36 @@ export const ProjectGallerySection = (): JSX.Element => {
           >
             Explore a curated collection of captivating visuals that showcase the transformation of this space into a harmonious blend of style and functionality.
           </p>
+        </div>
+
+        {/* Tabs */}
+        <div 
+          ref={tabsRef}
+          className="flex justify-center mb-12"
+        >
+          <div className="flex space-x-8">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`relative pb-2 text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-colors duration-300 ${
+                  activeTab === tab.id 
+                    ? 'text-primary' 
+                    : 'text-[#626161] hover:text-primary'
+                }`}
+              >
+                {tab.label}
+                {activeTab === tab.id && (
+                  <motion.div
+                    layoutId="activeTabIndicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"
+                    initial={false}
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Gallery Grid - Masonry Layout matching the design */}
