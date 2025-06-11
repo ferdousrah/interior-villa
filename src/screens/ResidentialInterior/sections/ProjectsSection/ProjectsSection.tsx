@@ -318,7 +318,7 @@ export const ProjectsSection = (): JSX.Element => {
           ))}
         </div>
 
-        {/* Explore More Button with Color Filling Animation */}
+        {/* Explore More Button with Water Drop Animation */}
         <div className="text-center">
           <button 
             ref={exploreButtonRef}
@@ -326,166 +326,147 @@ export const ProjectsSection = (): JSX.Element => {
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
           >
-            {/* Color Filling Layers */}
+            {/* Water Drop Filling Animation */}
             <div className="absolute inset-0 rounded-full overflow-hidden">
-              {/* Primary Color Fill - Green from left */}
+              {/* Main water drop that expands from bottom-left corner */}
               <div 
-                className="absolute inset-0 bg-gradient-to-r from-primary via-primary-hover to-primary opacity-0 group-hover:opacity-100 transition-all duration-1000 ease-out transform -translate-x-full group-hover:translate-x-0"
+                className="absolute w-0 h-0 opacity-0 group-hover:opacity-100 transition-all duration-1500 ease-out group-hover:w-[300%] group-hover:h-[300%] rounded-full"
                 style={{
-                  background: 'linear-gradient(45deg, #75BF44 0%, #68AB3C 50%, #75BF44 100%)'
+                  bottom: '-100%',
+                  left: '-100%',
+                  background: 'radial-gradient(circle at center, #75BF44 0%, #68AB3C 40%, #5FA032 80%, #4A7D2A 100%)',
+                  transform: 'scale(0)',
+                  transformOrigin: 'center center',
+                  transition: 'all 1500ms cubic-bezier(0.25, 0.46, 0.45, 0.94)'
                 }}
               />
               
-              {/* Secondary Color Fill - Orange from right */}
+              {/* Secondary water layer for depth and organic feel */}
               <div 
-                className="absolute inset-0 bg-gradient-to-l from-secondary via-secondary-hover to-secondary opacity-0 group-hover:opacity-80 transition-all duration-1200 ease-out transform translate-x-full group-hover:translate-x-0 delay-200"
+                className="absolute w-0 h-0 opacity-0 group-hover:opacity-80 transition-all duration-1700 ease-out group-hover:w-[280%] group-hover:h-[280%] rounded-full"
                 style={{
-                  background: 'linear-gradient(-45deg, #EE5428 0%, #D64C24 50%, #EE5428 100%)'
-                }}
-              />
-              
-              {/* Tertiary Color Fill - Radial from center */}
-              <div 
-                className="absolute inset-0 opacity-0 group-hover:opacity-60 transition-all duration-1400 ease-out transform scale-0 group-hover:scale-150 delay-400"
-                style={{
-                  background: 'radial-gradient(circle at center, #A9F577 0%, #75BF44 40%, #EE5428 80%, transparent 100%)',
-                  borderRadius: '50%'
+                  bottom: '-90%',
+                  left: '-90%',
+                  background: 'radial-gradient(circle at center, #A9F577 0%, #75BF44 50%, #68AB3C 100%)',
+                  transform: 'scale(0)',
+                  transformOrigin: 'center center',
+                  transition: 'all 1700ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  transitionDelay: '100ms'
                 }}
               />
 
-              {/* Liquid Wave Effect */}
+              {/* Third layer for smooth gradient transition */}
               <div 
-                className="absolute inset-0 opacity-0 group-hover:opacity-70 transition-all duration-1600 ease-out transform translate-y-full group-hover:translate-y-0 delay-600"
+                className="absolute w-0 h-0 opacity-0 group-hover:opacity-60 transition-all duration-1900 ease-out group-hover:w-[260%] group-hover:h-[260%] rounded-full"
                 style={{
-                  background: 'linear-gradient(0deg, #75BF44 0%, #A9F577 50%, transparent 100%)',
-                  clipPath: 'polygon(0% 100%, 100% 100%, 100% 70%, 90% 65%, 80% 70%, 70% 65%, 60% 70%, 50% 65%, 40% 70%, 30% 65%, 20% 70%, 10% 65%, 0% 70%)'
+                  bottom: '-80%',
+                  left: '-80%',
+                  background: 'radial-gradient(circle at center, #E9FFDA 0%, #A9F577 30%, #75BF44 70%, #68AB3C 100%)',
+                  transform: 'scale(0)',
+                  transformOrigin: 'center center',
+                  transition: 'all 1900ms cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  transitionDelay: '200ms'
                 }}
               />
 
-              {/* Shimmer Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-40 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out delay-800" />
-              
-              {/* Pulsing Glow */}
-              <div className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-30 rounded-full blur-md animate-pulse" style={{ animationDuration: '2s' }} />
+              {/* Liquid surface ripples */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-800">
+                <div 
+                  className="absolute w-full h-full"
+                  style={{
+                    background: 'linear-gradient(45deg, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+                    transform: 'translateX(-100%)',
+                    transition: 'transform 2000ms ease-out',
+                    transitionDelay: '800ms'
+                  }}
+                />
+              </div>
+
+              {/* Floating bubbles effect */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-1000">
+                <div className="absolute bottom-1/4 left-1/4 w-2 h-2 bg-white rounded-full animate-ping" style={{ animationDelay: '0.5s', animationDuration: '3s' }} />
+                <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '0.8s', animationDuration: '2.5s' }} />
+                <div className="absolute bottom-1/2 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-ping" style={{ animationDelay: '1.1s', animationDuration: '4s' }} />
+                <div className="absolute bottom-2/3 left-2/3 w-1 h-1 bg-white rounded-full animate-ping" style={{ animationDelay: '1.4s', animationDuration: '3.5s' }} />
+              </div>
+
+              {/* Shimmer effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-2000 ease-out delay-1200" />
             </div>
 
             {/* Button Content */}
             <span className="relative z-10 transition-all duration-500 group-hover:text-white group-hover:drop-shadow-lg">
               Explore more
             </span>
-            <div className="relative z-10 w-6 h-6 bg-primary rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-white group-hover:scale-125 group-hover:rotate-90">
+            <div className="relative z-10 w-6 h-6 bg-primary rounded-full flex items-center justify-center transition-all duration-500 group-hover:bg-white group-hover:scale-125 group-hover:rotate-45">
               <ArrowRight className="w-3 h-3 text-white group-hover:text-primary transition-all duration-500" />
             </div>
 
-            {/* Floating Color Particles */}
-            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-1000">
-              <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary rounded-full animate-ping" style={{ animationDelay: '0.5s', animationDuration: '2s' }} />
-              <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-secondary rounded-full animate-ping" style={{ animationDelay: '0.8s', animationDuration: '2.5s' }} />
-              <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-primary rounded-full animate-ping" style={{ animationDelay: '1.1s', animationDuration: '3s' }} />
-              <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-secondary rounded-full animate-ping" style={{ animationDelay: '1.4s', animationDuration: '2s' }} />
-              <div className="absolute bottom-1/4 right-1/3 w-2 h-2 bg-primary rounded-full animate-ping" style={{ animationDelay: '1.7s', animationDuration: '2.8s' }} />
-            </div>
-
-            {/* Border Glow Effect */}
-            <div className="absolute inset-0 rounded-full border-2 border-transparent group-hover:border-primary opacity-0 group-hover:opacity-100 transition-all duration-1000 animate-pulse" />
+            {/* Subtle glow effect */}
+            <div className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-500" 
+                 style={{
+                   boxShadow: '0 0 30px rgba(117, 191, 68, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.1)'
+                 }} 
+            />
           </button>
         </div>
       </div>
 
       <style jsx global>{`
-        /* Enhanced Color Filling Animations */
-        @keyframes colorFillLeft {
-          0% {
-            transform: translateX(-100%);
-            opacity: 0;
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            transform: translateX(0%);
-            opacity: 1;
-          }
+        /* Enhanced Water Drop Animation */
+        .group:hover div[style*="bottom: -100%"] {
+          transform: scale(1) !important;
         }
 
-        @keyframes colorFillRight {
-          0% {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.8;
-          }
-          100% {
-            transform: translateX(0%);
-            opacity: 0.8;
-          }
+        .group:hover div[style*="bottom: -90%"] {
+          transform: scale(1) !important;
         }
 
-        @keyframes radialExpand {
-          0% {
-            transform: scale(0);
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.6;
-          }
-          100% {
-            transform: scale(1.5);
-            opacity: 0.6;
-          }
+        .group:hover div[style*="bottom: -80%"] {
+          transform: scale(1) !important;
         }
 
-        @keyframes liquidWave {
-          0% {
-            transform: translateY(100%);
-            opacity: 0;
-          }
-          50% {
-            opacity: 0.7;
-          }
-          100% {
-            transform: translateY(0%);
-            opacity: 0.7;
-          }
+        /* Liquid shimmer animation */
+        .group:hover div[style*="translateX(-100%)"] {
+          transform: translateX(100%) !important;
         }
 
-        /* Enhanced Button Hover Effects */
+        /* Enhanced button hover effects */
         .group:hover {
-          box-shadow: 
-            0 20px 40px rgba(117, 191, 68, 0.4), 
-            0 0 30px rgba(238, 84, 40, 0.3),
-            inset 0 0 20px rgba(255, 255, 255, 0.1);
           transform: scale(1.05) translateY(-2px);
+          box-shadow: 
+            0 15px 35px rgba(117, 191, 68, 0.4),
+            0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* Smooth color transitions */
+        /* Smooth water-like transitions */
         .group * {
           transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        /* Enhanced glow effect */
-        .group:hover::before {
-          content: '';
-          position: absolute;
-          top: -5px;
-          left: -5px;
-          right: -5px;
-          bottom: -5px;
-          background: linear-gradient(45deg, #75BF44, #EE5428, #A9F577, #D64C24);
-          border-radius: inherit;
-          z-index: -1;
-          opacity: 0.7;
-          filter: blur(10px);
-          animation: colorRotate 3s linear infinite;
+        /* Organic bubble animation */
+        @keyframes organicFloat {
+          0%, 100% {
+            transform: translateY(0) scale(1);
+            opacity: 0.7;
+          }
+          50% {
+            transform: translateY(-15px) scale(1.2);
+            opacity: 1;
+          }
         }
 
-        @keyframes colorRotate {
-          0% {
-            filter: hue-rotate(0deg) blur(10px);
+        .group:hover .animate-ping {
+          animation: organicFloat 3s ease-in-out infinite;
+        }
+
+        /* Water surface effect */
+        @keyframes waterSurface {
+          0%, 100% {
+            clip-path: polygon(0% 100%, 100% 100%, 100% 85%, 95% 80%, 85% 85%, 75% 80%, 65% 85%, 55% 80%, 45% 85%, 35% 80%, 25% 85%, 15% 80%, 5% 85%, 0% 80%);
           }
-          100% {
-            filter: hue-rotate(360deg) blur(10px);
+          50% {
+            clip-path: polygon(0% 100%, 100% 100%, 100% 80%, 95% 85%, 85% 80%, 75% 85%, 65% 80%, 55% 85%, 45% 80%, 35% 85%, 25% 80%, 15% 85%, 5% 80%, 0% 85%);
           }
         }
 
