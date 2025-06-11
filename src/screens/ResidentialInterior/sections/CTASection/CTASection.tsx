@@ -48,141 +48,78 @@ export const CTASection = (): JSX.Element => {
       className="py-16 md:py-24 bg-white"
     >
       <div className="container mx-auto px-4 max-w-6xl">
-        {/* Rounded Container with Beige Background and Decorative Circles */}
+        {/* Rounded Container with Beige Background and Three Circle.svg Shapes */}
         <div 
           className="relative overflow-hidden rounded-[40px] py-20 md:py-28"
           style={{
             background: 'linear-gradient(135deg, #F5E6D3 0%, #E8D5C4 30%, #F0E1D2 70%, #F5E6D3 100%)'
           }}
         >
-          {/* Decorative Background Circles - Warm beige/cream tones with subtle gradients */}
+          {/* Three Decorative Circle.svg Shapes - Positioned as in your design */}
           <div className="absolute inset-0 overflow-hidden">
-            {/* Large main circle - bottom left, very soft and warm */}
+            {/* Large Circle - Bottom Left */}
             <div 
-              className="absolute rounded-full"
-              style={{
-                width: '600px',
-                height: '600px',
-                background: 'radial-gradient(circle, rgba(245, 230, 211, 0.6) 0%, rgba(240, 225, 210, 0.4) 30%, rgba(235, 220, 205, 0.2) 60%, transparent 100%)',
-                bottom: '-300px',
-                left: '-200px',
-                opacity: 0.8
-              }}
-            />
-            
-            {/* Large circle - top right area, overlapping for depth */}
-            <div 
-              className="absolute rounded-full"
-              style={{
-                width: '500px',
-                height: '500px',
-                background: 'radial-gradient(circle, rgba(240, 225, 210, 0.7) 0%, rgba(235, 220, 205, 0.5) 40%, rgba(230, 215, 200, 0.3) 70%, transparent 100%)',
-                top: '-200px',
-                right: '-150px',
-                opacity: 0.9
-              }}
-            />
-            
-            {/* Medium circle - center left for layering */}
-            <div 
-              className="absolute rounded-full"
-              style={{
-                width: '350px',
-                height: '350px',
-                background: 'radial-gradient(circle, rgba(250, 240, 230, 0.8) 0%, rgba(245, 230, 211, 0.6) 35%, rgba(240, 225, 210, 0.3) 70%, transparent 100%)',
-                top: '20%',
-                left: '-100px',
-                opacity: 0.7
-              }}
-            />
-            
-            {/* Medium circle - bottom right for balance */}
-            <div 
-              className="absolute rounded-full"
+              className="absolute"
               style={{
                 width: '400px',
                 height: '400px',
-                background: 'radial-gradient(circle, rgba(245, 235, 220, 0.6) 0%, rgba(240, 225, 210, 0.4) 40%, rgba(235, 220, 205, 0.2) 75%, transparent 100%)',
-                bottom: '-150px',
-                right: '-100px',
-                opacity: 0.8
+                bottom: '-200px',
+                left: '-150px',
+                opacity: 0.3
               }}
-            />
+            >
+              <img 
+                src="/circle.svg" 
+                alt="Decorative Circle" 
+                className="w-full h-full object-contain"
+                style={{
+                  filter: 'brightness(0.9) contrast(1.1)'
+                }}
+              />
+            </div>
             
-            {/* Smaller accent circles for organic feel */}
+            {/* Medium Circle - Top Right */}
             <div 
-              className="absolute rounded-full"
+              className="absolute"
               style={{
-                width: '250px',
-                height: '250px',
-                background: 'radial-gradient(circle, rgba(250, 245, 235, 0.9) 0%, rgba(245, 230, 211, 0.6) 45%, rgba(240, 225, 210, 0.3) 80%, transparent 100%)',
-                top: '15%',
-                right: '20%',
-                opacity: 0.6
+                width: '300px',
+                height: '300px',
+                top: '-100px',
+                right: '-80px',
+                opacity: 0.25
               }}
-            />
+            >
+              <img 
+                src="/circle.svg" 
+                alt="Decorative Circle" 
+                className="w-full h-full object-contain"
+                style={{
+                  filter: 'brightness(0.85) contrast(1.2)'
+                }}
+              />
+            </div>
             
+            {/* Small Circle - Center Right */}
             <div 
-              className="absolute rounded-full"
-              style={{
-                width: '280px',
-                height: '280px',
-                background: 'radial-gradient(circle, rgba(245, 230, 211, 0.7) 0%, rgba(240, 225, 210, 0.5) 50%, rgba(235, 220, 205, 0.2) 85%, transparent 100%)',
-                top: '60%',
-                left: '15%',
-                opacity: 0.7
-              }}
-            />
-
-            {/* Additional layering circles for depth */}
-            <div 
-              className="absolute rounded-full"
+              className="absolute"
               style={{
                 width: '200px',
                 height: '200px',
-                background: 'radial-gradient(circle, rgba(250, 240, 230, 0.8) 0%, rgba(245, 235, 220, 0.5) 50%, transparent 85%)',
-                bottom: '40%',
-                right: '30%',
-                opacity: 0.5
+                top: '50%',
+                right: '10%',
+                transform: 'translateY(-50%)',
+                opacity: 0.2
               }}
-            />
-            
-            <div 
-              className="absolute rounded-full"
-              style={{
-                width: '160px',
-                height: '160px',
-                background: 'radial-gradient(circle, rgba(245, 230, 211, 0.9) 0%, rgba(240, 225, 210, 0.6) 45%, transparent 80%)',
-                top: '45%',
-                left: '60%',
-                opacity: 0.6
-              }}
-            />
-
-            {/* Very subtle background circles for texture */}
-            <div 
-              className="absolute rounded-full"
-              style={{
-                width: '320px',
-                height: '320px',
-                background: 'radial-gradient(circle, rgba(250, 245, 235, 0.4) 0%, rgba(245, 235, 220, 0.2) 60%, transparent 90%)',
-                top: '30%',
-                left: '40%',
-                opacity: 0.4
-              }}
-            />
-            
-            <div 
-              className="absolute rounded-full"
-              style={{
-                width: '140px',
-                height: '140px',
-                background: 'radial-gradient(circle, rgba(240, 225, 210, 0.8) 0%, rgba(235, 220, 205, 0.4) 55%, transparent 85%)',
-                bottom: '20%',
-                left: '70%',
-                opacity: 0.5
-              }}
-            />
+            >
+              <img 
+                src="/circle.svg" 
+                alt="Decorative Circle" 
+                className="w-full h-full object-contain"
+                style={{
+                  filter: 'brightness(0.8) contrast(1.3)'
+                }}
+              />
+            </div>
           </div>
 
           {/* Content */}
