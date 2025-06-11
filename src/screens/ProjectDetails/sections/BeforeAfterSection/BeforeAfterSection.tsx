@@ -85,7 +85,8 @@ export const BeforeAfterSection = (): JSX.Element => {
             height="500px"
             className="w-full"
             style={{
-              borderRadius: '0px',
+              borderRadius: '20px',
+              overflow: 'hidden',
               boxShadow: 'none'
             }}
           />
