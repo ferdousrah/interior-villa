@@ -260,37 +260,53 @@ export const ProjectsSection = (): JSX.Element => {
                   <AnimatePresence>
                     {hoveredProject === project.id && (
                       <>
-                        {/* Gradient Overlay - Only on hover */}
+                        {/* Dark overlay for better contrast - Only on hover */}
                         <motion.div 
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.3 }}
-                          className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
+                          className="absolute inset-0 bg-black/30"
                         />
                         
-                        {/* Project Information Overlay - Only on hover */}
+                        {/* Bright Green Overlay Bar at Bottom - Only on hover */}
                         <motion.div 
-                          initial={{ opacity: 0, y: 20 }}
+                          initial={{ opacity: 0, y: 100 }}
                           animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 20 }}
-                          transition={{ duration: 0.3, delay: 0.1 }}
-                          className="absolute bottom-6 left-6 right-6"
+                          exit={{ opacity: 0, y: 100 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          className="absolute bottom-0 left-0 right-0 h-20 flex items-center justify-between px-6"
+                          style={{
+                            background: 'linear-gradient(135deg, #A9F577 0%, #75BF44 100%)', // Bright lime-like green
+                            borderRadius: '0 0 24px 24px' // Match the card's border radius
+                          }}
                         >
-                          {/* Green Project Title Badge */}
-                          <div className="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium mb-4 inline-block [font-family:'Fahkwang',Helvetica]">
-                            Project Title
-                          </div>
+                          {/* Project Title on the left */}
+                          <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -20 }}
+                            transition={{ duration: 0.3, delay: 0.1 }}
+                          >
+                            <span className="text-black font-semibold text-lg [font-family:'Fahkwang',Helvetica]">
+                              Project Title
+                            </span>
+                          </motion.div>
                           
-                          {/* Details Button */}
-                          <div className="flex items-center justify-between">
-                            <div className="bg-white text-black px-6 py-2 rounded-full flex items-center space-x-2 transition-all duration-300 hover:bg-gray-100 hover:scale-105">
+                          {/* Details Button on the right */}
+                          <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: 20 }}
+                            transition={{ duration: 0.3, delay: 0.1 }}
+                          >
+                            <div className="bg-white text-black px-6 py-2 rounded-full flex items-center space-x-2 transition-all duration-300 hover:bg-gray-100 hover:scale-105 shadow-md">
                               <span className="text-sm font-medium [font-family:'Fahkwang',Helvetica]">
                                 Details
                               </span>
                               <ArrowRight className="w-4 h-4" />
                             </div>
-                          </div>
+                          </motion.div>
                         </motion.div>
                       </>
                     )}
