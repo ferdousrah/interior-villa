@@ -38,9 +38,17 @@ export const ServicesSection = (): JSX.Element => {
   const gridRef = useRef<HTMLDivElement>(null);
   const backgroundRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const eventHandlersRef = useRef<Array<{
+    element: HTMLDivElement;
+    handleMouseEnter: () => void;
+    handleMouseLeave: () => void;
+  }>>([]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
+
+    // Clear previous event handlers
+    eventHandlersRef.current = [];
 
     // Parallax effect for background grid
     if (backgroundRef.current) {
@@ -136,7 +144,7 @@ export const ServicesSection = (): JSX.Element => {
         }
       });
 
-      // Hover animations
+      // Create named event handlers for proper cleanup
       const handleMouseEnter = () => {
         gsap.to(card, {
           y: -12,
@@ -157,11 +165,16 @@ export const ServicesSection = (): JSX.Element => {
         });
       };
 
+      // Add event listeners
       card.addEventListener('mouseenter', handleMouseEnter);
       card.addEventListener('mouseleave', handleMouseLeave);
 
-      // Store cleanup functions
-      card.dataset.cleanup = 'true';
+      // Store handlers for cleanup
+      eventHandlersRef.current.push({
+        element: card,
+        handleMouseEnter,
+        handleMouseLeave
+      });
     });
 
     // Grid container parallax
@@ -183,13 +196,14 @@ export const ServicesSection = (): JSX.Element => {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
       
-      // Remove event listeners
-      cardRefs.current.forEach(card => {
-        if (card && card.dataset.cleanup) {
-          card.removeEventListener('mouseenter', () => {});
-          card.removeEventListener('mouseleave', () => {});
-        }
+      // Remove event listeners using the exact same function references
+      eventHandlersRef.current.forEach(({ element, handleMouseEnter, handleMouseLeave }) => {
+        element.removeEventListener('mouseenter', handleMouseEnter);
+        element.removeEventListener('mouseleave', handleMouseLeave);
       });
+      
+      // Clear the handlers array
+      eventHandlersRef.current = [];
     };
   }, []);
 

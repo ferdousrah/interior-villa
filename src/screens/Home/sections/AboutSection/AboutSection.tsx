@@ -58,49 +58,54 @@ export const AboutSection = (): JSX.Element => {
       ease: "power4.out"
     });
 
+    // Store event handlers as named functions for proper cleanup
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!headingWrapperRef.current) return;
+      const rect = headingWrapperRef.current.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+      
+      gsap.to(splitText.chars, {
+        duration: 0.5,
+        y: (i, target) => (y - 0.5) * 15 * Math.sin((i + 1) * 0.5),
+        x: (i, target) => (x - 0.5) * 15 * Math.cos((i + 1) * 0.5),
+        rotationY: (x - 0.5) * 20,
+        rotationX: (y - 0.5) * -20,
+        ease: "power2.out",
+        stagger: {
+          amount: 0.3,
+          from: "center"
+        }
+      });
+    };
+
+    const handleMouseLeave = () => {
+      gsap.to(splitText.chars, {
+        duration: 1,
+        y: 0,
+        x: 0,
+        rotationY: 0,
+        rotationX: 0,
+        ease: "elastic.out(1, 0.3)",
+        stagger: {
+          amount: 0.3,
+          from: "center"
+        }
+      });
+    };
+
     // Add hover animation
     if (headingWrapperRef.current) {
-      headingWrapperRef.current.addEventListener('mousemove', (e) => {
-        const rect = headingWrapperRef.current!.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-        
-        gsap.to(splitText.chars, {
-          duration: 0.5,
-          y: (i, target) => (y - 0.5) * 15 * Math.sin((i + 1) * 0.5),
-          x: (i, target) => (x - 0.5) * 15 * Math.cos((i + 1) * 0.5),
-          rotationY: (x - 0.5) * 20,
-          rotationX: (y - 0.5) * -20,
-          ease: "power2.out",
-          stagger: {
-            amount: 0.3,
-            from: "center"
-          }
-        });
-      });
-
-      headingWrapperRef.current.addEventListener('mouseleave', () => {
-        gsap.to(splitText.chars, {
-          duration: 1,
-          y: 0,
-          x: 0,
-          rotationY: 0,
-          rotationX: 0,
-          ease: "elastic.out(1, 0.3)",
-          stagger: {
-            amount: 0.3,
-            from: "center"
-          }
-        });
-      });
+      headingWrapperRef.current.addEventListener('mousemove', handleMouseMove);
+      headingWrapperRef.current.addEventListener('mouseleave', handleMouseLeave);
     }
 
     // Cleanup function
     return () => {
       splitText.revert();
       if (headingWrapperRef.current) {
-        headingWrapperRef.current.removeEventListener('mousemove', () => {});
-        headingWrapperRef.current.removeEventListener('mouseleave', () => {});
+        headingWrapperRef.current.removeEventListener('mousemove', handleMouseMove);
+        headingWrapperRef.current.removeEventListener('mouseleave', handleMouseLeave);
       }
     };
   }, []);
