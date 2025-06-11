@@ -110,8 +110,8 @@ export const ProcessSection = (): JSX.Element => {
           ref={stepsContainerRef}
           className="relative"
         >
-          {/* Desktop Layout - Flex with fixed card widths */}
-          <div className="hidden md:flex justify-center items-center gap-6 lg:gap-8 xl:gap-12">
+          {/* Desktop Layout - Flex with fixed card widths and NO GAPS */}
+          <div className="hidden md:flex justify-center items-center">
             {processSteps.map((step, index) => (
               <React.Fragment key={index}>
                 {/* Process Step Card - Fixed 340px width */}
@@ -140,13 +140,17 @@ export const ProcessSection = (): JSX.Element => {
                   </p>
                 </div>
 
-                {/* Arrow between steps (only if not the last step) */}
+                {/* Arrow between steps (only if not the last step) - EXACT 118.47px width, NO GAPS */}
                 {index < processSteps.length - 1 && (
                   <div className="flex justify-center items-center flex-shrink-0">
                     <img 
                       src={index === 0 ? "/approach-arrow-one.svg" : "/approach-arrow-two.svg"}
                       alt="Process Arrow" 
-                      className="w-16 h-8 lg:w-20 lg:h-10 xl:w-24 xl:h-12 object-contain"
+                      className="object-contain"
+                      style={{ 
+                        width: '118.47px',
+                        height: 'auto'
+                      }}
                     />
                   </div>
                 )}
