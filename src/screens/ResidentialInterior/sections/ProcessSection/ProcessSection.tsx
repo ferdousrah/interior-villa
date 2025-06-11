@@ -110,12 +110,15 @@ export const ProcessSection = (): JSX.Element => {
           ref={stepsContainerRef}
           className="relative"
         >
-          {/* Desktop Grid Layout - 5 columns with proper arrow positioning */}
-          <div className="hidden md:grid md:grid-cols-5 gap-6 lg:gap-8 xl:gap-12 items-center">
+          {/* Desktop Layout - Flex with fixed card widths */}
+          <div className="hidden md:flex justify-center items-center gap-6 lg:gap-8 xl:gap-12">
             {processSteps.map((step, index) => (
               <React.Fragment key={index}>
-                {/* Process Step Card */}
-                <div className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl p-8 lg:p-12 xl:p-16 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 col-span-1 min-h-[500px] lg:min-h-[550px] xl:min-h-[600px] flex flex-col justify-center">
+                {/* Process Step Card - Fixed 340px width */}
+                <div 
+                  className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl p-8 lg:p-12 xl:p-16 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 min-h-[500px] lg:min-h-[550px] xl:min-h-[600px] flex flex-col justify-center"
+                  style={{ width: '340px' }}
+                >
                   {/* Step Number Circle with dotted border */}
                   <div className="relative w-24 h-24 lg:w-28 lg:h-28 xl:w-32 xl:h-32 mx-auto mb-8 lg:mb-10 xl:mb-12">
                     {/* Dotted border circle */}
@@ -139,7 +142,7 @@ export const ProcessSection = (): JSX.Element => {
 
                 {/* Arrow between steps (only if not the last step) */}
                 {index < processSteps.length - 1 && (
-                  <div className="col-span-1 flex justify-center items-center">
+                  <div className="flex justify-center items-center flex-shrink-0">
                     <img 
                       src={index === 0 ? "/approach-arrow-one.svg" : "/approach-arrow-two.svg"}
                       alt="Process Arrow" 
@@ -151,12 +154,13 @@ export const ProcessSection = (): JSX.Element => {
             ))}
           </div>
 
-          {/* Mobile Layout - Single Column */}
-          <div className="md:hidden space-y-12">
+          {/* Mobile Layout - Single Column with 340px width */}
+          <div className="md:hidden space-y-12 flex flex-col items-center">
             {processSteps.map((step, index) => (
               <div 
                 key={index}
                 className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl p-10 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 min-h-[450px] flex flex-col justify-center"
+                style={{ width: '340px' }}
               >
                 {/* Step Number Circle with dotted border */}
                 <div className="relative w-28 h-28 mx-auto mb-10">
