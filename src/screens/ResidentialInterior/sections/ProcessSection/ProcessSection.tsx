@@ -75,16 +75,19 @@ export const ProcessSection = (): JSX.Element => {
       step: "01",
       title: "Discovery & Concept",
       description: "We Start By Understanding Your Lifestyle And Vision To Create A Personalized Design.",
+      backgroundColor: "#FFFEF3" // Light cream/yellow
     },
     {
       step: "02", 
       title: "Design & Material Selection",
       description: "We Craft A Personalized Design And Choose Sustainable, Premium Materials To Make It A Reality.",
+      backgroundColor: "#F8FFFF" // Light cyan/blue
     },
     {
       step: "03",
       title: "Execution & Finishing Touches", 
       description: "our team handles every detail, delivering a seamless transformation into a beautiful, functional space.",
+      backgroundColor: "#F6EFEF" // Light pink/rose
     }
   ];
 
@@ -97,11 +100,11 @@ export const ProcessSection = (): JSX.Element => {
         <div className="text-center mb-16 md:mb-24">
           <h2 
             ref={headingRef}
-            className="text-4xl md:text-5xl lg:text-6xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
             Our Approach
           </h2>
-          <p className="text-xl [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed max-w-2xl mx-auto">
             A Clear Path to Your Dream Interior
           </p>
         </div>
@@ -116,11 +119,12 @@ export const ProcessSection = (): JSX.Element => {
               <React.Fragment key={index}>
                 {/* Process Step Card - Fixed 340px width with equal height */}
                 <div 
-                  className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 flex flex-col justify-center"
+                  className="relative border-2 border-[#E5E5E5] rounded-2xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 flex flex-col justify-center"
                   style={{ 
                     width: '340px',
                     height: '400px', // Fixed equal height
-                    padding: '40px 30px' // Reduced padding for smaller content
+                    padding: '40px 30px', // Reduced padding for smaller content
+                    backgroundColor: step.backgroundColor // Custom background color
                   }}
                 >
                   {/* Step Number Circle with dotted border - Smaller */}
@@ -176,11 +180,12 @@ export const ProcessSection = (): JSX.Element => {
             {processSteps.map((step, index) => (
               <div 
                 key={index}
-                className="relative bg-white border-2 border-[#E5E5E5] rounded-3xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 flex flex-col justify-center"
+                className="relative border-2 border-[#E5E5E5] rounded-3xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 flex flex-col justify-center"
                 style={{ 
                   width: '340px',
                   height: '350px', // Fixed equal height for mobile
-                  padding: '30px 25px' // Reduced padding for mobile
+                  padding: '30px 25px', // Reduced padding for mobile
+                  backgroundColor: step.backgroundColor // Custom background color
                 }}
               >
                 {/* Step Number Circle with dotted border - Smaller for mobile */}

@@ -144,7 +144,7 @@ export const FAQSection = (): JSX.Element => {
           ref={headerRef}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6">
             Find Answers To Your Questions
           </h2>
         </div>
@@ -206,7 +206,7 @@ export const FAQSection = (): JSX.Element => {
         {/* CTA Section */}
         <div 
           ref={ctaRef}
-          className="text-center"
+          className="text-center mt-40"
         >
           <h3 className="text-2xl md:text-3xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4">
             Still have questions? We're here to help!

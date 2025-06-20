@@ -8,10 +8,60 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const CTASection = (): JSX.Element => {
   const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current || !contentRef.current) return;
+
+     // Heading animation
+    if (headingRef.current) {
+      gsap.fromTo(headingRef.current,
+        {
+          opacity: 0,
+          y: 50,
+          scale: 0.95
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 85%",
+            end: "top 55%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+
+    // Description animation
+    if (descriptionRef.current) {
+      gsap.fromTo(descriptionRef.current,
+        {
+          opacity: 0,
+          y: 30,
+          filter: "blur(5px)"
+        },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 85%",
+            end: "top 65%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
 
     // Content animation
     gsap.fromTo(contentRef.current,
@@ -50,18 +100,26 @@ export const CTASection = (): JSX.Element => {
         <motion.div
           ref={contentRef}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6">
-            Ready to Transform Your Space?
-          </h2>
-          <p className="text-lg md:text-xl [font-family:'Fahkwang',Helvetica] text-[#626161] mb-12 max-w-3xl mx-auto leading-relaxed">
-            Let's work together to create the interior of your dreams. Contact us today for a consultation and discover how we can bring your vision to life.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Button className="bg-primary hover:bg-primary-hover text-white px-10 py-4 rounded-full text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg">
-              START A PROJECT
+          
+          <motion.h2 
+                      ref={headingRef}
+                      className="text-2xl md:text-3xl lg:text-4xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+                    >
+                      Ready to Transform Your Space?
+                    </motion.h2>
+          <motion.p 
+            ref={descriptionRef}
+            className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-4xl mx-auto leading-relaxed"
+            >
+            Whether you're renovating, building from scratch, or simply looking to refresh your space, our team is ready to bring your vision to life.
+          </motion.p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
+            <Button className="bg-[#132A13] hover:bg-primary-hover text-white px-[62px] py-[30px] rounded-[46px] text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg">
+              Book an Appointment
             </Button>
-            <Button variant="outline" className="border-2 border-[#01190c] text-[#01190c] hover:bg-[#01190c] hover:text-white px-10 py-4 rounded-full text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105">
-              CONTACT US
+
+            <Button variant="outline" className="border-2 border-[#01190c] text-[#01190c] hover:bg-[#01190c] hover:text-white px-[62px] py-[30px] rounded-[46px] text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105">
+              Contact Us
             </Button>
           </div>
         </motion.div>

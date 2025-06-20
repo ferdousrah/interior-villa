@@ -95,22 +95,22 @@ export const BeforeAfterSection = (): JSX.Element => {
         {/* Project Description */}
         <div 
           ref={descriptionRef}
-          className="max-w-4xl mx-auto"
+          className="max-w-1xl mx-auto"
         >
           <div className="space-y-6">
-            <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
               When we started work on this project, we knew that creating a living space that was both functional and beautiful would be a priority. The client wanted to create a modern, sophisticated environment that would serve as both a comfortable family home and an elegant space for entertaining guests.
             </p>
             
-            <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
               Our team designed a space combining "light" to reflect the best of modern design while also respecting the original architecture of the home. The result is a home that feels both timeless and contemporary, with a sophisticated lighting plan that enhances the natural beauty of the space.
             </p>
             
-            <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
               The project was completed on schedule and within budget, and the client was thrilled with the results. The space now serves as a beautiful backdrop for family life and entertaining, and we're proud to have been a part of bringing this vision to life.
             </p>
             
-            <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed text-justify">
               In this project, traditional and contemporary design elements were combined to create a space that feels both timeless and current. The result is a home that feels both sophisticated and comfortable, with a design that will stand the test of time.
             </p>
           </div>

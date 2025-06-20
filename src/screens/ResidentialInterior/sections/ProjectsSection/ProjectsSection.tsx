@@ -204,20 +204,20 @@ export const ProjectsSection = (): JSX.Element => {
   return (
     <section 
       ref={sectionRef}
-      className="py-16 md:py-24 bg-[#f7f9fb]"
+      className="py-16 md:py-24 bg-[#ffffff]"
     >
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header Section */}
         <div className="text-center mb-12 md:mb-16">
           <h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
             Featured Projects
           </h2>
           <p 
             ref={descriptionRef}
-            className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-2xl mx-auto leading-relaxed"
+            className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-2xl mx-auto leading-relaxed"
           >
             Guided by our core values, we strive to create spaces that inspire and transform everyday living.
           </p>
@@ -409,6 +409,17 @@ export const ProjectsSection = (): JSX.Element => {
                  }} 
             />
           </button>
+
+          {/* Place this before the CTASection component */}
+          <div className="container mx-auto px-4 max-w-6xl mt-60">
+            <img 
+              src="/divider.svg" 
+              alt="Section Divider" 
+              className="w-full h-auto"
+            />
+          </div>
+
+
         </div>
       </div>
 

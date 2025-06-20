@@ -99,24 +99,24 @@ export const TeamSection = (): JSX.Element => {
 
   const teamMembers = [
     {
-      name: "John Doe",
-      position: "Lead Designer",
-      image: "/avatar-image-1.png"
+      name: "Md Ashikur Rahman",
+      position: "Founder & CEO",
+      image: "/team/ashikur-rahman.jpeg"
     },
     {
-      name: "Jane Smith",
-      position: "Project Manager",
-      image: "/avatar-image-1.png"
+      name: "Nashiba Shahariar",
+      position: "Head of Business",
+      image: "/team/nashiba.jpeg"
     },
     {
-      name: "Mike Johnson",
-      position: "Senior Architect",
-      image: "/avatar-image-1.png"
+      name: "Omar Ferdous",
+      position: "Senior architect",
+      image: "/team/omar.jpeg"
     },
     {
-      name: "Sarah Wilson",
-      position: "Interior Stylist",
-      image: "/avatar-image-1.png"
+      name: "Kamruzzaman Setu",
+      position: "Junior architect",
+      image: "/team/kamruzzaman.jpeg"
     }
   ];
 
@@ -129,7 +129,7 @@ export const TeamSection = (): JSX.Element => {
         <div className="text-center mb-8 md:mb-12 lg:mb-16">
           <motion.h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-2xl md:text-3xl lg:text-4xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
             Meet Our Team
           </motion.h2>
@@ -148,29 +148,25 @@ export const TeamSection = (): JSX.Element => {
           {teamMembers.map((member, index) => (
             <div
               key={index}
-              className="text-center"
+              className="text-center bg-white rounded-[10px] p-6"
             >
               <div className="relative mb-8 group">
                 <div className="w-48 h-48 md:w-56 md:h-56 mx-auto bg-gray-200 rounded-3xl overflow-hidden">
                   <img
                     src={member.image}
                     alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
                   />
                 </div>
                 <div className="absolute inset-0 bg-primary/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
-              <h3 className="text-xl md:text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-2">
+              <h3 className="text-xl md:text-1xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-2">
                 {member.name}
               </h3>
               <p className="text-[#626161] [font-family:'Fahkwang',Helvetica] text-base md:text-lg mb-6">
                 {member.position}
               </p>
-              <div className="flex justify-center space-x-4">
-                <div className="w-10 h-10 bg-gray-300 rounded-full hover:bg-primary transition-colors duration-300 cursor-pointer"></div>
-                <div className="w-10 h-10 bg-gray-300 rounded-full hover:bg-primary transition-colors duration-300 cursor-pointer"></div>
-                <div className="w-10 h-10 bg-gray-300 rounded-full hover:bg-primary transition-colors duration-300 cursor-pointer"></div>
-              </div>
+              
             </div>
           ))}
         </div>

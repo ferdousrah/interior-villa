@@ -44,7 +44,7 @@ export const CTASection = (): JSX.Element => {
   return (
     <section 
       ref={sectionRef}
-      className="py-16 md:py-24 bg-[#f7f9fb]"
+      className="py-16 md:py-24"
     >
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Rounded Container with cta-bg.svg Background */}
@@ -60,7 +60,7 @@ export const CTASection = (): JSX.Element => {
           {/* Content - Centered */}
           <div className="relative z-10 text-center px-6 md:px-12">
             <div ref={contentRef}>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] mb-12 leading-tight text-[#2D2D2D]">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] mb-12 leading-tight text-[#2D2D2D]">
                 Ready to transform your space?
               </h2>
               

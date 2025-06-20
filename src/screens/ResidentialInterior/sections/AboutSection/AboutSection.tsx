@@ -47,12 +47,12 @@ export const AboutSection = (): JSX.Element => {
     >
       <div className="container mx-auto px-4 max-w-4xl text-center">
         <div ref={contentRef}>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-8 leading-tight">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-8 leading-tight">
             Transforming Your Home Into a Sanctuary of Style and Comfort.
           </h2>
           
-          <p className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed max-w-3xl mx-auto">
-            We specialize in creating personalized residential interior design solutions that reflect your unique lifestyle and taste. Our expert team brings years of experience in transforming homes into beautiful, functional environments.
+          <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] leading-relaxed max-w-3xl mx-auto">
+            We specialize in creating personalized residential interiors that reflect your unique taste and lifestyle. Our designs blend comfort, style, and functionality to transform your living spaces into beautiful, harmonious environments.
           </p>
         </div>
       </div>

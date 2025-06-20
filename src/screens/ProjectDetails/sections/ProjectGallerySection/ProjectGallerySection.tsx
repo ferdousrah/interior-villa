@@ -267,13 +267,13 @@ export const ProjectGallerySection = (): JSX.Element => {
         <div className="text-center mb-12 md:mb-16">
           <h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
             Project Gallery
           </h2>
           <p 
             ref={descriptionRef}
-            className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-3xl mx-auto leading-relaxed"
+            className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-3xl mx-auto leading-relaxed"
           >
             Explore a curated collection of captivating visuals that showcase the transformation of this space into a harmonious blend of style and functionality.
           </p>

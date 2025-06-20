@@ -46,6 +46,8 @@ export const CTASection = (): JSX.Element => {
       ref={sectionRef}
       className="py-16 md:py-24 bg-white"
     >
+      
+
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Rounded Container with cta-bg.svg Background */}
         <div 

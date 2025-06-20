@@ -179,7 +179,7 @@ export const BlogGridSection = (): JSX.Element => {
           ref={headerRef}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6">
             Get Interesting Insights into Interior Designs
           </h2>
         </div>

@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 export const MissionVisionSection = (): JSX.Element => {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,6 +33,30 @@ export const MissionVisionSection = (): JSX.Element => {
             trigger: headingRef.current,
             start: "top 85%",
             end: "top 55%",
+            toggleActions: "play none none reverse"
+          }
+        }
+      );
+    }
+
+    // Description animation
+    if (descriptionRef.current) {
+      gsap.fromTo(descriptionRef.current,
+        {
+          opacity: 0,
+          y: 30,
+          filter: "blur(5px)"
+        },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 85%",
+            end: "top 65%",
             toggleActions: "play none none reverse"
           }
         }
@@ -80,10 +105,16 @@ export const MissionVisionSection = (): JSX.Element => {
         <div className="text-center mb-8 md:mb-12 lg:mb-16">
           <motion.h2 
             ref={headingRef}
-            className="text-3xl md:text-4xl lg:text-5xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
+            className="text-2xl md:text-3xl lg:text-4xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6"
           >
             Mission & Vision
           </motion.h2>
+          <motion.p 
+            ref={descriptionRef}
+             className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-4xl mx-auto leading-relaxed"
+                   >
+                      Guided by our core values, we strive to create spaces that inspire and transform everyday living.
+                    </motion.p>
         </div>
 
         <div 
@@ -93,10 +124,15 @@ export const MissionVisionSection = (): JSX.Element => {
           <Card className="bg-[#01190c] text-white rounded-3xl p-8 md:p-12 h-full">
             <CardContent className="p-0">
               <div className="flex items-center mb-8">
-                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mr-6">
-                  <span className="text-white text-2xl font-bold [font-family:'Fahkwang',Helvetica]">M</span>
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mr-6">
+                  
+                    <img
+                      src="/mission.svg"
+                      className="w-8 h-8 mb-4 transition-all duration-500 group-hover:scale-110 group-hover:brightness-110 group-hover:drop-shadow-lg"
+                    />
+                  
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold [font-family:'Fahkwang',Helvetica]">
+                <h3 className="text-1xl md:text-2xl font-bold [font-family:'Fahkwang',Helvetica]">
                   Our Mission
                 </h3>
               </div>
@@ -109,10 +145,13 @@ export const MissionVisionSection = (): JSX.Element => {
           <Card className="bg-[#01190c] text-white rounded-3xl p-8 md:p-12 h-full">
             <CardContent className="p-0">
               <div className="flex items-center mb-8">
-                <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mr-6">
-                  <span className="text-white text-2xl font-bold [font-family:'Fahkwang',Helvetica]">V</span>
+                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mr-6">
+                  <img
+                      src="/mission.svg"
+                      className="w-8 h-8 mb-4 transition-all duration-500 group-hover:scale-110 group-hover:brightness-110 group-hover:drop-shadow-lg"
+                    />
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold [font-family:'Fahkwang',Helvetica]">
+                <h3 className="text-1xl md:text-2xl font-bold [font-family:'Fahkwang',Helvetica]">
                   Our Vision
                 </h3>
               </div>

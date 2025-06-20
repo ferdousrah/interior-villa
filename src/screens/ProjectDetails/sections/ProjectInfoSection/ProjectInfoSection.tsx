@@ -99,7 +99,7 @@ export const ProjectInfoSection = (): JSX.Element => {
         <div className="text-center mb-16">
           <h1 
             ref={titleRef}
-            className="text-4xl md:text-5xl lg:text-6xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-8"
+            className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-8"
           >
             Riverside Boulevard Modern
           </h1>
@@ -112,7 +112,7 @@ export const ProjectInfoSection = (): JSX.Element => {
         >
           {/* Year */}
           <div className="text-center md:text-left">
-            <h3 className="text-lg font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
+            <h3 className="text-base font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
               Year
             </h3>
             <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">
@@ -122,7 +122,7 @@ export const ProjectInfoSection = (): JSX.Element => {
 
           {/* Square Footage */}
           <div className="text-center md:text-left">
-            <h3 className="text-lg font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
+            <h3 className="text-base font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
               Square Footage
             </h3>
             <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">
@@ -132,7 +132,7 @@ export const ProjectInfoSection = (): JSX.Element => {
 
           {/* Location */}
           <div className="text-center md:text-left">
-            <h3 className="text-lg font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
+            <h3 className="text-base font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
               Location
             </h3>
             <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">

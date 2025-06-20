@@ -257,13 +257,13 @@ export const ProjectsSection = (): JSX.Element => {
         {/* Header Section */}
         <div className="text-center mb-12 md:mb-16">
           <div ref={headerRef}>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-6">
               Our Portfolio
             </h2>
           </div>
           <p 
             ref={descriptionRef}
-            className="text-lg [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-4xl mx-auto leading-relaxed"
+            className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] max-w-4xl mx-auto leading-relaxed"
           >
             Explore our diverse range of interior design projects, from cozy residential spaces to innovative commercial environments. Each project reflects our commitment to creativity, functionality and client satisfaction.
           </p>
