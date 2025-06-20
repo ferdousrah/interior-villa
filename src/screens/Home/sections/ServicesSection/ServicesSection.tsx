@@ -216,6 +216,12 @@ export const ServicesSection = (): JSX.Element => {
     }
   };
 
+  const handleReadMoreClick = (link: string) => {
+    if (link && link !== "#") {
+      window.location.href = link;
+    }
+  };
+
   return (
     <section 
       ref={sectionRef}
@@ -317,6 +323,10 @@ export const ServicesSection = (): JSX.Element => {
                     <Button
                       variant="ghost"
                       className="[font-family:'Fahkwang',Helvetica] text-base text-[#000000] hover:text-[#010212] hover:bg-transparent transition-all duration-500 hover:scale-105 relative z-10 group-hover:text-[#010212]"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleReadMoreClick(service.link);
+                      }}
                     >
                       Read More
                       <ArrowRightIcon className="ml-2 w-[22px] h-[22px] transition-all duration-500 group-hover:translate-x-1 group-hover:scale-110" />

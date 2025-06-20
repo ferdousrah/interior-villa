@@ -366,6 +366,11 @@ export const BlogSection = (): JSX.Element => {
     },
   ];
 
+  // Handle read more click
+  const handleReadMoreClick = () => {
+    window.location.href = '/blog-details';
+  };
+
   return (
     <section 
       ref={sectionRef}
@@ -500,6 +505,7 @@ export const BlogSection = (): JSX.Element => {
 
             <Button 
               className="bg-primary rounded-[25px] h-9 px-6 relative transition-all duration-300 hover:scale-105 hover:shadow-lg hover:bg-primary-hover"
+              onClick={handleReadMoreClick}
             >
               <span className="[font-family:'Fahkwang',Helvetica] font-bold text-white text-xs tracking-[0.09px]">
                 READ MORE
@@ -579,6 +585,7 @@ export const BlogSection = (): JSX.Element => {
                         ? '0 8px 25px rgba(117, 191, 68, 0.4)' 
                         : '0 2px 8px rgba(117, 191, 68, 0.2)'
                     }}
+                    onClick={handleReadMoreClick}
                   >
                     <span className="[font-family:'Fahkwang',Helvetica] font-bold text-white text-xs tracking-[0.09px]">
                       READ MORE
