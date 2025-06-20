@@ -326,6 +326,10 @@ export const FeaturedProjectSection = (): JSX.Element => {
     700: 1
   };
 
+  const handleViewAllClick = () => {
+  window.location.href = '/portfolio';
+};
+
   return (
     <section 
       ref={sectionRef}
@@ -602,6 +606,7 @@ export const FeaturedProjectSection = (): JSX.Element => {
             }`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
+            onClick={handleViewAllClick}
             style={{
               transformOrigin: 'center center',
               backfaceVisibility: 'hidden',

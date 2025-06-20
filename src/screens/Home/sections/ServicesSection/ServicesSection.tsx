@@ -23,7 +23,7 @@ const services = [
     description:
       "There are many variations of passages of lorem ipsum available",
     iconBg: "#f5fdfd",
-    link: "#"
+    link: "/residential-interior"
   },
   {
     title: "Architectural consultancy",
@@ -31,7 +31,7 @@ const services = [
     description:
       "There are many variations of passages of lorem ipsum available",
     iconBg: "#f5fdfd",
-    link: "#"
+    link: "/residential-interior"
   },
 ];
 
