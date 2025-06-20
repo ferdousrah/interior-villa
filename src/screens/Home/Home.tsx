@@ -30,37 +30,43 @@ const Home = (): JSX.Element => {
     { 
       name: "Home", 
       active: true,
-      icon: HomeIcon
+      icon: HomeIcon,
+      href: "/"
     },
     { 
       name: "About Us", 
       active: false,
-      icon: User
+      icon: User,
+      href: "/about"
     },
     { 
       name: "Services", 
       active: false,
       icon: Briefcase,
+      href: "/services",
       subItems: [
-        "Residential Interior",
-        "Commercial Interior",
-        "Architectural Consultancy"
+        { name: "Residential Interior", href: "/residential-interior" },
+        { name: "Commercial Interior", href: "/commercial-interior" },
+        { name: "Architectural Consultancy", href: "/architectural-consultancy" }
       ]
     },
     { 
       name: "Portfolio", 
       active: false,
-      icon: FolderOpen
+      icon: FolderOpen,
+      href: "/portfolio"
     },
     { 
       name: "Blog", 
       active: false,
-      icon: BookOpen
+      icon: BookOpen,
+      href: "/blog"
     },
     { 
       name: "Contact Us", 
       active: false,
-      icon: Mail
+      icon: Mail,
+      href: "/contact"
     },
   ];
 
@@ -257,6 +263,15 @@ const Home = (): JSX.Element => {
     setExpandedSubmenu(expandedSubmenu === itemName ? null : itemName);
   };
 
+  const handleNavigation = (href: string) => {
+    window.location.href = href;
+  };
+
+  const handleSubmenuNavigation = (href: string) => {
+    setIsMobileMenuOpen(false);
+    window.location.href = href;
+  };
+
   return (
     <div className="flex flex-col w-full items-start relative bg-white overflow-x-hidden">
       {/* Custom Cursor */}
@@ -292,9 +307,10 @@ const Home = (): JSX.Element => {
           <div className="container mx-auto px-4 relative flex items-center justify-between h-full">
             <img
               ref={logoRef}
-              className="w-52 h-[41px] object-cover z-10 transition-transform duration-700 ease-out"
+              className="w-52 h-[41px] object-cover z-10 transition-transform duration-700 ease-out cursor-pointer"
               alt="Interior villa dark"
               src="/interior-villa-dark.png"
+              onClick={() => handleNavigation("/")}
               style={{
                 transform: isScrolled ? "scale(0.8)" : "scale(1)"
               }}
@@ -364,6 +380,7 @@ const Home = (): JSX.Element => {
                             height: isScrolled ? "36px" : "38px",
                             fontSize: isScrolled ? "13px" : "14px"
                           }}
+                          onClick={() => handleNavigation(item.href)}
                         >
                           <span className="[font-family:'Fahkwang',Helvetica] font-medium text-center transition-all duration-300">
                             {item.name}
@@ -397,8 +414,9 @@ const Home = (): JSX.Element => {
                                     variants={itemVariants}
                                     transition={{ delay: subIndex * 0.1 }}
                                     className="w-full px-4 py-3 text-left text-sm text-white hover:text-primary transition-colors duration-300 [font-family:'Fahkwang',Helvetica] relative group overflow-hidden"
+                                    onClick={() => handleNavigation(subItem.href)}
                                   >
-                                    <span className="relative z-10">{subItem}</span>
+                                    <span className="relative z-10">{subItem.name}</span>
                                   </motion.button>
                                 ))}
                               </motion.div>
@@ -442,9 +460,13 @@ const Home = (): JSX.Element => {
                 {/* Sidebar Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
                   <img
-                    className="w-40 h-8 object-cover"
+                    className="w-40 h-8 object-cover cursor-pointer"
                     alt="Interior villa dark"
                     src="/interior-villa-dark.png"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      handleNavigation("/");
+                    }}
                   />
                   <button
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -478,6 +500,7 @@ const Home = (): JSX.Element => {
                               handleSubmenuToggle(item.name);
                             } else {
                               setIsMobileMenuOpen(false);
+                              handleNavigation(item.href);
                             }
                           }}
                         >
@@ -521,11 +544,11 @@ const Home = (): JSX.Element => {
                                   animate={{ x: 0, opacity: 1 }}
                                   transition={{ delay: subIndex * 0.1 }}
                                   className="flex items-center p-3 rounded-lg text-gray-400 hover:text-primary hover:bg-gray-800/30 transition-all duration-300 cursor-pointer group"
-                                  onClick={() => setIsMobileMenuOpen(false)}
+                                  onClick={() => handleSubmenuNavigation(subItem.href)}
                                 >
                                   <div className="w-2 h-2 rounded-full bg-gray-600 group-hover:bg-primary transition-colors duration-300 mr-4"></div>
                                   <span className="[font-family:'Fahkwang',Helvetica] font-normal text-sm">
-                                    {subItem}
+                                    {subItem.name}
                                   </span>
                                 </motion.div>
                               ))}
