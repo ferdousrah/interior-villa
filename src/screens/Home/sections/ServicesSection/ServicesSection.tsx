@@ -15,6 +15,7 @@ const services = [
     description:
       "There are many variations of passages of lorem ipsum available",
     iconBg: "#f5fdfd",
+    link: "/residential-interior"
   },
   {
     title: "Commercial Interior",
@@ -22,6 +23,7 @@ const services = [
     description:
       "There are many variations of passages of lorem ipsum available",
     iconBg: "#f5fdfd",
+    link: "#"
   },
   {
     title: "Architectural consultancy",
@@ -29,6 +31,7 @@ const services = [
     description:
       "There are many variations of passages of lorem ipsum available",
     iconBg: "#f5fdfd",
+    link: "#"
   },
 ];
 
@@ -207,6 +210,12 @@ export const ServicesSection = (): JSX.Element => {
     };
   }, []);
 
+  const handleServiceClick = (link: string) => {
+    if (link && link !== "#") {
+      window.location.href = link;
+    }
+  };
+
   return (
     <section 
       ref={sectionRef}
@@ -247,13 +256,14 @@ export const ServicesSection = (): JSX.Element => {
             <div
               key={index}
               ref={el => cardRefs.current[index] = el}
-              className="will-change-transform group"
+              className="will-change-transform group cursor-pointer"
               style={{
                 transformOrigin: 'center center',
                 backfaceVisibility: 'hidden',
                 transform: 'translate3d(0, 0, 0)',
                 transformStyle: 'preserve-3d'
               }}
+              onClick={() => handleServiceClick(service.link)}
             >
               <Card className="rounded-[5px] overflow-hidden transition-all duration-500 hover:shadow-2xl relative">
                 {/* Color filling animation overlay */}
