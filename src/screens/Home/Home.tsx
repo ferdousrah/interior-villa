@@ -282,7 +282,7 @@ const Home = (): JSX.Element => {
           ref={heroImageRef}
           className="w-full h-[800px] object-cover will-change-transform"
           alt="Hero background"
-          src="/home-hero.jpg"
+          src="/image.png"
           style={{
             transformOrigin: 'center center',
             backfaceVisibility: 'hidden',
