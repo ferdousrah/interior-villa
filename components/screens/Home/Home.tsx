@@ -16,8 +16,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { X, ChevronDown, Home as HomeIcon, User, Briefcase, FolderOpen, BookOpen, Mail } from "lucide-react";
 import { useRouter } from 'next/navigation';
 
-gsap.registerPlugin(ScrollTrigger);
-
 const Home = (): JSX.Element => {
   const router = useRouter();
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
@@ -137,6 +135,11 @@ const Home = (): JSX.Element => {
   }, [isScrolled]);
 
   useEffect(() => {
+    // Register ScrollTrigger plugin only on client-side
+    if (typeof window !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
     if (!heroImageRef.current || !heroContainerRef.current) return;
 
     // Create parallax effect for hero image
