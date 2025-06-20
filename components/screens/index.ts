@@ -1,0 +1,11 @@
+export { default as Home } from "./Home/Home";
+export { default as About } from "./About/About";
+export { default as ResidentialInterior } from "./ResidentialInterior/ResidentialInterior";
+export { default as Portfolio } from "./Portfolio/Portfolio";
+export { default as ProjectDetails } from "./ProjectDetails/ProjectDetails";
+export { default as Blog } from "./Blog/Blog";
+export { default as BlogDetails } from "./BlogDetails/BlogDetails";
+export { default as FAQ } from "./FAQ/FAQ";
+export { default as BookAppointment } from "./BookAppointment/BookAppointment";
+export { default as Contact } from "./Contact/Contact";
+export { default as NotFound } from "./NotFound/NotFound";
