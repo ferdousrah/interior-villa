@@ -91,6 +91,14 @@ export const CTASection = (): JSX.Element => {
     };
   }, []);
 
+  const handleAppointmentClick = () => {
+    window.location.href = '/book-appointment';
+  };
+
+  const handleContactClick = () => {
+    window.location.href = '/contact';
+  };
+
   return (
     <section 
       ref={sectionRef}
@@ -114,11 +122,11 @@ export const CTASection = (): JSX.Element => {
             Whether you're renovating, building from scratch, or simply looking to refresh your space, our team is ready to bring your vision to life.
           </motion.p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
-            <Button className="bg-[#132A13] hover:bg-primary-hover text-white px-[62px] py-[30px] rounded-[46px] text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg">
+            <Button onClick={handleAppointmentClick} className="bg-[#132A13] hover:bg-primary-hover text-white px-[62px] py-[30px] rounded-[46px] text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg">
               Book an Appointment
             </Button>
 
-            <Button variant="outline" className="border-2 border-[#01190c] text-[#01190c] hover:bg-[#01190c] hover:text-white px-[62px] py-[30px] rounded-[46px] text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105">
+            <Button onClick={handleContactClick} variant="outline" className="border-2 border-[#01190c] text-[#01190c] hover:bg-[#01190c] hover:text-white px-[62px] py-[30px] rounded-[46px] text-lg [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105">
               Contact Us
             </Button>
           </div>

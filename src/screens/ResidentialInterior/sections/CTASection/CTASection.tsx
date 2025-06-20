@@ -41,6 +41,11 @@ export const CTASection = (): JSX.Element => {
     };
   }, []);
 
+
+  const handleAppointmentClick = () => {
+    window.location.href = '/book-appointment';
+  };
+
   return (
     <section 
       ref={sectionRef}
@@ -68,7 +73,8 @@ export const CTASection = (): JSX.Element => {
               </h2>
               
               {/* Simple Button without Animation */}
-              <Button 
+              <Button
+                onClick={handleAppointmentClick} 
                 className="bg-secondary hover:bg-secondary-hover text-white px-10 py-4 rounded-lg [font-family:'Fahkwang',Helvetica] font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-lg"
               >
                 Book an Appointment

@@ -168,6 +168,10 @@ export const BlogGridSection = (): JSX.Element => {
     }
   ];
 
+  const handleBlogDetailsClick = () => {
+    window.location.href = '/blog-details';
+  };
+
   return (
     <section 
       ref={sectionRef}
@@ -222,7 +226,7 @@ export const BlogGridSection = (): JSX.Element => {
               </div>
 
               {/* Blog Post Content */}
-              <div className="space-y-4">
+              <div className="space-y-4" onClick={handleBlogDetailsClick}>
                 {/* Meta Information */}
                 <div className="flex items-center space-x-4 text-sm text-[#626161] [font-family:'Fahkwang',Helvetica]">
                   <div className="flex items-center space-x-1">

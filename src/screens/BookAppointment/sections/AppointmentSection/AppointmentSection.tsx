@@ -92,6 +92,10 @@ export const AppointmentSection = (): JSX.Element => {
     setFormData({ name: "", mobile: "", address: "" });
   };
 
+  const handleContactClick = () => {
+    window.location.href = '/contact';
+  };
+
   return (
     <section 
       ref={sectionRef}
@@ -129,7 +133,7 @@ export const AppointmentSection = (): JSX.Element => {
                   Need More Information?
                 </p>
                 
-                <Button 
+                <Button onClick={handleContactClick} 
                   className="bg-[#01190c] text-white px-6 py-3 rounded-lg [font-family:'Fahkwang',Helvetica] font-medium hover:bg-[#2a2b31] transition-all duration-300 hover:scale-105"
                 >
                   Contact Us

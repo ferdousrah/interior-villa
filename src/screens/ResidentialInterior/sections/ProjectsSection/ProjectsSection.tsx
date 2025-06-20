@@ -201,6 +201,10 @@ export const ProjectsSection = (): JSX.Element => {
     }
   ];
 
+  const handleExploreClick = () => {
+    window.location.href = '/portfolio';
+  };
+
   return (
     <section 
       ref={sectionRef}
@@ -325,6 +329,7 @@ export const ProjectsSection = (): JSX.Element => {
             className="relative bg-black text-white px-8 py-3 rounded-full [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 hover:scale-105 flex items-center space-x-3 mx-auto overflow-hidden group"
             onMouseEnter={() => setIsButtonHovered(true)}
             onMouseLeave={() => setIsButtonHovered(false)}
+            onClick={handleExploreClick}
           >
             {/* Orange Water Drop Filling Animation */}
             <div className="absolute inset-0 rounded-full overflow-hidden">
