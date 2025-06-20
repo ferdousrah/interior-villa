@@ -37,9 +37,9 @@ export const HeroSection = (): JSX.Element => {
       icon: Briefcase,
       href: "/services",
       subItems: [
-        "Residential Interior",
-        "Commercial Interior",
-        "Architectural Consultancy"
+        { name: "Residential Interior", href: "/residential-interior" },
+        { name: "Commercial Interior", href: "/commercial-interior" },
+        { name: "Architectural Consultancy", href: "/architectural-consultancy" }
       ]
     },
     { 
@@ -256,10 +256,12 @@ export const HeroSection = (): JSX.Element => {
   };
 
   const handleNavigation = (href: string) => {
-    if (href === "/") {
-      window.location.href = "/";
-    }
-    // For other routes, you can implement navigation logic here
+    window.location.href = href;
+  };
+
+  const handleSubmenuNavigation = (href: string) => {
+    setIsMobileMenuOpen(false);
+    window.location.href = href;
   };
 
   return (
@@ -404,8 +406,9 @@ export const HeroSection = (): JSX.Element => {
                                   variants={itemVariants}
                                   transition={{ delay: subIndex * 0.1 }}
                                   className="w-full px-4 py-3 text-left text-sm text-white hover:text-primary transition-colors duration-300 [font-family:'Fahkwang',Helvetica] relative group overflow-hidden"
+                                  onClick={() => handleNavigation(subItem.href)}
                                 >
-                                  <span className="relative z-10">{subItem}</span>
+                                  <span className="relative z-10">{subItem.name}</span>
                                 </motion.button>
                               ))}
                             </motion.div>
@@ -449,9 +452,13 @@ export const HeroSection = (): JSX.Element => {
               {/* Sidebar Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
                 <img
-                  className="w-40 h-8 object-cover"
+                  className="w-40 h-8 object-cover cursor-pointer"
                   alt="Interior villa dark"
                   src="/interior-villa-dark.png"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    handleNavigation("/");
+                  }}
                 />
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -529,11 +536,11 @@ export const HeroSection = (): JSX.Element => {
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ delay: subIndex * 0.1 }}
                                 className="flex items-center p-3 rounded-lg text-gray-400 hover:text-primary hover:bg-gray-800/30 transition-all duration-300 cursor-pointer group"
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                onClick={() => handleSubmenuNavigation(subItem.href)}
                               >
                                 <div className="w-2 h-2 rounded-full bg-gray-600 group-hover:bg-primary transition-colors duration-300 mr-4"></div>
                                 <span className="[font-family:'Fahkwang',Helvetica] font-normal text-sm">
-                                  {subItem}
+                                  {subItem.name}
                                 </span>
                               </motion.div>
                             ))}

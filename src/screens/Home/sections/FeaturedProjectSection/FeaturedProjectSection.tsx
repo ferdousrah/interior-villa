@@ -327,8 +327,8 @@ export const FeaturedProjectSection = (): JSX.Element => {
   };
 
   const handleViewAllClick = () => {
-  window.location.href = '/portfolio';
-};
+    window.location.href = '/portfolio';
+  };
 
   return (
     <section 
