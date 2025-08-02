@@ -8,7 +8,7 @@ import { Textarea } from "../../../../ui/textarea";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin, Phone, Mail, MapPin } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -343,22 +343,28 @@ export const FooterSection = (): JSX.Element => {
               Contact Us
             </h4>
             
+            {/* Divider */}
+            <div className="w-full h-px bg-white/20"></div>
+            
             <div className="flex flex-col items-start gap-3 w-full">
               <a
                 href="tel:+8801748981590"
-                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+                className="flex items-center gap-3 [font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
               >
+                <Phone className="w-4 h-4 text-primary flex-shrink-0" />
                 <span className="relative z-10">+88 01748981590</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
               </a>
               <a
                 href="mailto:info@interiorvillabd.com"
-                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+                className="flex items-center gap-3 [font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
               >
+                <Mail className="w-4 h-4 text-primary flex-shrink-0" />
                 <span className="relative z-10">info@interiorvillabd.com</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
               </a>
-              <div className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6">
+              <div className="flex items-start gap-3 [font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6">
+                <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                 18/10-A, Block-F, Ring Road, Mohammadpur, Dhaka-1207.
               </div>
             </div>
@@ -369,6 +375,9 @@ export const FooterSection = (): JSX.Element => {
             <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
               Services
             </h4>
+
+            {/* Divider */}
+            <div className="w-full h-px bg-white/20"></div>
 
             <div className="flex flex-col items-start gap-3 w-full">
               <a
@@ -400,6 +409,9 @@ export const FooterSection = (): JSX.Element => {
             <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
               Important Links
             </h4>
+
+            {/* Divider */}
+            <div className="w-full h-px bg-white/20"></div>
 
             <div className="flex flex-col items-start gap-3 w-full">
               <a
@@ -438,6 +450,9 @@ export const FooterSection = (): JSX.Element => {
             <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
               Follow Us
             </h4>
+            
+            {/* Divider */}
+            <div className="w-full h-px bg-white/20"></div>
             
             <p className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-xs tracking-[0] leading-5 mb-4">
               Stay connected and inspired! Follow us on our social media platforms to keep up with the latest design trends.
