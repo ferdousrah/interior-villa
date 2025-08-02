@@ -388,34 +388,155 @@ export const FooterSection = (): JSX.Element => {
 
         <div 
           ref={footerMenusRef}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-16 will-change-transform"
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 will-change-transform"
           style={{
             transformOrigin: 'center center',
             backfaceVisibility: 'hidden',
             transform: 'translate3d(0, 0, 0)'
           }}
         >
-          {footerMenus.map((menu, index) => (
-            <div key={index} className="flex flex-col items-start gap-6">
-              <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
-                {menu.title}
-              </h4>
-
-              <div className="flex flex-col items-start gap-3 w-full">
-                {menu.items.map((item, itemIndex) => (
-                  <a
-                    key={itemIndex}
-                    href="#"
-                    className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
-                  >
-                    <span className="relative z-10">{item}</span>
-                    {/* Draw underline animation */}
-                    <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
-                  </a>
-                ))}
+          {/* Contact Us Column - 2 column span */}
+          <div className="md:col-span-2 flex flex-col items-start gap-6">
+            <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
+              Contact Us
+            </h4>
+            
+            <div className="flex flex-col items-start gap-3 w-full">
+              <a
+                href="tel:+8801748981590"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">+88 01748981590</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+              <a
+                href="mailto:info@interiorvillabd.com"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">info@interiorvillabd.com</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+              <div className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6">
+                18/10-A, Block-F, Ring Road, Mohammadpur, Dhaka-1207.
               </div>
             </div>
-          ))}
+
+            {/* Social Icons in Contact Us Section */}
+            <div className="mt-6">
+              <p className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-xs tracking-[0] leading-5 mb-4 max-w-[520px]">
+                Stay connected and inspired! Follow us on our social media platforms to keep up with the latest design trends.
+              </p>
+              
+              <div className="flex items-center gap-4">
+                {[
+                  { icon: Facebook, name: "Facebook", color: "#1877F2" },
+                  { icon: Twitter, name: "Twitter", color: "#1DA1F2" },
+                  { icon: Instagram, name: "Instagram", color: "#E4405F" },
+                  { icon: Linkedin, name: "LinkedIn", color: "#0A66C2" }
+                ].map((social, index) => {
+                  const IconComponent = social.icon;
+                  return (
+                    <div
+                      key={index}
+                      className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 cursor-pointer relative overflow-hidden group transform-gpu transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 flex items-center justify-center"
+                    >
+                      {/* Glow effect on hover */}
+                      <div 
+                        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-sm scale-110"
+                        style={{ backgroundColor: social.color }}
+                      ></div>
+                      
+                      {/* Ripple effect */}
+                      <div 
+                        className="absolute inset-0 rounded-xl border-2 opacity-0 group-hover:opacity-100 group-hover:scale-150 transition-all duration-700 ease-out"
+                        style={{ borderColor: social.color }}
+                      ></div>
+                      
+                      {/* Shine effect */}
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out"></div>
+                      
+                      {/* Icon */}
+                      <IconComponent 
+                        className="w-5 h-5 text-white transition-all duration-500 ease-out group-hover:rotate-12 group-hover:scale-110 relative z-10"
+                        style={{
+                          filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Services Column */}
+          <div className="flex flex-col items-start gap-6">
+            <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
+              Services
+            </h4>
+
+            <div className="flex flex-col items-start gap-3 w-full">
+              <a
+                href="/residential-interior"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">Residential Interior</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+              <a
+                href="/commercial-interior"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">Commercial Interior</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+              <a
+                href="/architectural-consultancy"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">Architectural Consultancy</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+            </div>
+          </div>
+
+          {/* Important Links Column */}
+          <div className="flex flex-col items-start gap-6">
+            <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
+              Important Links
+            </h4>
+
+            <div className="flex flex-col items-start gap-3 w-full">
+              <a
+                href="/about"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">About Us</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+              <a
+                href="/portfolio"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">Portfolio</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+              <a
+                href="/blog"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">Blog</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+              <a
+                href="/contact"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-all duration-300 hover:text-primary hover:translate-x-2 relative group overflow-hidden"
+              >
+                <span className="relative z-10">Contact Us</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+            </div>
+          </div>
         </div>
 
         <Separator className="bg-white/10 mb-6" />
