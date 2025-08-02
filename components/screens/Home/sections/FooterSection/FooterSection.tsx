@@ -330,7 +330,7 @@ export const FooterSection = (): JSX.Element => {
 
         <div 
           ref={footerMenusRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 will-change-transform"
+          className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-16 will-change-transform"
           style={{
             transformOrigin: 'center center',
             backfaceVisibility: 'hidden',
@@ -412,7 +412,7 @@ export const FooterSection = (): JSX.Element => {
           </div>
 
           {/* Services Column */}
-          <div className="flex flex-col items-start gap-6">
+          <div className="md:col-span-1 flex flex-col items-start gap-6">
             <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
               Services
             </h4>
@@ -443,7 +443,7 @@ export const FooterSection = (): JSX.Element => {
           </div>
 
           {/* Important Links Column */}
-          <div className="flex flex-col items-start gap-6">
+          <div className="md:col-span-1 flex flex-col items-start gap-6">
             <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
               Important Links
             </h4>
