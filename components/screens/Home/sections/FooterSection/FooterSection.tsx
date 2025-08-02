@@ -16,7 +16,6 @@ export const FooterSection = (): JSX.Element => {
   const footerHeadingRef = useRef<HTMLHeadingElement>(null);
   const footerHeadingWrapperRef = useRef<HTMLDivElement>(null);
   const leftContentRef = useRef<HTMLDivElement>(null);
-  const contactFormRef = useRef<HTMLDivElement>(null);
   const socialSectionRef = useRef<HTMLDivElement>(null);
   const footerMenusRef = useRef<HTMLDivElement>(null);
   const bottomSectionRef = useRef<HTMLDivElement>(null);
@@ -120,43 +119,6 @@ export const FooterSection = (): JSX.Element => {
           start: "top bottom",
           end: "bottom top",
           scrub: 0.8,
-          invalidateOnRefresh: true
-        }
-      });
-    }
-
-    // Contact form animation
-    if (contactFormRef.current) {
-      gsap.fromTo(contactFormRef.current,
-        {
-          opacity: 0,
-          x: 60,
-          scale: 0.95
-        },
-        {
-          opacity: 1,
-          x: 0,
-          scale: 1,
-          duration: 1.5,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: contactFormRef.current,
-            start: "top 85%",
-            end: "top 55%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-
-      // Parallax for contact form
-      gsap.to(contactFormRef.current, {
-        yPercent: -5,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.6,
           invalidateOnRefresh: true
         }
       });
@@ -333,10 +295,10 @@ export const FooterSection = (): JSX.Element => {
       </div>
 
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
-        <div className="flex flex-col lg:flex-row justify-between gap-12 mb-20">
+        <div className="mb-20">
           <div 
             ref={leftContentRef}
-            className="max-w-4xl will-change-transform"
+            className="will-change-transform"
             style={{
               transformOrigin: 'center center',
               backfaceVisibility: 'hidden',
