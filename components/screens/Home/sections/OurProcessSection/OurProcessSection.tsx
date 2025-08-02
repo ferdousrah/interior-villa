@@ -199,7 +199,7 @@ export const OurProcessSection: React.FC = () => {
           >
             <h2
               ref={headingRef}
-              className="[font-family:'Fahkwang',Helvetica] font-medium text-[40px] leading-tight mb-6"
+              className="[font-family:'Fahkwang',Helvetica] font-medium text-[40px] leading-tight mb-6 mt-5"
               style={{ transform: 'translateZ(0)', transformStyle: 'preserve-3d' }}
             >
               <span className="text-[#0d1529]">Our </span>
