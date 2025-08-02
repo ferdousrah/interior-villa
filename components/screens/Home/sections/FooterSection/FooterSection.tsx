@@ -8,6 +8,7 @@ import { Textarea } from "../../../../ui/textarea";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -341,28 +342,43 @@ export const FooterSection = (): JSX.Element => {
                 </div>
 
                 <div className="flex items-center gap-6">
-                  {socialMediaContainers.map((container, index) => (
-                    <div
-                      key={index}
-                      className="w-10 h-10 rounded-xl bg-cover bg-center cursor-pointer relative overflow-hidden group transform-gpu transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2"
-                      style={{ backgroundImage: `url(${container})` }}
-                    >
-                      {/* Glow effect on hover - Updated to primary color */}
-                      <div className="absolute inset-0 rounded-xl bg-primary opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-sm scale-110"></div>
-                      
-                      {/* Ripple effect - Updated to primary color */}
-                      <div className="absolute inset-0 rounded-xl border-2 border-primary opacity-0 group-hover:opacity-100 group-hover:scale-150 transition-all duration-700 ease-out"></div>
-                      
-                      {/* Shine effect */}
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out"></div>
-                      
-                      {/* Rotation on hover */}
-                      <div 
-                        className="w-full h-full rounded-xl bg-cover bg-center transition-transform duration-500 ease-out group-hover:rotate-12 group-hover:scale-110"
-                        style={{ backgroundImage: `url(${container})` }}
-                      ></div>
-                    </div>
-                  ))}
+                  {[
+                    { icon: Facebook, name: "Facebook", color: "#1877F2" },
+                    { icon: Twitter, name: "Twitter", color: "#1DA1F2" },
+                    { icon: Instagram, name: "Instagram", color: "#E4405F" },
+                    { icon: Linkedin, name: "LinkedIn", color: "#0A66C2" }
+                  ].map((social, index) => {
+                    const IconComponent = social.icon;
+                    return (
+                      <div
+                        key={index}
+                        className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 cursor-pointer relative overflow-hidden group transform-gpu transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 flex items-center justify-center"
+                      >
+                        {/* Glow effect on hover */}
+                        <div 
+                          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-sm scale-110"
+                          style={{ backgroundColor: social.color }}
+                        ></div>
+                        
+                        {/* Ripple effect */}
+                        <div 
+                          className="absolute inset-0 rounded-xl border-2 opacity-0 group-hover:opacity-100 group-hover:scale-150 transition-all duration-700 ease-out"
+                          style={{ borderColor: social.color }}
+                        ></div>
+                        
+                        {/* Shine effect */}
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out"></div>
+                        
+                        {/* Icon */}
+                        <IconComponent 
+                          className="w-6 h-6 text-white transition-all duration-500 ease-out group-hover:rotate-12 group-hover:scale-110 relative z-10"
+                          style={{
+                            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
