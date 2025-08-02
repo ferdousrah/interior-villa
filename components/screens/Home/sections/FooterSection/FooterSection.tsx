@@ -382,7 +382,8 @@ export const FooterSection = (): JSX.Element => {
                 </div>
               </div>
             </div>
-
+          </div>
+        </div>
 
         <div 
           ref={footerMenusRef}
