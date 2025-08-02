@@ -377,9 +377,8 @@ export const ProjectsSection = (): JSX.Element => {
                 transform: 'translateZ(0)',
               }}
             >
-              <span className="text-[#0d1529]">Our </span>
-              <span className="text-[#0d1529]">Featured </span>
-              <span className="text-secondary">Works</span>
+              <span className="text-[#0d1529]">Recent </span>
+              <span className="text-secondary">Projects</span>
             </h2>
           </div>
 
