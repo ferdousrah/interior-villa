@@ -336,7 +336,7 @@ export const FooterSection = (): JSX.Element => {
         <div className="flex flex-col lg:flex-row justify-between gap-12 mb-20">
           <div 
             ref={leftContentRef}
-            className="max-w-2xl will-change-transform"
+            className="max-w-4xl will-change-transform"
             style={{
               transformOrigin: 'center center',
               backfaceVisibility: 'hidden',
@@ -406,42 +406,6 @@ export const FooterSection = (): JSX.Element => {
             </div>
           </div>
 
-          <Card 
-            ref={contactFormRef}
-            className="w-full max-w-[480px] bg-[#ffffff24] rounded-3xl backdrop-blur-[10px] backdrop-brightness-[100%] [-webkit-backdrop-filter:blur(10px)_brightness(100%)] border-none will-change-transform"
-            style={{
-              transformOrigin: 'center center',
-              backfaceVisibility: 'hidden',
-              transform: 'translate3d(0, 0, 0)'
-            }}
-          >
-            <CardContent className="flex flex-col items-center gap-[39px] p-6">
-              <h3 className="relative self-stretch mt-[-1.00px] [font-family:'Fahkwang',Helvetica] font-medium text-white text-2xl text-center tracking-[0] leading-10">
-                Let&apos;s Work Together!
-              </h3>
-
-              <div className="flex flex-col items-start gap-3 w-full">
-                <Input
-                  className="bg-[#9b9b9b1f] rounded-xl border-[0.5px] border-solid border-[#ebebeb] text-white [font-family:'Fahkwang',Helvetica] p-3 h-auto transition-all duration-300 focus:scale-105 focus:border-primary"
-                  placeholder="Your Name"
-                />
-
-                <Input
-                  className="bg-[#9b9b9b1f] rounded-xl border-[0.5px] border-solid border-[#ebebeb] text-white [font-family:'Fahkwang',Helvetica] p-3 h-auto transition-all duration-300 focus:scale-105 focus:border-primary"
-                  placeholder="Your Email"
-                />
-
-                <Textarea
-                  className="bg-[#9b9b9b1f] rounded-xl border-[0.5px] border-solid border-[#ebebeb] text-white [font-family:'Fahkwang',Helvetica] p-3 h-[211px] resize-none transition-all duration-300 focus:scale-105 focus:border-primary"
-                  placeholder="Describe Your Case"
-                />
-              </div>
-
-              <Button className="w-full bg-primary rounded-[60px] text-black [font-family:'Fahkwang',Helvetica] font-medium text-base py-3 shadow-[inset_0px_0px_12px_4px_#00000040] hover:bg-primary-hover transition-all duration-300 hover:scale-105 hover:shadow-lg">
-                Send Message
-              </Button>
-            </CardContent>
-          </Card>
         </div>
 
         <div 
