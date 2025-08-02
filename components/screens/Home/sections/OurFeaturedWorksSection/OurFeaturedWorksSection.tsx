@@ -288,7 +288,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
             >
               {/* Main Card - Centered and properly sized */}
               <div 
-                className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative mx-auto"
+                className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative mx-auto cursor-pointer"
+                onClick={handleViewProject}
                 style={{
                   width: '90%',
                   maxWidth: windowWidth < 640 ? '100%' 
@@ -330,7 +331,10 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
 
                     {/* CTA Button */}
                     <button 
-                      onClick={handleViewProject}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewProject();
+                      }}
                       className="group inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 rounded-full text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl w-fit relative overflow-hidden"
                       style={{ background: "rgba(255, 255, 255, 0.2)" }}
                       onMouseEnter={(e) => {
@@ -358,7 +362,7 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
                   </div>
 
                   {/* Visual Section - Full width on mobile, 60% on desktop */}
-                  <div className="w-full lg:w-3/5 relative overflow-hidden flex-1">
+                  <div className="w-full lg:w-3/5 relative overflow-hidden flex-1 pointer-events-none">
                     {/* Mockup Image */}
                     <div className="absolute inset-0 w-full h-full p-4 sm:p-6 md:p-8 lg:p-10">
                       <div className="w-full h-full rounded-1xl sm:rounded-2xl overflow-hidden">
