@@ -140,21 +140,64 @@ export const ProjectsSection = (): JSX.Element => {
     };
   }, []);
 
-  // subtle fade-in animation for subtitle
+  // Entrance animations
   useEffect(() => {
-    if (!subtitleRef.current) return;
-    gsap.fromTo(
-      subtitleRef.current,
-      { opacity: 0, y: 50, filter: "blur(10px)" },
-      {
+    if (!sectionRef.current) return;
+
+    // Heading animation
+    if (featuredWorksHeadingRef.current) {
+      const splitText = new SplitText(featuredWorksHeadingRef.current, { 
+        type: "words,chars",
+        charsClass: "char",
+        wordsClass: "word"
+      });
+
+      // Set initial state
+      gsap.set(splitText.chars, {
+        opacity: 0,
+        y: 100,
+        rotationX: -90,
+        transformOrigin: "50% 50% -50px"
+      });
+
+      // Title reveal animation
+      gsap.to(splitText.chars, {
+        duration: 1.5,
         opacity: 1,
         y: 0,
-        filter: "blur(0px)",
-        duration: 1.8,
-        ease: "power3.out",
-        delay: 0.8,
-      }
-    );
+        rotationX: 0,
+        stagger: {
+          amount: 1.2,
+          from: "start"
+        },
+        ease: "power4.out",
+        delay: 0.5
+      });
+    }
+
+    // Subtitle animation
+    if (subtitleRef.current) {
+      gsap.fromTo(subtitleRef.current,
+        {
+          opacity: 0,
+          y: 50,
+          filter: "blur(10px)"
+        },
+        {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 1.8,
+          ease: "power3.out",
+          delay: 1.2
+        }
+      );
+    }
+
+    // Cleanup function
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   // card stacking animation
@@ -283,6 +326,75 @@ export const ProjectsSection = (): JSX.Element => {
 
   return (
     <>
+      {/* Featured Works Header Section */}
+      <section 
+        className="w-full pt-16 md:pt-20 lg:pt-24 pb-0 bg-white relative overflow-hidden"
+      >
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gray-300/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+          <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
+          <div className="absolute top-3/4 left-1/3 w-72 h-72 bg-gray-400/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '6s' }} />
+          
+          {/* Grid pattern */}
+          <div className="absolute inset-0 opacity-6">
+            <div 
+              className="w-full h-full"
+              style={{
+                backgroundImage: `
+                  linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
+                `,
+                backgroundSize: '120px 120px'
+              }}
+            />
+          </div>
+          
+          {/* Noise overlay */}
+          <div className="absolute inset-0">
+            <div 
+              className="w-full h-full opacity-15"
+              style={{
+                background: `
+                  radial-gradient(circle at 20% 30%, rgba(0,0,0,0.02) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 70%, rgba(0,0,0,0.015) 0%, transparent 50%),
+                  radial-gradient(circle at 40% 80%, rgba(0,0,0,0.018) 0%, transparent 50%)
+                `
+              }}
+            />
+          </div>
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <div 
+            ref={featuredWorksWrapperRef}
+            className="perspective-[1000px] cursor-default"
+            style={{ transformStyle: 'preserve-3d' }}
+          >
+            <h2
+              ref={featuredWorksHeadingRef}
+              className="[font-family:'Fahkwang',Helvetica] font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[40px] text-center tracking-[0] leading-tight mb-6"
+              style={{ 
+                transformStyle: 'preserve-3d',
+                transform: 'translateZ(0)',
+              }}
+            >
+              <span className="text-[#0d1529]">Our </span>
+              <span className="text-[#0d1529]">Featured </span>
+              <span className="text-secondary">Works</span>
+            </h2>
+          </div>
+
+          <p 
+            ref={subtitleRef}
+            className="text-sm md:text-base lg:text-lg text-[#626161] max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed [font-family:'Fahkwang',Helvetica]"
+          >
+            Explore our showcase of exceptional commercial interior design projects that enhance productivity and reflect brand excellence.
+          </p>
+        </div>
+      </section>
+
       {/* Featured Works Section */}
       <section
         ref={sectionRef}
@@ -332,58 +444,10 @@ export const ProjectsSection = (): JSX.Element => {
           </div>
         </div>
 
-        {/* Section header: interactive "Our Featured Works" and subtitle */}
-        <div className="absolute top-0 left-0 right-0 z-50 text-center pt-16 sm:pt-20 lg:pt-24">
-          <div
-            className="container mx-auto px-4 text-center"
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            <div
-              ref={featuredWorksWrapperRef}
-              className="perspective-[1000px] cursor-default"
-              style={{ transformStyle: "preserve-3d" }}
-            >
-              <h2
-                ref={featuredWorksHeadingRef}
-                className="[font-family:'Fahkwang',Helvetica] font-semibold text-[40px] text-center tracking-[0] leading-[62px] mb-2"
-                style={{
-                  transformStyle: "preserve-3d",
-                  transform: "translateZ(0)",
-                }}
-              >
-                <span className="text-[#0d1529]">Our </span>
-                <span
-                  className="text-[#0d1529]"
-                  style={{ fontFamily: "Shadows Into Light, cursive", fontWeight: "normal" }}
-                >
-                  Featured{" "}
-                </span>
-                <span className="text-secondary">Works</span>
-              </h2>
-            </div>
-
-            <p
-              ref={subtitleRef}
-              className="text-xs md:text-sm lg:text-sm text-[#626161] max-w-4xl mx-auto leading-relaxed [font-family:'Fahkwang',Helvetica] will-change-transform px-4 md:px-8"
-              style={{
-                transformOrigin: "center center",
-                backfaceVisibility: "hidden",
-                transform: "translate3d(0, 0, 0)",
-              }}
-            >
-              Explore our showcase of exceptional commercial interior design projects that enhance
-              productivity and reflect brand excellence.
-            </p>
-          </div>
-        </div>
-
         {/* Card container with stacking layout */}
         <div
           ref={containerRef}
-          className="relative w-full h-full flex items-center justify-center
-             pt-40 md:pt-48 lg:pt-56
-             pb-20 md:pb-24
-             mt-[180px] sm:mt-[150px] md:mt-32 lg:mt-24"
+          className="relative w-full h-full flex items-center justify-center pt-0"
         >
           {projects.map((project, index) => (
             <div
@@ -401,7 +465,8 @@ export const ProjectsSection = (): JSX.Element => {
             >
               {/* Main card */}
               <div
-                className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative mx-auto h-auto min-h-[800px] sm:min-h-[800px] lg:h-auto lg:min-h-[600px]"
+                className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative mx-auto cursor-pointer"
+                onClick={handleViewProject}
                 style={{
                   width: "90%",
                   maxWidth:
@@ -410,12 +475,16 @@ export const ProjectsSection = (): JSX.Element => {
                       : windowWidth < 1024
                       ? "600px"
                       : `${1200 + index * 40}px`,
+                  height: windowWidth < 640 ? '70vh' 
+                    : windowWidth < 1024 ? '60vh' 
+                    : '80vh',
+                  minHeight: windowWidth < 640 ? '500px' : '600px',
                   background: project.color,
                   transform: "translateZ(0)",
                   willChange: "transform",
                 }}
               >
-                <div className="flex flex-col lg:flex-row h-full min-h-[500px] sm:min-h-[700px] lg:min-h-[500px]">
+                <div className="flex flex-col lg:flex-row h-full">
                   {/* Content side */}
                   <div className="w-full lg:w-2/5 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-center relative z-10 flex-shrink-0">
                     <div className="mb-3 md:mb-4">
@@ -442,7 +511,10 @@ export const ProjectsSection = (): JSX.Element => {
                     </p>
 
                     <button
-                      onClick={handleViewProject}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewProject();
+                      }}
                       className="group inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 rounded-full text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl w-fit relative overflow-hidden"
                       style={{ background: "rgba(255, 255, 255, 0.2)" }}
                       onMouseEnter={(e) => {
@@ -472,7 +544,7 @@ export const ProjectsSection = (): JSX.Element => {
                   </div>
 
                   {/* visual side */}
-                  <div className="w-full lg:w-3/5 relative overflow-hidden flex-1 min-h-[250px] sm:min-h-[300px] lg:min-h-auto">
+                  <div className="w-full lg:w-3/5 relative overflow-hidden flex-1 pointer-events-none">
                     <div className="absolute inset-0 w-full h-full p-4 sm:p-6 md:p-8 lg:p-10">
                       <div className="w-full h-full rounded-1xl sm:rounded-2xl overflow-hidden">
                         <img
