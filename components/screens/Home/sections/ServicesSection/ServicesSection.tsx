@@ -361,7 +361,7 @@ export const ServicesSection = (): JSX.Element => {
         {/* Section Header with MORE GAP */}
         <div 
           ref={headerRef}
-          className="flex flex-col items-center text-center mb-24" // Increased from mb-16 to mb-24
+          className="flex flex-col items-center text-center mb-24 mt-5" // Added mt-5 for 20px top gap
           style={{
             transformOrigin: 'center center',
             backfaceVisibility: 'hidden',
