@@ -485,27 +485,47 @@ export const FooterSection = (): JSX.Element => {
           </div>
         </div>
 
-        <Separator className="bg-white/10 mb-6" />
+        <Separator className="bg-white/20 mb-8" />
 
         <div 
           ref={bottomSectionRef}
-          className="flex flex-col sm:flex-row items-center justify-between will-change-transform"
+          className="flex flex-col sm:flex-row items-center justify-between py-6 will-change-transform"
           style={{
             transformOrigin: 'center center',
             backfaceVisibility: 'hidden',
             transform: 'translate3d(0, 0, 0)'
           }}
         >
-          <div className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-colors duration-300 hover:text-primary relative group overflow-hidden cursor-pointer">
-            <span className="relative z-10">Privacy Policy/Terms</span>
-            {/* Draw underline animation for bottom link too */}
-            <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+            <div className="flex items-center gap-2">
+              <CopyrightIcon className="w-4 h-4 text-white" />
+              <div className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6">
+                2025 Interior Villa. All rights reserved.
+              </div>
+            </div>
+            
+            <div className="flex items-center gap-6">
+              <a
+                href="/privacy-policy"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-colors duration-300 hover:text-primary relative group overflow-hidden cursor-pointer"
+              >
+                <span className="relative z-10">Privacy Policy</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+              
+              <a
+                href="/terms-of-service"
+                className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-colors duration-300 hover:text-primary relative group overflow-hidden cursor-pointer"
+              >
+                <span className="relative z-10">Terms of Service</span>
+                <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
+              </a>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 mt-4 sm:mt-0">
-            <CopyrightIcon className="w-3.5 h-3.5 text-white" />
+          <div className="flex items-center gap-4 mt-4 sm:mt-0">
             <div className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6">
-              2025 Interior Villa, All right reserved
+              Designed with ❤️ by Interior Villa Team
             </div>
           </div>
         </div>
