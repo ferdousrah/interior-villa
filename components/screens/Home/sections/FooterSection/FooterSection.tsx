@@ -344,7 +344,7 @@ export const FooterSection = (): JSX.Element => {
             </h4>
             
             {/* Divider */}
-            <div className="w-full h-px bg-white/20"></div>
+            <div className="w-full h-px bg-white/30 -mt-2"></div>
             
             <div className="flex flex-col items-start gap-3 w-full">
               <a
@@ -377,7 +377,7 @@ export const FooterSection = (): JSX.Element => {
             </h4>
 
             {/* Divider */}
-            <div className="w-full h-px bg-white/20"></div>
+            <div className="w-full h-px bg-white/30 -mt-2"></div>
 
             <div className="flex flex-col items-start gap-3 w-full">
               <a
@@ -411,7 +411,7 @@ export const FooterSection = (): JSX.Element => {
             </h4>
 
             {/* Divider */}
-            <div className="w-full h-px bg-white/20"></div>
+            <div className="w-full h-px bg-white/30 -mt-2"></div>
 
             <div className="flex flex-col items-start gap-3 w-full">
               <a
@@ -452,7 +452,7 @@ export const FooterSection = (): JSX.Element => {
             </h4>
             
             {/* Divider */}
-            <div className="w-full h-px bg-white/20"></div>
+            <div className="w-full h-px bg-white/30 -mt-2"></div>
             
             <p className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-xs tracking-[0] leading-5 mb-4">
               Stay connected and inspired! Follow us on our social media platforms to keep up with the latest design trends.
