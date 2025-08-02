@@ -325,63 +325,6 @@ export const FooterSection = (): JSX.Element => {
               </h2>
             </div>
 
-            <div 
-              ref={socialSectionRef}
-              className="mt-20"
-            >
-              <div className="flex flex-col items-start gap-6">
-                <div className="flex flex-col items-start gap-3 w-full">
-                  <h3 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-xl tracking-[0] leading-8">
-                    Follow Us
-                  </h3>
-                  <p className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-xs tracking-[0] leading-5 max-w-[520px]">
-                    Stay connected and inspired! Follow us on our social media
-                    platforms to keep up with the latest design trends, project
-                    updates, and behind-the-scenes insights
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-6">
-                  {[
-                    { icon: Facebook, name: "Facebook", color: "#1877F2" },
-                    { icon: Twitter, name: "Twitter", color: "#1DA1F2" },
-                    { icon: Instagram, name: "Instagram", color: "#E4405F" },
-                    { icon: Linkedin, name: "LinkedIn", color: "#0A66C2" }
-                  ].map((social, index) => {
-                    const IconComponent = social.icon;
-                    return (
-                      <div
-                        key={index}
-                        className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 cursor-pointer relative overflow-hidden group transform-gpu transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 flex items-center justify-center"
-                      >
-                        {/* Glow effect on hover */}
-                        <div 
-                          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-sm scale-110"
-                          style={{ backgroundColor: social.color }}
-                        ></div>
-                        
-                        {/* Ripple effect */}
-                        <div 
-                          className="absolute inset-0 rounded-xl border-2 opacity-0 group-hover:opacity-100 group-hover:scale-150 transition-all duration-700 ease-out"
-                          style={{ borderColor: social.color }}
-                        ></div>
-                        
-                        {/* Shine effect */}
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out"></div>
-                        
-                        {/* Icon */}
-                        <IconComponent 
-                          className="w-6 h-6 text-white transition-all duration-500 ease-out group-hover:rotate-12 group-hover:scale-110 relative z-10"
-                          style={{
-                            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
-                          }}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
