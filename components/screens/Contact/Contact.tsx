@@ -8,7 +8,7 @@ import {
 
 const Contact = (): JSX.Element => {
   return (
-    <div className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
+    <main className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
       {/* Custom Cursor */}
       <CustomCursor className="custom-cursor" />
       
@@ -16,14 +16,14 @@ const Contact = (): JSX.Element => {
       <HeroSection />
 
       {/* Main Content Container */}
-      <div className="w-full">
+      <section className="w-full">
         {/* Contact Section */}
         <ContactSection />
-      </div>
+      </section>
       
       {/* Footer */}
       <FooterSection />
-    </div>
+    </main>
   );
 };
 

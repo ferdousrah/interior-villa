@@ -8,7 +8,7 @@ import {
 
 const BlogDetails = (): JSX.Element => {
   return (
-    <div className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
+    <main className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
       {/* Custom Cursor */}
       <CustomCursor className="custom-cursor" />
       
@@ -16,14 +16,14 @@ const BlogDetails = (): JSX.Element => {
       <HeroSection />
 
       {/* Main Content Container */}
-      <div className="w-full">
+      <article className="w-full">
         {/* Blog Content Section with Sidebar */}
         <BlogContentSection />
-      </div>
+      </article>
       
       {/* Footer */}
       <FooterSection />
-    </div>
+    </main>
   );
 };
 

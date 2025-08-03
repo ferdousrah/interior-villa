@@ -11,7 +11,7 @@ import {
 
 const ResidentialInterior = (): JSX.Element => {
   return (
-    <div className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
+    <main className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
       {/* Custom Cursor */}
       <CustomCursor className="custom-cursor" />
       
@@ -19,7 +19,7 @@ const ResidentialInterior = (): JSX.Element => {
       <HeroSection />
 
       {/* Main Content Container */}
-      <div className="w-full">
+      <section className="w-full">
         {/* About Residential Interior Section */}
         <AboutSection />
         
@@ -31,11 +31,11 @@ const ResidentialInterior = (): JSX.Element => {
         
         {/* CTA Section */}
         <CTASection />
-      </div>
+      </section>
       
       {/* Footer */}
       <FooterSection />
-    </div>
+    </main>
   );
 };
 

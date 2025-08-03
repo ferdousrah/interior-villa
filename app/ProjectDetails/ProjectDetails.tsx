@@ -11,7 +11,7 @@ import {
 
 const ProjectDetails = (): JSX.Element => {
   return (
-    <div className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
+    <main className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
       {/* Custom Cursor */}
       <CustomCursor className="custom-cursor" />
       
@@ -19,7 +19,7 @@ const ProjectDetails = (): JSX.Element => {
       <HeroSection />
 
       {/* Main Content Container */}
-      <div className="w-full">
+      <article className="w-full">
         {/* Before & After Section */}
         <BeforeAfterSection />
         
@@ -32,11 +32,11 @@ const ProjectDetails = (): JSX.Element => {
         
         {/* CTA Section */}
         <CTASection />
-      </div>
+      </article>
       
       {/* Footer */}
       <FooterSection />
-    </div>
+    </main>
   );
 };
 

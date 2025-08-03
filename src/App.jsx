@@ -1,5 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useEffect } from 'react'
+import { updateSEO, seoData } from './utils/seo'
 import { Home } from '../components/screens/Home/Home'
 import { About } from '../components/screens/About/About'
 import { Contact } from '../components/screens/Contact/Contact'
@@ -12,21 +14,31 @@ import { ArchitecturalConsultancy } from '../app/ArchitecturalConsultancy'
 import { BlogDetails } from '../components/screens/BlogDetails/BlogDetails'
 import '../app/globals.css'
 
+// SEO wrapper component
+const SEORoute = ({ children, seoKey }) => {
+  useEffect(() => {
+    if (seoData[seoKey]) {
+      updateSEO(seoData[seoKey]);
+    }
+  }, [seoKey]);
+
+  return children;
+};
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogDetails />} />
-        <Route path="/blog-details" element={<BlogDetails />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/project-details" element={<ProjectDetails />} />
-        <Route path="/residential-interior" element={<ResidentialInterior />} />
-        <Route path="/commercial-interior" element={<CommercialInterior />} />
-        <Route path="/architectural-consultancy" element={<ArchitecturalConsultancy />} />
+        <Route path="/" element={<SEORoute seoKey="home"><Home /></SEORoute>} />
+        <Route path="/about" element={<SEORoute seoKey="about"><About /></SEORoute>} />
+        <Route path="/contact" element={<SEORoute seoKey="contact"><Contact /></SEORoute>} />
+        <Route path="/blog" element={<SEORoute seoKey="blog"><Blog /></SEORoute>} />
+        <Route path="/blog/:id" element={<SEORoute seoKey="blog"><BlogDetails /></SEORoute>} />
+        <Route path="/blog-details" element={<SEORoute seoKey="blog"><BlogDetails /></SEORoute>} />
+        <Route path="/portfolio" element={<SEORoute seoKey="portfolio"><Portfolio /></SEORoute>} />
+        <Route path="/project-details" element={<SEORoute seoKey="portfolio"><ProjectDetails /></SEORoute>} />
+        <Route path="/residential-interior" element={<SEORoute seoKey="residentialInterior"><ResidentialInterior /></SEORoute>} />
+        <Route path="/commercial-interior" element={<SEORoute seoKey="commercialInterior"><CommercialInterior /></SEORoute>} />
+        <Route path="/architectural-consultancy" element={<SEORoute seoKey="architecturalConsultancy"><ArchitecturalConsultancy /></SEORoute>} />
         <Route path="/services" element={<div className="min-h-screen flex items-center justify-center">Services Page Coming Soon</div>} />
       </Routes>
     </Router>

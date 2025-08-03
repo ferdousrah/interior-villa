@@ -418,7 +418,7 @@ const Home = (): JSX.Element => {
   };
 
   return (
-    <div className="flex flex-col w-full items-start relative bg-white overflow-x-hidden">
+    <main className="flex flex-col w-full items-start relative bg-white overflow-x-hidden">
       {/* Custom Cursor */}
       <CustomCursor className="custom-cursor" />
       
@@ -426,9 +426,9 @@ const Home = (): JSX.Element => {
         {isLowEndDevice ? (
           <StaticHeroBackground />
         ) : (
-          <div className="w-full h-[800px] bg-gradient-to-br from-black via-gray-900 to-black">
+          <section className="w-full h-[800px] bg-gradient-to-br from-black via-gray-900 to-black">
             <FloorPlan3D className="w-full h-full" lowPerformanceMode={true} />
-          </div>
+          </section>
         )}
 
         <header 
@@ -447,7 +447,7 @@ const Home = (): JSX.Element => {
           }}
         >
           <div className="container mx-auto px-4 relative flex items-center justify-between h-full">
-            <Link to="/">
+            <Link to="/" aria-label="Interior Villa Home">
               <img
                 ref={logoRef}
                 className="w-52 h-[41px] object-cover z-10 transition-transform duration-700 ease-out cursor-pointer"
@@ -472,6 +472,7 @@ const Home = (): JSX.Element => {
             >
               <div className="flex items-center justify-end h-full">
                 <button 
+                  aria-label="Toggle mobile menu"
                   className="lg:hidden text-white transition-all duration-300 hover:scale-110 z-50 relative"
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >
@@ -504,7 +505,7 @@ const Home = (): JSX.Element => {
                 </button>
 
                 <div className="hidden lg:block">
-                  <nav className="flex space-x-2">
+                  <nav className="flex space-x-2" role="navigation" aria-label="Main navigation">
                     {navItems.map((item, index) => (
                       <div 
                         key={index} 
@@ -512,7 +513,7 @@ const Home = (): JSX.Element => {
                         onMouseEnter={() => handleMouseEnter(item.name)}
                         onMouseLeave={handleMouseLeave}
                       >
-                        <Link to={item.href}>
+                        <Link to={item.href} aria-label={`Navigate to ${item.name}`}>
                           <Button
                             variant={item.active ? "default" : "ghost"}
                             className={`min-w-[108px] px-6 rounded-[50px] whitespace-nowrap transition-all duration-300 hover:bg-primary hover:text-white hover:scale-105 hover:shadow-lg ${
@@ -545,6 +546,8 @@ const Home = (): JSX.Element => {
                               initial="hidden"
                               animate="visible"
                               exit="hidden"
+                              role="menu"
+                              aria-label={`${item.name} submenu`}
                               className="absolute top-full left-0 mt-2 min-w-[200px] bg-[#1b1b1b] rounded-lg shadow-2xl overflow-hidden z-50 border border-[#333333]"
                               style={{
                                 boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.3)"
@@ -556,6 +559,7 @@ const Home = (): JSX.Element => {
                                 {item.subItems.map((subItem, subIndex) => (
                                   <motion.button
                                     key={subIndex}
+                                    role="menuitem"
                                     ref={(el) => {
                                       const key = `${item.name}-${subIndex}`;
                                       if (el && !el.dataset.animationKey) {
@@ -607,6 +611,8 @@ const Home = (): JSX.Element => {
                 initial="closed"
                 animate="open"
                 exit="closed"
+                role="navigation"
+                aria-label="Mobile navigation"
                 className="fixed top-0 left-0 h-full w-80 bg-gradient-to-br from-[#1a1a1a] via-[#1e1e1e] to-[#1a1a1a] z-50 lg:hidden shadow-2xl"
                 style={{
                   boxShadow: "20px 0 40px rgba(0, 0, 0, 0.3)"
@@ -614,12 +620,13 @@ const Home = (): JSX.Element => {
               >
                 {/* Sidebar Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
-                  <img
+                  <Link to="/" onClick={() => setIsMobileMenuOpen(false)} aria-label="Interior Villa Home">
                     className="w-40 h-8 object-cover"
                     alt="Interior villa dark"
                     src="/interior-villa-dark.png"
                   />
                   <button
+                    aria-label="Close mobile menu"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-white hover:bg-gray-700/50 transition-all duration-300 hover:scale-110"
                   >
@@ -628,7 +635,7 @@ const Home = (): JSX.Element => {
                 </div>
 
                 {/* Navigation Menu */}
-                <nav className="flex flex-col p-6 space-y-2 overflow-y-auto h-full pb-20">
+                <nav className="flex flex-col p-6 space-y-2 overflow-y-auto h-full pb-20" role="navigation" aria-label="Mobile menu items">
                   {navItems.map((item, index) => {
                     const IconComponent = item.icon;
                     return (
@@ -655,7 +662,7 @@ const Home = (): JSX.Element => {
                           }}
                         >
                           <Link to={item.href} className="flex items-center space-x-4 flex-1">
-                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                          <Link to={item.href} className="flex items-center space-x-4 flex-1" aria-label={`Navigate to ${item.name}`} onClick={(e) => {
                               item.active 
                                 ? "bg-white/20" 
                                 : "bg-gray-700/50 group-hover:bg-gray-600/50"
@@ -858,7 +865,7 @@ const Home = (): JSX.Element => {
           background: rgba(117, 191, 68, 0.5);
         }
       `}</style>
-    </div>
+    </main>
   );
 };
 
