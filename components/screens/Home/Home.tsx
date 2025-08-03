@@ -621,10 +621,12 @@ const Home = (): JSX.Element => {
                 {/* Sidebar Header */}
                 <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
                   <Link to="/" onClick={() => setIsMobileMenuOpen(false)} aria-label="Interior Villa Home">
-                    className="w-40 h-8 object-cover"
-                    alt="Interior villa dark"
-                    src="/interior-villa-dark.png"
-                  />
+                    <img
+                      className="w-40 h-8 object-cover"
+                      alt="Interior villa dark"
+                      src="/interior-villa-dark.png"
+                    />
+                  </Link>
                   <button
                     aria-label="Close mobile menu"
                     onClick={() => setIsMobileMenuOpen(false)}
@@ -661,8 +663,12 @@ const Home = (): JSX.Element => {
                             }
                           }}
                         >
-                          <Link to={item.href} className="flex items-center space-x-4 flex-1">
                           <Link to={item.href} className="flex items-center space-x-4 flex-1" aria-label={`Navigate to ${item.name}`} onClick={(e) => {
+                            if (item.subItems) {
+                              e.preventDefault();
+                            }
+                          }}>
+                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
                               item.active 
                                 ? "bg-white/20" 
                                 : "bg-gray-700/50 group-hover:bg-gray-600/50"
