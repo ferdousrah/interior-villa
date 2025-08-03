@@ -62,8 +62,8 @@ export const ApproachSection = (): JSX.Element => {
             ease: "power3.out",
             scrollTrigger: {
               trigger: headingRef.current,
-              start: "top 85%",
-              end: "top 55%",
+              start: "top 95%",
+              end: "top 70%",
               toggleActions: "play none none reverse"
             }
           }
@@ -82,8 +82,8 @@ export const ApproachSection = (): JSX.Element => {
             ease: "power2.out",
             scrollTrigger: {
               trigger: descriptionRef.current,
-              start: "top 85%",
-              end: "top 65%",
+              start: "top 95%",
+              end: "top 75%",
               toggleActions: "play none none reverse"
             }
           }
@@ -109,8 +109,8 @@ export const ApproachSection = (): JSX.Element => {
             stagger: 0.15,
             scrollTrigger: {
               trigger: cardsContainerRef.current,
-              start: "top 90%",
-              end: "bottom 60%",
+              start: "top 95%",
+              end: "bottom 70%",
               toggleActions: "play none none reverse"
             }
           }
