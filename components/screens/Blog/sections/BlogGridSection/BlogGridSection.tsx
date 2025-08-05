@@ -5,6 +5,7 @@ import { Clock, User, ArrowRight, Calendar, Tag } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
@@ -21,6 +22,7 @@ interface BlogPost {
 
 export const BlogGridSection = (): JSX.Element => {
   const [hoveredPost, setHoveredPost] = useState<number | null>(null);
+  const navigate = useNavigate();
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -231,7 +233,7 @@ export const BlogGridSection = (): JSX.Element => {
 
   const handleBlogDetailsClick = (postId: number) => {
     // Navigate to blog details page
-    window.location.href = `/blog-details`;
+    navigate('/blog-details');
   };
 
   const getCategoryColor = (category: string) => {

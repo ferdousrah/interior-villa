@@ -4,6 +4,7 @@ import { Button } from "../../../../components/ui/button";
 import { Clock, User } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useNavigate } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -20,6 +21,7 @@ interface BlogPost {
 
 export const BlogGridSection = (): JSX.Element => {
   const [hoveredPost, setHoveredPost] = useState<number | null>(null);
+  const navigate = useNavigate();
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -169,7 +171,7 @@ export const BlogGridSection = (): JSX.Element => {
   ];
 
   const handleBlogDetailsClick = () => {
-    window.location.href = '/blog-details';
+    navigate('/blog-details');
   };
 
   return (
