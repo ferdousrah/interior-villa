@@ -27,6 +27,7 @@
     "react-intersection-observer": "^9.5.3",
     "react-masonry-css": "^1.0.16",
     "react-router-dom": "^7.6.3",
+    "resend": "^4.8.0",
     "tailwind-merge": "^2.2.0",
     "three": "^0.178.0",
     "three-stdlib": "^2.36.0",
