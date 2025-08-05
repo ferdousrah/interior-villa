@@ -6,7 +6,7 @@ import { Textarea } from "../../../../components/ui/textarea";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { sendAppointmentEmail } from "../../../services/emailService";
+import { sendAppointmentEmail } from "../../../src/services/emailService";
 
 gsap.registerPlugin(ScrollTrigger);
 
