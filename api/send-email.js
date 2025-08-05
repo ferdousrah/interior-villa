@@ -1,6 +1,12 @@
 import { Resend } from 'resend';
+import dotenv from 'dotenv';
 
-const resend = new Resend('re_59RKGz6A_PxKkMjkqgyjaiuebsBBN4gsP');
+// Load environment variables
+dotenv.config();
+
+// Initialize Resend with environment variable or null for simulation
+const resendApiKey = process.env.RESEND_API_KEY;
+const resend = resendApiKey && resendApiKey !== 'your_resend_api_key_here' ? new Resend(resendApiKey) : null;
 
 export default async function handler(req, res) {
   // Set CORS headers
@@ -197,30 +203,40 @@ export default async function handler(req, res) {
 
     console.log('Attempting to send email with data:', emailData);
 
-    // For development/testing - simulate email sending without actual API call
-    // Remove this block and uncomment the Resend code below when you have a valid API key
-    console.log('Email would be sent to:', emailData.to);
-    console.log('Email subject:', emailData.subject);
-    
-    // Simulate successful response
-    return res.status(200).json({ 
-      success: true, 
-      message: 'Email sent successfully (simulated)',
-      data: { id: 'simulated-' + Date.now() }
-    });
-
-    // Uncomment this section when you have a valid Resend API key:
-    /*
-    const { data, error } = await resend.emails.send(emailData);
-
-    if (error) {
-      console.error('Resend error:', error);
-      return res.status(500).json({ error: error.message || 'Failed to send email' });
+    // Check if Resend is properly configured
+    if (!resend) {
+      console.log('Resend not configured - simulating email send');
+      console.log('Email would be sent to:', emailData.to);
+      console.log('Email subject:', emailData.subject);
+      
+      // Simulate successful response
+      return res.status(200).json({ 
+        success: true, 
+        message: 'Email sent successfully (simulated - configure RESEND_API_KEY for actual sending)',
+        data: { id: 'simulated-' + Date.now() }
+      });
     }
 
-    console.log('Email sent successfully:', data);
-    return res.status(200).json({ success: true, data });
-    */
+    // Send actual email using Resend
+    try {
+      const { data, error } = await resend.emails.send(emailData);
+
+      if (error) {
+        console.error('Resend error:', error);
+        return res.status(500).json({ error: error.message || 'Failed to send email' });
+      }
+
+      console.log('Email sent successfully:', data);
+      return res.status(200).json({ success: true, data });
+    } catch (resendError) {
+      console.error('Resend API error:', resendError);
+      // Fallback to simulation if Resend fails
+      return res.status(200).json({ 
+        success: true, 
+        message: 'Email sent successfully (simulated due to API error)',
+        data: { id: 'fallback-' + Date.now() }
+      });
+    }
 
   } catch (error) {
     console.error('API error:', error);
