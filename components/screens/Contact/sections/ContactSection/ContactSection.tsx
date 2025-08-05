@@ -6,7 +6,7 @@ import { Textarea } from "../../../../ui/textarea";
 import { MapPin, Phone, Mail, Send } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { sendContactEmail } from "../../../services/emailService";
+import { sendContactEmail } from "../../../../../src/services/emailService";
 
 gsap.registerPlugin(ScrollTrigger);
 
