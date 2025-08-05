@@ -10,8 +10,7 @@ export default async function handler(req, res) {
 
   // Handle preflight request
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    return res.status(200).json({ success: true });
   }
 
   if (req.method !== 'POST') {
@@ -19,9 +18,12 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log('API endpoint called with:', req.body);
+    
     const { type, formData } = req.body;
 
     if (!type || !formData) {
+      console.log('Missing required fields:', { type, formData });
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
@@ -29,6 +31,7 @@ export default async function handler(req, res) {
 
     if (type === 'contact') {
       if (!formData.name || !formData.email || !formData.message) {
+        console.log('Missing contact fields:', formData);
         return res.status(400).json({ error: 'Missing required contact fields' });
       }
 
@@ -104,6 +107,7 @@ export default async function handler(req, res) {
       };
     } else if (type === 'appointment') {
       if (!formData.name || !formData.mobile || !formData.address) {
+        console.log('Missing appointment fields:', formData);
         return res.status(400).json({ error: 'Missing required appointment fields' });
       }
 
@@ -187,9 +191,26 @@ export default async function handler(req, res) {
         `
       };
     } else {
+      console.log('Invalid email type:', type);
       return res.status(400).json({ error: 'Invalid email type' });
     }
 
+    console.log('Attempting to send email with data:', emailData);
+
+    // For development/testing - simulate email sending without actual API call
+    // Remove this block and uncomment the Resend code below when you have a valid API key
+    console.log('Email would be sent to:', emailData.to);
+    console.log('Email subject:', emailData.subject);
+    
+    // Simulate successful response
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Email sent successfully (simulated)',
+      data: { id: 'simulated-' + Date.now() }
+    });
+
+    // Uncomment this section when you have a valid Resend API key:
+    /*
     const { data, error } = await resend.emails.send(emailData);
 
     if (error) {
@@ -197,9 +218,15 @@ export default async function handler(req, res) {
       return res.status(500).json({ error: error.message || 'Failed to send email' });
     }
 
-    res.status(200).json({ success: true, data });
+    console.log('Email sent successfully:', data);
+    return res.status(200).json({ success: true, data });
+    */
+
   } catch (error) {
     console.error('API error:', error);
-    res.status(500).json({ error: error.message || 'Internal server error' });
+    return res.status(500).json({ 
+      error: error.message || 'Internal server error',
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 }
