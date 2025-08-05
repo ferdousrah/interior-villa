@@ -1,6 +1,6 @@
 import React from "react";
 import { CustomCursor } from "../../components/ui/cursor";
-import { FooterSection } from "../Home/sections/FooterSection/FooterSection";
+import { FooterSection } from "../../components/screens/Home/sections/FooterSection/FooterSection";
 import {
   HeroSection,
   BlogGridSection
