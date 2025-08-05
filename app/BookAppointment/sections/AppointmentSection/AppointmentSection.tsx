@@ -6,6 +6,7 @@ import { Textarea } from "../../../../components/ui/textarea";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { sendAppointmentEmail } from "../../../services/emailService";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +16,9 @@ export const AppointmentSection = (): JSX.Element => {
     mobile: "",
     address: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const sectionRef = useRef<HTMLElement>(null);
   const leftCardRef = useRef<HTMLDivElement>(null);
@@ -82,14 +86,36 @@ export const AppointmentSection = (): JSX.Element => {
       ...prev,
       [field]: value
     }));
+    // Reset status when user starts typing
+    if (submitStatus !== 'idle') {
+      setSubmitStatus('idle');
+      setErrorMessage('');
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
-    // Reset form
-    setFormData({ name: "", mobile: "", address: "" });
+    
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      await sendAppointmentEmail(formData);
+      setSubmitStatus('success');
+      setFormData({ name: "", mobile: "", address: "" });
+      
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus('error');
+      setErrorMessage(error.message || 'Failed to send appointment request. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleContactClick = () => {
@@ -153,6 +179,32 @@ export const AppointmentSection = (): JSX.Element => {
             className="bg-[#E8E8E8] rounded-3xl p-8 md:p-12 h-full min-h-[500px] flex flex-col justify-center"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Success Message */}
+              {submitStatus === 'success' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-green-100 border border-green-300 rounded-lg"
+                >
+                  <p className="text-green-800 [font-family:'Fahkwang',Helvetica] font-medium">
+                    ✅ Appointment request sent successfully! We'll contact you within 24 hours.
+                  </p>
+                </motion.div>
+              )}
+
+              {/* Error Message */}
+              {submitStatus === 'error' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 bg-red-100 border border-red-300 rounded-lg"
+                >
+                  <p className="text-red-800 [font-family:'Fahkwang',Helvetica] font-medium">
+                    ❌ {errorMessage}
+                  </p>
+                </motion.div>
+              )}
+
               {/* Form Fields */}
               <div className="space-y-6">
                 <Input
@@ -160,6 +212,7 @@ export const AppointmentSection = (): JSX.Element => {
                   value={formData.name}
                   onChange={(e) => handleInputChange('name', e.target.value)}
                   className="bg-white border-gray-300 rounded-lg px-4 py-4 text-base [font-family:'Fahkwang',Helvetica] placeholder:text-gray-500 focus:border-primary focus:ring-primary h-auto"
+                  disabled={isSubmitting}
                   required
                 />
 
@@ -168,6 +221,7 @@ export const AppointmentSection = (): JSX.Element => {
                   value={formData.mobile}
                   onChange={(e) => handleInputChange('mobile', e.target.value)}
                   className="bg-white border-gray-300 rounded-lg px-4 py-4 text-base [font-family:'Fahkwang',Helvetica] placeholder:text-gray-500 focus:border-primary focus:ring-primary h-auto"
+                  disabled={isSubmitting}
                   required
                 />
 
@@ -176,6 +230,7 @@ export const AppointmentSection = (): JSX.Element => {
                   value={formData.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
                   className="bg-white border-gray-300 rounded-lg px-4 py-4 text-base [font-family:'Fahkwang',Helvetica] placeholder:text-gray-500 focus:border-primary focus:ring-primary min-h-[120px] resize-none"
+                  disabled={isSubmitting}
                   required
                 />
               </div>
@@ -184,9 +239,17 @@ export const AppointmentSection = (): JSX.Element => {
               <div className="pt-4">
                 <Button 
                   type="submit"
-                  className="w-full bg-primary text-white px-8 py-4 rounded-lg [font-family:'Fahkwang',Helvetica] font-medium text-lg hover:bg-primary-hover transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  disabled={isSubmitting}
+                  className="w-full bg-primary text-white px-8 py-4 rounded-lg [font-family:'Fahkwang',Helvetica] font-medium text-lg hover:bg-primary-hover transition-all duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
-                  Submit
+                  {isSubmitting ? (
+                    <div className="flex items-center justify-center space-x-2">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <span>Submitting...</span>
+                    </div>
+                  ) : (
+                    'Submit'
+                  )}
                 </Button>
               </div>
             </form>
