@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../../../../components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate, Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { X, ChevronDown, Home as HomeIcon, User, Briefcase, FolderOpen, BookOpen, Mail, ChevronRight } from "lucide-react";
@@ -17,6 +18,7 @@ export const HeroSection = (): JSX.Element => {
   const headerRef = useRef<HTMLElement>(null);
   const logoRef = useRef<HTMLImageElement>(null);
   const menuContainerRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const navItems = [
     { 
@@ -255,14 +257,6 @@ export const HeroSection = (): JSX.Element => {
     setExpandedSubmenu(expandedSubmenu === itemName ? null : itemName);
   };
 
-  const handleNavigation = (href: string) => {
-    window.location.href = href;
-  };
-
-  const handleSubmenuNavigation = (href: string) => {
-    setIsMobileMenuOpen(false);
-    window.location.href = href;
-  };
 
   return (
     <div ref={heroContainerRef} className="w-full h-[70vh] md:h-[80vh] lg:h-screen relative overflow-hidden">
@@ -297,16 +291,17 @@ export const HeroSection = (): JSX.Element => {
         }}
       >
         <div className="container mx-auto px-4 relative flex items-center justify-between h-full">
-          <img
-            ref={logoRef}
-            className="w-52 h-[41px] object-cover z-10 transition-transform duration-700 ease-out cursor-pointer"
-            alt="Interior villa dark"
-            src="/interior-villa-dark.png"
-            onClick={() => handleNavigation("/")}
-            style={{
-              transform: isScrolled ? "scale(0.8)" : "scale(1)"
-            }}
-          />
+          <Link to="/">
+            <img
+              ref={logoRef}
+              className="w-52 h-[41px] object-cover z-10 transition-transform duration-700 ease-out cursor-pointer"
+              alt="Interior villa dark"
+              src="/interior-villa-dark.png"
+              style={{
+                transform: isScrolled ? "scale(0.8)" : "scale(1)"
+              }}
+            />
+          </Link>
           
           <div 
             ref={menuContainerRef}
@@ -361,31 +356,32 @@ export const HeroSection = (): JSX.Element => {
                       onMouseEnter={() => setHoveredMenu(item.name)}
                       onMouseLeave={() => setHoveredMenu(null)}
                     >
-                      <Button
-                        variant={item.active ? "default" : "ghost"}
-                        className={`min-w-[108px] px-6 rounded-[50px] whitespace-nowrap transition-all duration-300 hover:bg-primary hover:text-white hover:scale-105 hover:shadow-lg ${
-                          item.active
-                            ? "bg-primary text-white shadow-lg"
-                            : "bg-transparent text-[#c6c6c6] hover:shadow-[0_0_20px_rgba(117,191,68,0.3)]"
-                        }`}
-                        style={{
-                          height: isScrolled ? "36px" : "38px",
-                          fontSize: isScrolled ? "13px" : "14px"
-                        }}
-                        onClick={() => handleNavigation(item.href)}
-                      >
-                        <span className="[font-family:'Fahkwang',Helvetica] font-medium text-center transition-all duration-300">
-                          {item.name}
-                        </span>
-                        {item.subItems && (
-                          <motion.span 
-                            className="ml-1 transition-transform duration-300"
-                            animate={{ rotate: hoveredMenu === item.name ? 45 : 0 }}
-                          >
-                            +
-                          </motion.span>
-                        )}
-                      </Button>
+                      <Link to={item.href}>
+                        <Button
+                          variant={item.active ? "default" : "ghost"}
+                          className={`min-w-[108px] px-6 rounded-[50px] whitespace-nowrap transition-all duration-300 hover:bg-primary hover:text-white hover:scale-105 hover:shadow-lg ${
+                            item.active
+                              ? "bg-primary text-white shadow-lg"
+                              : "bg-transparent text-[#c6c6c6] hover:shadow-[0_0_20px_rgba(117,191,68,0.3)]"
+                          }`}
+                          style={{
+                            height: isScrolled ? "36px" : "38px",
+                            fontSize: isScrolled ? "13px" : "14px"
+                          }}
+                        >
+                          <span className="[font-family:'Fahkwang',Helvetica] font-medium text-center transition-all duration-300">
+                            {item.name}
+                          </span>
+                          {item.subItems && (
+                            <motion.span 
+                              className="ml-1 transition-transform duration-300"
+                              animate={{ rotate: hoveredMenu === item.name ? 45 : 0 }}
+                            >
+                              +
+                            </motion.span>
+                          )}
+                        </Button>
+                      </Link>
                       
                       <AnimatePresence>
                         {item.subItems && hoveredMenu === item.name && (
@@ -406,7 +402,7 @@ export const HeroSection = (): JSX.Element => {
                                   variants={itemVariants}
                                   transition={{ delay: subIndex * 0.1 }}
                                   className="w-full px-4 py-3 text-left text-sm text-white hover:text-primary transition-colors duration-300 [font-family:'Fahkwang',Helvetica] relative group overflow-hidden"
-                                  onClick={() => handleNavigation(subItem.href)}
+                                  onClick={() => navigate(subItem.href)}
                                 >
                                   <span className="relative z-10">{subItem.name}</span>
                                 </motion.button>
@@ -451,15 +447,13 @@ export const HeroSection = (): JSX.Element => {
             >
               {/* Sidebar Header */}
               <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
-                <img
-                  className="w-40 h-8 object-cover cursor-pointer"
-                  alt="Interior villa dark"
-                  src="/interior-villa-dark.png"
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    handleNavigation("/");
-                  }}
-                />
+                <Link to="/" onClick={() => setIsMobileMenuOpen(false)}>
+                  <img
+                    className="w-40 h-8 object-cover cursor-pointer"
+                    alt="Interior villa dark"
+                    src="/interior-villa-dark.png"
+                  />
+                </Link>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="w-10 h-10 rounded-full bg-gray-800/50 flex items-center justify-center text-white hover:bg-gray-700/50 transition-all duration-300 hover:scale-110"
@@ -491,12 +485,18 @@ export const HeroSection = (): JSX.Element => {
                           if (item.subItems) {
                             handleSubmenuToggle(item.name);
                           } else {
+                            navigate(item.href);
                             setIsMobileMenuOpen(false);
-                            handleNavigation(item.href);
                           }
                         }}
                       >
-                        <div className="flex items-center space-x-4">
+                        <Link to={item.href} className="flex items-center space-x-4" onClick={(e) => {
+                          if (item.subItems) {
+                            e.preventDefault();
+                          } else {
+                            setIsMobileMenuOpen(false);
+                          }
+                        }}>
                           <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
                             item.active 
                               ? "bg-white/20" 
@@ -507,7 +507,7 @@ export const HeroSection = (): JSX.Element => {
                           <span className="[font-family:'Fahkwang',Helvetica] font-medium text-base">
                             {item.name}
                           </span>
-                        </div>
+                        </Link>
                         {item.subItems && (
                           <motion.div
                             animate={{ rotate: expandedSubmenu === item.name ? 180 : 0 }}
@@ -515,7 +515,7 @@ export const HeroSection = (): JSX.Element => {
                             className="w-6 h-6 flex items-center justify-center"
                           >
                             <ChevronDown className="w-4 h-4" />
-                          </motion.div>
+                          </div>
                         )}
                       </div>
 
@@ -536,7 +536,10 @@ export const HeroSection = (): JSX.Element => {
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ delay: subIndex * 0.1 }}
                                 className="flex items-center p-3 rounded-lg text-gray-400 hover:text-primary hover:bg-gray-800/30 transition-all duration-300 cursor-pointer group"
-                                onClick={() => handleSubmenuNavigation(subItem.href)}
+                                onClick={() => {
+                                  setIsMobileMenuOpen(false);
+                                  navigate(subItem.href);
+                                }}
                               >
                                 <div className="w-2 h-2 rounded-full bg-gray-600 group-hover:bg-primary transition-colors duration-300 mr-4"></div>
                                 <span className="[font-family:'Fahkwang',Helvetica] font-normal text-sm">
@@ -597,12 +600,12 @@ export const HeroSection = (): JSX.Element => {
               transition={{ duration: 0.8, delay: 0.8 }}
               className="flex items-center space-x-2"
             >
-              <button 
-                onClick={() => handleNavigation("/")}
+              <Link 
+                to="/"
                 className="text-white/80 hover:text-white transition-colors duration-300 [font-family:'Fahkwang',Helvetica] text-sm sm:text-base"
               >
                 Home
-              </button>
+              </Link>
               <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-white/60" />
               <span className="text-primary [font-family:'Fahkwang',Helvetica] text-sm sm:text-base font-medium">
                 Book an Appointment
