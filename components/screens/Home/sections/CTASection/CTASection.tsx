@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Button } from "../../../../ui/button";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
@@ -13,6 +14,7 @@ export const CTASection = (): JSX.Element => {
   const headingWrapperRef = useRef<HTMLDivElement>(null);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!sectionRef.current || !contentRef.current) return;
@@ -152,11 +154,11 @@ export const CTASection = (): JSX.Element => {
   }, []);
 
   const handleAppointmentClick = () => {
-    window.location.href = '/book-appointment';
+    navigate('/book-appointment');
   };
 
   const handleContactClick = () => {
-    window.location.href = '/contact';
+    navigate('/contact');
   };
 
   return (
