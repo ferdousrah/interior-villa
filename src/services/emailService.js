@@ -1,11 +1,12 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(import.meta.env.VITE_RESEND_API_KEY || 're_59RKGz6A_PxKkMjkqgyjaiuebsBBN4gsP');
+// Initialize Resend with API key
+const resend = new Resend('re_59RKGz6A_PxKkMjkqgyjaiuebsBBN4gsP');
 
 export const sendContactEmail = async (formData) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Interior Villa <noreply@interiorvillabd.com>',
+      from: 'Interior Villa <onboarding@resend.dev>',
       to: ['bdtechnocrats@gmail.com'],
       subject: 'New Contact Form Submission - Interior Villa',
       html: `
@@ -90,7 +91,7 @@ export const sendContactEmail = async (formData) => {
 export const sendAppointmentEmail = async (formData) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Interior Villa <noreply@interiorvillabd.com>',
+      from: 'Interior Villa <onboarding@resend.dev>',
       to: ['bdtechnocrats@gmail.com'],
       subject: 'New Appointment Request - Interior Villa',
       html: `

@@ -6,6 +6,7 @@ import { Textarea } from "../../../../components/ui/textarea";
 import { MapPin, Phone, Mail, Send } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { sendContactEmail } from "../../../services/emailService";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +16,9 @@ export const ContactSection = (): JSX.Element => {
     email: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const sectionRef = useRef<HTMLElement>(null);
   const contactInfoRef = useRef<HTMLDivElement>(null);
@@ -106,14 +110,36 @@ export const ContactSection = (): JSX.Element => {
       ...prev,
       [field]: value
     }));
+    // Reset status when user starts typing
+    if (submitStatus !== 'idle') {
+      setSubmitStatus('idle');
+      setErrorMessage('');
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log("Form submitted:", formData);
-    // Reset form
-    setFormData({ name: "", email: "", message: "" });
+    
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+    setErrorMessage('');
+
+    try {
+      await sendContactEmail(formData);
+      setSubmitStatus('success');
+      setFormData({ name: "", email: "", message: "" });
+      
+      // Auto-hide success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus('idle');
+      }, 5000);
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setSubmitStatus('error');
+      setErrorMessage(error.message || 'Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -194,12 +220,39 @@ export const ContactSection = (): JSX.Element => {
             Need Any Help? Drop us a Line
           </h2>
           
+          {/* Success Message */}
+          {submitStatus === 'success' && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 bg-green-100 border border-green-300 rounded-lg"
+            >
+              <p className="text-green-800 [font-family:'Fahkwang',Helvetica] font-medium">
+                ✅ Message sent successfully! We'll get back to you soon.
+              </p>
+            </motion.div>
+          )}
+
+          {/* Error Message */}
+          {submitStatus === 'error' && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 p-4 bg-red-100 border border-red-300 rounded-lg"
+            >
+              <p className="text-red-800 [font-family:'Fahkwang',Helvetica] font-medium">
+                ❌ {errorMessage}
+              </p>
+            </motion.div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               placeholder="Full Name"
               value={formData.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               className="bg-white border border-gray-300 rounded-lg px-4 py-4 text-base [font-family:'Fahkwang',Helvetica] placeholder:text-gray-500 focus:border-primary focus:ring-primary h-auto w-full"
+              disabled={isSubmitting}
               required
             />
 
@@ -209,6 +262,7 @@ export const ContactSection = (): JSX.Element => {
               value={formData.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               className="bg-white border border-gray-300 rounded-lg px-4 py-4 text-base [font-family:'Fahkwang',Helvetica] placeholder:text-gray-500 focus:border-primary focus:ring-primary h-auto w-full"
+              disabled={isSubmitting}
               required
             />
 
@@ -217,14 +271,23 @@ export const ContactSection = (): JSX.Element => {
               value={formData.message}
               onChange={(e) => handleInputChange('message', e.target.value)}
               className="bg-white border border-gray-300 rounded-lg px-4 py-4 text-base [font-family:'Fahkwang',Helvetica] placeholder:text-gray-500 focus:border-primary focus:ring-primary min-h-[120px] resize-none w-full"
+              disabled={isSubmitting}
               required
             />
 
             <Button 
               type="submit"
-              className="bg-primary text-white px-8 py-3 rounded-lg [font-family:'Fahkwang',Helvetica] font-medium text-base hover:bg-primary-hover transition-all duration-300 hover:scale-105"
+              disabled={isSubmitting}
+              className="bg-primary text-white px-8 py-3 rounded-lg [font-family:'Fahkwang',Helvetica] font-medium text-base hover:bg-primary-hover transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              Send Message
+              {isSubmitting ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Sending...</span>
+                </div>
+              ) : (
+                'Send Message'
+              )}
             </Button>
           </form>
         </div>
