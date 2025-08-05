@@ -142,5 +142,26 @@ export const seoData = {
     keywords: "architectural consultancy, building design, structural planning, architectural services, construction planning",
     url: "https://interiorvillabd.com/architectural-consultancy",
     type: "service"
+  },
+  bookAppointment: {
+    title: "Book an Appointment - Interior Villa | Schedule Your Free Design Consultation",
+    description: "Schedule a free consultation with Interior Villa's expert designers. Book your appointment today and start transforming your space with professional interior design services in Bangladesh.",
+    keywords: "book appointment, interior design consultation, free consultation, schedule meeting, interior designer appointment, design consultation Bangladesh",
+    url: "https://interiorvillabd.com/book-appointment",
+    type: "website"
+  },
+  faq: {
+    title: "FAQ - Interior Villa | Frequently Asked Questions About Interior Design",
+    description: "Find answers to common questions about Interior Villa's interior design services, pricing, timelines, and process. Get all the information you need before starting your project.",
+    keywords: "interior design FAQ, frequently asked questions, interior design process, pricing questions, design consultation FAQ",
+    url: "https://interiorvillabd.com/faq",
+    type: "website"
+  },
+  notFound: {
+    title: "Page Not Found - Interior Villa | 404 Error",
+    description: "The page you're looking for doesn't exist. Explore Interior Villa's interior design services, portfolio, and blog to find what you need.",
+    keywords: "404 error, page not found, interior villa, interior design services",
+    url: "https://interiorvillabd.com/404",
+    type: "website"
   }
 };

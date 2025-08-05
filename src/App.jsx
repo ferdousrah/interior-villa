@@ -11,6 +11,9 @@ import { ProjectDetails } from '../app/ProjectDetails'
 import { ResidentialInterior } from '../app/ResidentialInterior'
 import { CommercialInterior } from '../app/CommercialInterior'
 import { ArchitecturalConsultancy } from '../app/ArchitecturalConsultancy'
+import { BookAppointment } from '../app/BookAppointment'
+import { FAQ } from '../app/FAQ'
+import { NotFound } from '../app/NotFound'
 import { BlogDetails } from '../components/screens/BlogDetails/BlogDetails'
 import '../app/globals.css'
 
@@ -39,7 +42,10 @@ function App() {
         <Route path="/residential-interior" element={<SEORoute seoKey="residentialInterior"><ResidentialInterior /></SEORoute>} />
         <Route path="/commercial-interior" element={<SEORoute seoKey="commercialInterior"><CommercialInterior /></SEORoute>} />
         <Route path="/architectural-consultancy" element={<SEORoute seoKey="architecturalConsultancy"><ArchitecturalConsultancy /></SEORoute>} />
+        <Route path="/book-appointment" element={<SEORoute seoKey="bookAppointment"><BookAppointment /></SEORoute>} />
+        <Route path="/faq" element={<SEORoute seoKey="faq"><FAQ /></SEORoute>} />
         <Route path="/services" element={<div className="min-h-screen flex items-center justify-center">Services Page Coming Soon</div>} />
+        <Route path="*" element={<SEORoute seoKey="notFound"><NotFound /></SEORoute>} />
       </Routes>
     </Router>
   )
