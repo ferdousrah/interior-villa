@@ -152,7 +152,7 @@ export const CTASection = (): JSX.Element => {
   }, []);
 
   const handleAppointmentClick = () => {
-    window.location.href = '/contact';
+    window.location.href = '/book-appointment';
   };
 
   const handleContactClick = () => {
