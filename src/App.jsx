@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { updateSEO, seoData } from './utils/seo'
 import { Home } from '../components/screens/Home/Home'
 import { About } from '../components/screens/About/About'
@@ -17,6 +18,18 @@ import { NotFound } from '../app/NotFound'
 import { BlogDetails } from '../components/screens/BlogDetails/BlogDetails'
 import '../app/globals.css'
 
+// Component to handle scroll to top on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  useLayoutEffect(() => {
+    // Scroll to top immediately when route changes
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 // SEO wrapper component
 const SEORoute = ({ children, seoKey }) => {
   useEffect(() => {
@@ -30,6 +43,7 @@ const SEORoute = ({ children, seoKey }) => {
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<SEORoute seoKey="home"><Home /></SEORoute>} />
         <Route path="/about" element={<SEORoute seoKey="about"><About /></SEORoute>} />
