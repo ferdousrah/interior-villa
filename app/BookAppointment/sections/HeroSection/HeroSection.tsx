@@ -476,7 +476,6 @@ export const HeroSection = (): JSX.Element => {
                       className="relative"
                     >
                       <div
-                        className={flex items-center justify-between p-4 rounded-xl transition-all duration-300 cursor-pointer group ${
                         className={`flex items-center justify-between p-4 rounded-xl transition-all duration-300 cursor-pointer group ${
                           item.active
                             ? "bg-primary text-white shadow-lg"
@@ -498,11 +497,11 @@ export const HeroSection = (): JSX.Element => {
                             setIsMobileMenuOpen(false);
                           }
                         }}>
-                          <div className={w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-300 ${
                             item.active 
                               ? "bg-white/20" 
                               : "bg-gray-700/50 group-hover:bg-gray-600/50"
-                          }}>
+                          }`}>
                             <IconComponent className="w-5 h-5" />
                           </div>
                           <span className="[font-family:'Fahkwang',Helvetica] font-medium text-base">
