@@ -278,11 +278,11 @@ export const HeroSection = (): JSX.Element => {
       {/* Header */}
       <header 
         ref={headerRef}
-        className={${
+        className={`${
           isScrolled 
             ? 'fixed top-0 left-0 w-full z-50' 
             : 'absolute w-full top-[22px] z-50'
-        } transition-all duration-700 ease-out}
+        } transition-all duration-700 ease-out`}
         style={{
           height: isScrolled ? "60px" : "90px",
           backgroundColor: isScrolled ? "rgba(27, 27, 27, 0.95)" : "transparent",
@@ -305,9 +305,9 @@ export const HeroSection = (): JSX.Element => {
           
           <div 
             ref={menuContainerRef}
-            className={flex items-center transition-all duration-700 ease-out ${
+            className={`flex items-center transition-all duration-700 ease-out ${
               !isScrolled && 'bg-white-fade rounded-[50px] backdrop-blur-[5px] px-4'
-            }}
+            }`}
             style={{
               height: isScrolled ? "50px" : "60px",
               padding: isScrolled ? "0 16px" : !isScrolled ? "0 16px" : "0",
@@ -359,11 +359,11 @@ export const HeroSection = (): JSX.Element => {
                       <Link to={item.href}>
                         <Button
                           variant={item.active ? "default" : "ghost"}
-                          className={min-w-[108px] px-6 rounded-[50px] whitespace-nowrap transition-all duration-300 hover:bg-primary hover:text-white hover:scale-105 hover:shadow-lg ${
+                          className={`min-w-[108px] px-6 rounded-[50px] whitespace-nowrap transition-all duration-300 hover:bg-primary hover:text-white hover:scale-105 hover:shadow-lg ${
                             item.active
                               ? "bg-primary text-white shadow-lg"
                               : "bg-transparent text-[#c6c6c6] hover:shadow-[0_0_20px_rgba(117,191,68,0.3)]"
-                          }}
+                          }`}
                           style={{
                             height: isScrolled ? "36px" : "38px",
                             fontSize: isScrolled ? "13px" : "14px"
@@ -477,10 +477,11 @@ export const HeroSection = (): JSX.Element => {
                     >
                       <div
                         className={flex items-center justify-between p-4 rounded-xl transition-all duration-300 cursor-pointer group ${
+                        className={`flex items-center justify-between p-4 rounded-xl transition-all duration-300 cursor-pointer group ${
                           item.active
                             ? "bg-primary text-white shadow-lg"
                             : "text-gray-300 hover:bg-gray-800/50 hover:text-white"
-                        }}
+                        }`}
                         onClick={() => {
                           if (item.subItems) {
                             handleSubmenuToggle(item.name);
