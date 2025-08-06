@@ -515,7 +515,7 @@ export const HeroSection = (): JSX.Element => {
                             className="w-6 h-6 flex items-center justify-center"
                           >
                             <ChevronDown className="w-4 h-4" />
-                          </div>
+                          </motion.div>
                         )}
                       </div>
 
