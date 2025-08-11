@@ -199,7 +199,6 @@ export const ProcessSection = (): JSX.Element => {
                 {/* Process Step Card - Fixed 340px width with equal height */}
                 <div 
                   className="relative border-2 border-[#E5E5E5] rounded-2xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 flex flex-col justify-center"
-                  className="relative border-2 border-[#E5E5E5] rounded-3xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:border-primary/30 flex flex-col justify-center group"
                   style={{ 
                     width: '340px',
                     height: '400px', // Fixed equal height
