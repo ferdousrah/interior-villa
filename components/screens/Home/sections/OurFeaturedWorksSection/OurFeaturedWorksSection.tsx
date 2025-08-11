@@ -5,11 +5,12 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-gsap.registerPlugin(ScrollTrigger, SplitText, ScrollToPlugin);
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 interface Project {
   id: number;
@@ -35,8 +36,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
       title: "Luxury Home Interior",
       description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
       image: "/Qirat.avif",
-      color: "#2D5016", // Much darker green
-      accent: "#2D5016"
+      color: "#75BF44", // Deepest green 
+      accent: "#75BF44"
     },
     {
       id: 2,
@@ -44,8 +45,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
       title: "Luxury Kitchen Interior",
       description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
       image: "/Raqamyah.avif",
-      color: "#1A2E0A", // Very dark green
-      accent: "#1A2E0A"
+      color: "#91CC61", // Medium-deep green
+      accent: "#91CC61"
     },
     {
       id: 3,
@@ -53,8 +54,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
       title: "Luxury Office Interior",
       description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
       image: "/Hoopoe Advisors.avif",
-      color: "#0F1A08", // Almost black green
-      accent: "#0F1A08"
+      color: "#ACD97F", // Medium-light green
+      accent: "#ACD97F"
     },
     {
       id: 4,
@@ -62,8 +63,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
       title: "Luxury Kitchen Interior",
       description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
       image: "/Tamara.avif",
-      color: "#1B1B1B", // Dark charcoal
-      accent: "#1B1B1B"
+      color: "#C8E7A0", // Lightest green
+      accent: "#C8E7A0"
     }
   ];
 
