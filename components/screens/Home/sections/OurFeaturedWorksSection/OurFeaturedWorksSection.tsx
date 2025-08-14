@@ -36,8 +36,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
       title: "Luxury Home Interior",
       description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
       image: "/Qirat.avif",
-      color: "#75BF44", // Deepest green 
-      accent: "#75BF44"
+      color: "#50852d", // Deepest green 
+      accent: "#50852d"
     },
     {
       id: 2,
@@ -45,8 +45,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
       title: "Luxury Kitchen Interior",
       description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
       image: "/Raqamyah.avif",
-      color: "#91CC61", // Medium-deep green
-      accent: "#91CC61"
+      color: "#599432", // Medium-deep green
+      accent: "#599432"
     },
     {
       id: 3,
@@ -54,8 +54,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
       title: "Luxury Office Interior",
       description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
       image: "/Hoopoe Advisors.avif",
-      color: "#ACD97F", // Medium-light green
-      accent: "#ACD97F"
+      color: "#62a337", // Medium-light green
+      accent: "#62a337"
     },
     {
       id: 4,
@@ -63,8 +63,8 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
       title: "Luxury Kitchen Interior",
       description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
       image: "/Tamara.avif",
-      color: "#C8E7A0", // Lightest green
-      accent: "#C8E7A0"
+      color: "#6db53e", // Lightest green
+      accent: "#6db53e"
     }
   ];
 
