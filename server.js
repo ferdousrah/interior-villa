@@ -31,6 +31,18 @@ app.use(express.json());
 // API route
 app.post('/api/send-email', sendEmailHandler);
 
+// Team members API endpoint
+app.get('/api/team-members', (req, res) => {
+  // Proxy request to Payload CMS
+  fetch('https://cms.interiorvillabd.com/api/team-members?depth=1')
+    .then(response => response.json())
+    .then(data => res.json(data))
+    .catch(error => {
+      console.error('Error fetching team members:', error);
+      res.status(500).json({ error: 'Failed to fetch team members' });
+    });
+});
+
 // Serve static files from dist directory (for production)
 app.use(express.static(path.join(__dirname, 'dist')));
 
