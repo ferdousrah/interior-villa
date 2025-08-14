@@ -30,6 +30,9 @@ interface TeamApiResponse {
   totalPages: number;
 }
 
+// --- Force .jpeg/.jpg -> .webp ---
+const convertToWebp = (url: string) => url.replace(/\.jpe?g(\?[^#]*)?$/i, ".webp$1");
+
 export const TeamSection = (): JSX.Element => {
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [loading, setLoading] = useState(true);
@@ -54,8 +57,8 @@ export const TeamSection = (): JSX.Element => {
         setLoading(true);
         setError(null);
         
-        const response = await fetch('https://cms.interiorvillabd.com/api/team-members?depth=1');
-        //const response = await fetch('/api/team-members');
+        //const response = await fetch('https://cms.interiorvillabd.com/api/team-members?depth=1');
+        const response = await fetch('/api/team-members');
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -394,7 +397,7 @@ export const TeamSection = (): JSX.Element => {
                   <div className="relative mb-8 group">
                     <div className="w-48 h-48 md:w-56 md:h-56 mx-auto bg-gray-200 rounded-3xl overflow-hidden">
                       <img
-                        src={member.photoUrl}
+                        src={convertToWebp(member.photoUrl)}
                         alt={member.name}
                         className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-110"
                         onError={(e) => {
