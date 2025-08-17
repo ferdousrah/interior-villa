@@ -1,49 +1,39 @@
+'use client';
+
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useProject } from "../../ProjectContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const ProjectInfoSection = (): JSX.Element => {
+  const { project } = useProject();
+
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const infoGridRef = useRef<HTMLDivElement>(null);
-  const servicesRef = useRef<HTMLDivElement>(null);
+
+  const first = (keys: string[]): string => {
+    for (const k of keys) {
+      const v = (project as any)?.[k];
+      if (v !== undefined && v !== null && String(v).trim() !== "") return String(v);
+    }
+    return "—";
+  };
+
+  const year = first(["year", "Year"]);
+  const sqft = first(["area", "squareFootage", "square_footage", "size"]);
+  const location = first(["location", "address", "city", "district"]);
+  const client = first(["client", "owner"]);
 
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    // Title animation
-    if (titleRef.current) {
-      gsap.fromTo(titleRef.current,
-        {
-          opacity: 0,
-          y: 50
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: "top 85%",
-            end: "top 55%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    }
-
-    // Info grid animation
     if (infoGridRef.current) {
       const items = infoGridRef.current.children;
-      
-      gsap.fromTo(items,
-        {
-          opacity: 0,
-          y: 40
-        },
+      gsap.fromTo(
+        items,
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
           y: 0,
@@ -54,61 +44,27 @@ export const ProjectInfoSection = (): JSX.Element => {
             trigger: infoGridRef.current,
             start: "top 85%",
             end: "top 65%",
-            toggleActions: "play none none reverse"
-          }
+            toggleActions: "play none none reverse",
+          },
         }
       );
     }
 
-    // Services animation
-    if (servicesRef.current) {
-      gsap.fromTo(servicesRef.current,
-        {
-          opacity: 0,
-          y: 40
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: servicesRef.current,
-            start: "top 85%",
-            end: "top 65%",
-            toggleActions: "play none none reverse"
-          }
-        }
-      );
-    }
-
-    // Cleanup function
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
   return (
-    <section 
-      ref={sectionRef}
-      className="py-8 md:py-12 bg-white -mt-8 relative z-10"
-    >
+    <section ref={sectionRef} className="py-8 md:py-12 bg-white -mt-8 relative z-10">
       <div className="container mx-auto px-4 max-w-6xl">
-       
-
-        {/* Project Information Grid */}
-        <div 
-          ref={infoGridRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-16"
-        >
+        <div ref={infoGridRef} className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16 mb-8">
           {/* Year */}
           <div className="text-center md:text-left">
             <h3 className="text-base font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
               Year
             </h3>
-            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">
-              2024
-            </p>
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">{year}</p>
           </div>
 
           {/* Square Footage */}
@@ -116,9 +72,7 @@ export const ProjectInfoSection = (): JSX.Element => {
             <h3 className="text-base font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
               Square Footage
             </h3>
-            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">
-              3,500 sq ft
-            </p>
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">{sqft}</p>
           </div>
 
           {/* Location */}
@@ -126,54 +80,15 @@ export const ProjectInfoSection = (): JSX.Element => {
             <h3 className="text-base font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
               Location
             </h3>
-            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">
-              Riverside Boulevard, Dhaka
-            </p>
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">{location}</p>
           </div>
-        </div>
 
-        {/* Services Section */}
-        <div ref={servicesRef}>
-          <h3 className="text-2xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-8 uppercase tracking-wider">
-            Services
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            {/* Interior Design */}
-            <div>
-              <h4 className="text-lg font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-3">
-                Interior Design
-              </h4>
-              <ul className="space-y-2">
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Space Planning</li>
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Furniture Selection</li>
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Color Consultation</li>
-              </ul>
-            </div>
-
-            {/* Project Management */}
-            <div>
-              <h4 className="text-lg font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-3">
-                Project Management
-              </h4>
-              <ul className="space-y-2">
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Timeline Coordination</li>
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Vendor Management</li>
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Quality Control</li>
-              </ul>
-            </div>
-
-            {/* Custom Solutions */}
-            <div>
-              <h4 className="text-lg font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-3">
-                Custom Solutions
-              </h4>
-              <ul className="space-y-2">
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Built-in Storage</li>
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Lighting Design</li>
-                <li className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">Material Selection</li>
-              </ul>
-            </div>
+          {/* Client */}
+          <div className="text-center md:text-left">
+            <h3 className="text-base font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-4 uppercase tracking-wider">
+              Client
+            </h3>
+            <p className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161]">{client}</p>
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import { useParams } from "react-router-dom";
 import { CustomCursor } from "../../components/ui/cursor";
 import { FooterSection } from "../../components/screens/Home/sections/FooterSection/FooterSection";
 import {
@@ -6,35 +7,50 @@ import {
   ProjectInfoSection,
   BeforeAfterSection,
   ProjectGallerySection,
-  CTASection
+  CTASection,
 } from "./sections";
+import { ProjectProvider, useProject } from "./ProjectContext";
 
-const ProjectDetails = (): JSX.Element => {
+const LoadingGate = ({ children }: { children: React.ReactNode }) => {
+  const { loading, error } = useProject();
+  if (loading)
+    return (
+      <div className="w-full py-24 text-center text-[#626161]">Loading project…</div>
+    );
+  if (error)
+    return (
+      <div className="w-full py-24 text-center text-red-600">
+        Failed to load project: {error}
+      </div>
+    );
+  return <>{children}</>;
+};
+
+const ProjectDetailsInner = () => {
   return (
-    <main className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
-      {/* Custom Cursor */}
-      <CustomCursor className="custom-cursor" />
-      
-      {/* Hero Section */}
+    <>
       <HeroSection />
-
-      {/* Main Content Container */}
       <article className="w-full">
-        {/* Before & After Section */}
         <BeforeAfterSection />
-        
-        {/* Project Gallery Section */}
         <ProjectGallerySection />
-        
-        {/* Project Information Section */}
-        <ProjectInfoSection />      
-        
-        
-        {/* CTA Section */}
+        <ProjectInfoSection />
         <CTASection />
       </article>
-      
-      {/* Footer */}
+    </>
+  );
+};
+
+const ProjectDetails = (): JSX.Element => {
+  const { id } = useParams(); // route: /project-details/:id
+
+  return (
+    <main className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
+      <CustomCursor className="custom-cursor" />
+      <ProjectProvider id={id || ""}>
+        <LoadingGate>
+          <ProjectDetailsInner />
+        </LoadingGate>
+      </ProjectProvider>
       <FooterSection />
     </main>
   );

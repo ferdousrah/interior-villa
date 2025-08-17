@@ -52,7 +52,7 @@ function App() {
         <Route path="/blog/:id" element={<SEORoute seoKey="blog"><BlogDetails /></SEORoute>} />
         <Route path="/blog-details" element={<SEORoute seoKey="blog"><BlogDetails /></SEORoute>} />
         <Route path="/portfolio" element={<SEORoute seoKey="portfolio"><Portfolio /></SEORoute>} />
-        <Route path="/project-details" element={<SEORoute seoKey="portfolio"><ProjectDetails /></SEORoute>} />
+        <Route path="/project-details/:id" element={<SEORoute seoKey="portfolio"><ProjectDetails /></SEORoute>} />
         <Route path="/residential-interior" element={<SEORoute seoKey="residentialInterior"><ResidentialInterior /></SEORoute>} />
         <Route path="/commercial-interior" element={<SEORoute seoKey="commercialInterior"><CommercialInterior /></SEORoute>} />
         <Route path="/architectural-consultancy" element={<SEORoute seoKey="architecturalConsultancy"><ArchitecturalConsultancy /></SEORoute>} />

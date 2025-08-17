@@ -5,20 +5,54 @@ import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin"; // <-- needed for scrollTo
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrollToPlugin);
 
+// ---------- helpers for image URL ----------
+const CMS_ORIGIN = "https://cms.interiorvillabd.com";
+const MEDIA_BASE = `${CMS_ORIGIN}/api/media/file/`;
+
+const absolutize = (u: string) =>
+  /^https?:\/\//i.test(u) ? u : new URL(u, CMS_ORIGIN).href;
+
+// .jpg/.jpeg -> .webp (preserve ?v=... etc.)
+const convertToWebp = (url: string) =>
+  url.replace(/\.jpe?g(\?[^#]*)?$/i, ".webp$1");
+
+const getFeaturedImageUrl = (fi: any): string => {
+  const placeholder = "/create-an-image-for-interior-design-about-us-section.png";
+  if (!fi) return placeholder;
+
+  if (typeof fi === "string") return convertToWebp(absolutize(fi));
+  if (fi?.url) return convertToWebp(absolutize(fi.url));
+  if (fi?.sizes?.large?.url)  return convertToWebp(absolutize(fi.sizes.large.url));
+  if (fi?.sizes?.medium?.url) return convertToWebp(absolutize(fi.sizes.medium.url));
+  if (fi?.sizes?.card?.url)   return convertToWebp(absolutize(fi.sizes.card.url));
+  if (fi?.filename) return convertToWebp(`${MEDIA_BASE}${fi.filename}`);
+
+  return placeholder;
+};
+
+// ---------- types ----------
 interface Project {
   id: number;
   category: string;
   title: string;
   description: string;
-  image: string;
+  image: string; // resolved featuredImage (.webp)
   color: string;
   accent: string;
 }
+
+interface ProjectsApiResponse {
+  docs: any[];
+}
+
+// fallback colors
+const palette = ["#794a48", "#7f4d4b", "#6f4241", "#8a5653", "#7b4c49"];
 
 export const ProjectsSection = (): JSX.Element => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -27,50 +61,50 @@ export const ProjectsSection = (): JSX.Element => {
   const featuredWorksHeadingRef = useRef<HTMLHeadingElement>(null);
   const featuredWorksWrapperRef = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 0
   );
+  const [projects, setProjects] = useState<Project[]>([]);
+
   const navigate = useNavigate();
 
-  const projects: Project[] = [
-    {
-      id: 1,
-      category: "Residential Interior",
-      title: "Luxury Home Interior",
-      description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
-      image: "/Qirat.avif",
-      color: "#794a48",
-      accent: "#794a48",
-    },
-    {
-      id: 2,
-      category: "Residential Interior",
-      title: "Luxury Kitchen Interior",
-      description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
-      image: "/Raqamyah.avif",
-      color: "#794a48",
-      accent: "#794a48",
-    },
-    {
-      id: 3,
-      category: "Residential Interior",
-      title: "Modern Living Space",
-      description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
-      image: "/Hoopoe Advisors.avif",
-      color: "#7f4d4b",
-      accent: "#7f4d4b",
-    },
-    {
-      id: 4,
-      category: "Residential Interior",
-      title: "Elegant Bedroom Suite",
-      description: "Contemporary kitchen design with smart functionality, premium materials, and elegant aesthetics for modern living.",
-      image: "/Tamara.avif",
-      color: "#794a48",
-      accent: "#794a48",
-    },
-  ];
+  // -------- fetch projects from API (category 1) --------
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await fetch(
+          `${CMS_ORIGIN}/api/projects?where[category][equals]=1&limit=5`,
+          { cache: "no-store" }
+        );
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data: ProjectsApiResponse = await res.json();
+
+        const mapped: Project[] = (data.docs ?? []).map((doc: any, i: number) => ({
+          id: Number(doc.id ?? i + 1),
+          category:
+            doc?.category?.title ||
+            doc?.category?.name ||
+            (typeof doc?.category === "string" ? doc.category : "Residential Interior"),
+          title: doc?.title || `Project ${i + 1}`,
+          description: doc?.shortDescription || doc?.description || "",
+          image: getFeaturedImageUrl(doc?.featuredImage), // <-- auto .webp
+          color: doc?.color || palette[i % palette.length],
+          accent: doc?.accent || palette[i % palette.length],
+        }));
+
+        if (!cancelled) setProjects(mapped);
+      } catch (err) {
+        console.error("Projects fetch failed:", err);
+        if (!cancelled) setProjects([]);
+      }
+    })();
+
+    return () => { cancelled = true; };
+  }, []);
 
   // track window width for responsive card sizing
   useEffect(() => {
@@ -79,127 +113,109 @@ export const ProjectsSection = (): JSX.Element => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // interactive hover animation for "Our Featured Works"
+  // interactive hover animation for heading
   useEffect(() => {
-    if (!featuredWorksHeadingRef.current) return;
+    if (!featuredWorksHeadingRef.current || !featuredWorksWrapperRef.current) return;
 
-    // Split text into characters
-    const splitText = new SplitText(featuredWorksHeadingRef.current, { 
+    const splitText = new SplitText(featuredWorksHeadingRef.current, {
       type: "chars,words",
       charsClass: "char",
-      wordsClass: "word"
+      wordsClass: "word",
     });
 
-    // Add hover animation
-    if (featuredWorksWrapperRef.current) {
-      featuredWorksWrapperRef.current.addEventListener('mousemove', (e) => {
-        const rect = featuredWorksWrapperRef.current!.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width;
-        const y = (e.clientY - rect.top) / rect.height;
-        
-        gsap.to(splitText.chars, {
-          duration: 0.5,
-          y: (i, target) => (y - 0.5) * 15 * Math.sin((i + 1) * 0.5),
-          x: (i, target) => (x - 0.5) * 15 * Math.cos((i + 1) * 0.5),
-          rotationY: (x - 0.5) * 20,
-          rotationX: (y - 0.5) * -20,
-          ease: "power2.out",
-          stagger: {
-            amount: 0.3,
-            from: "center"
-          }
-        });
-      });
+    const wrapper = featuredWorksWrapperRef.current;
 
-      featuredWorksWrapperRef.current.addEventListener('mouseleave', () => {
-        gsap.to(splitText.chars, {
-          duration: 1,
-          y: 0,
-          x: 0,
-          rotationY: 0,
-          rotationX: 0,
-          ease: "elastic.out(1, 0.3)",
-          stagger: {
-            amount: 0.3,
-            from: "center"
-          }
-        });
-      });
-    }
+    const onMove = (e: MouseEvent) => {
+      const rect = wrapper.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
 
-    // Cleanup function
+      gsap.to(splitText.chars, {
+        duration: 0.5,
+        y: (i) => (y - 0.5) * 15 * Math.sin((i + 1) * 0.5),
+        x: (i) => (x - 0.5) * 15 * Math.cos((i + 1) * 0.5),
+        rotationY: (x - 0.5) * 20,
+        rotationX: (y - 0.5) * -20,
+        ease: "power2.out",
+        stagger: { amount: 0.3, from: "center" },
+      });
+    };
+
+    const onLeave = () => {
+      gsap.to(splitText.chars, {
+        duration: 1,
+        y: 0,
+        x: 0,
+        rotationY: 0,
+        rotationX: 0,
+        ease: "elastic.out(1, 0.3)",
+        stagger: { amount: 0.3, from: "center" },
+      });
+    };
+
+    wrapper.addEventListener("mousemove", onMove);
+    wrapper.addEventListener("mouseleave", onLeave);
+
     return () => {
       splitText.revert();
-      if (featuredWorksWrapperRef.current) {
-        featuredWorksWrapperRef.current.removeEventListener('mousemove', () => {});
-        featuredWorksWrapperRef.current.removeEventListener('mouseleave', () => {});
-      }
+      wrapper.removeEventListener("mousemove", onMove);
+      wrapper.removeEventListener("mouseleave", onLeave);
     };
   }, []);
 
-  // Entrance animations
+  // entrance animations (title + subtitle)
   useEffect(() => {
     if (!sectionRef.current) return;
 
-    // Heading animation
     if (featuredWorksHeadingRef.current) {
-      const splitText = new SplitText(featuredWorksHeadingRef.current, { 
+      const splitText = new SplitText(featuredWorksHeadingRef.current, {
         type: "words,chars",
         charsClass: "char",
-        wordsClass: "word"
+        wordsClass: "word",
       });
 
-      // Set initial state
       gsap.set(splitText.chars, {
         opacity: 0,
         y: 100,
         rotationX: -90,
-        transformOrigin: "50% 50% -50px"
+        transformOrigin: "50% 50% -50px",
       });
 
-      // Title reveal animation
       gsap.to(splitText.chars, {
         duration: 1.5,
         opacity: 1,
         y: 0,
         rotationX: 0,
-        stagger: {
-          amount: 1.2,
-          from: "start"
-        },
+        stagger: { amount: 1.2, from: "start" },
         ease: "power4.out",
-        delay: 0.5
+        delay: 0.5,
       });
     }
 
-    // Subtitle animation
     if (subtitleRef.current) {
-      gsap.fromTo(subtitleRef.current,
-        {
-          opacity: 0,
-          y: 50,
-          filter: "blur(10px)"
-        },
+      gsap.fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 50, filter: "blur(10px)" },
         {
           opacity: 1,
           y: 0,
           filter: "blur(0px)",
           duration: 1.8,
           ease: "power3.out",
-          delay: 1.2
+          delay: 1.2,
         }
       );
     }
 
-    // Cleanup function
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
 
   // card stacking animation
   useEffect(() => {
-    if (!sectionRef.current || !containerRef.current) return;
+    if (!sectionRef.current || !containerRef.current || projects.length === 0) return;
+
     const cards = cardRefs.current.filter(Boolean);
     if (!cards.length) return;
 
@@ -221,7 +237,7 @@ export const ProjectsSection = (): JSX.Element => {
       });
     });
 
-    const scrollTrigger = ScrollTrigger.create({
+    const st = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: "top top",
       end: () => `+=${projects.length * 400}vh`,
@@ -233,12 +249,12 @@ export const ProjectsSection = (): JSX.Element => {
       refreshPriority: -1,
       onUpdate: (self) => {
         const progress = self.progress;
-        const totalCards = projects.length;
 
-        const activeIndex = Math.min(Math.floor(progress * totalCards), totalCards - 1);
-        if (activeIndex !== currentIndex) {
-          setCurrentIndex(activeIndex);
-        }
+        const activeIndex = Math.min(
+          Math.floor(progress * projects.length),
+          projects.length - 1
+        );
+        if (activeIndex !== currentIndex) setCurrentIndex(activeIndex);
 
         cards.forEach((card, index) => {
           if (!card) return;
@@ -246,24 +262,26 @@ export const ProjectsSection = (): JSX.Element => {
           const segment = 1 / projects.length;
           const cardStart = index * segment;
           const cardEnd = (index + 1) * segment;
-          let moveProgress = 0;
 
+          let moveProgress = 0;
           if (progress >= cardStart && progress <= cardEnd) {
             moveProgress = (progress - cardStart) / segment;
           } else if (progress > cardEnd) {
             moveProgress = 1;
           }
 
-          const eased = moveProgress < 0.5
-            ? 2 * moveProgress * moveProgress
-            : 1 - Math.pow(-2 * moveProgress + 2, 3) / 2;
+          const eased =
+            moveProgress < 0.5
+              ? 2 * moveProgress * moveProgress
+              : 1 - Math.pow(-2 * moveProgress + 2, 3) / 2;
 
           const stackGap = 2;
           const finalY = index * stackGap;
           const startY = index === 0 ? 0 : 100;
-          const yPos = index === 0 && progress <= 1 / projects.length
-            ? 0
-            : startY + eased * (finalY - startY);
+          const yPos =
+            index === 0 && progress <= 1 / projects.length
+              ? 0
+              : startY + eased * (finalY - startY);
 
           gsap.set(card, {
             y: `${yPos}vh`,
@@ -276,14 +294,12 @@ export const ProjectsSection = (): JSX.Element => {
     });
 
     return () => {
-      scrollTrigger.kill();
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.trigger === sectionRef.current) {
-          trigger.kill();
-        }
+      st.kill();
+      ScrollTrigger.getAll().forEach((t) => {
+        if (t.trigger === sectionRef.current) t.kill();
       });
     };
-  }, [currentIndex]);
+  }, [projects, currentIndex]);
 
   // keyboard navigation
   useEffect(() => {
@@ -296,10 +312,9 @@ export const ProjectsSection = (): JSX.Element => {
         scrollToCard(currentIndex - 1);
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [currentIndex]);
+  }, [currentIndex, projects.length]);
 
   const scrollToCard = (index: number) => {
     const sectionScrollHeight = (projects.length * 400 * window.innerHeight) / 100;
@@ -313,76 +328,31 @@ export const ProjectsSection = (): JSX.Element => {
     });
   };
 
-  const handleViewProject = () => {
-    navigate('/project-details');
-  };
-
-  const handleExploreAllProjects = () => {
-    navigate('/portfolio');
-  };
+  // >>> ONLY CHANGE: include project id in link <<<
+  const handleViewProject = (id: number) => navigate(`/project-details/${id}`);
+  const handleExploreAllProjects = () => navigate("/portfolio");
 
   return (
     <>
       {/* Featured Works Header Section */}
-      <section 
-        className="w-full pt-16 md:pt-20 lg:pt-24 pb-0 bg-white relative overflow-hidden"
-      >
-        {/* Background decorative elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gray-300/6 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-          <div className="absolute top-1/2 right-1/3 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
-          <div className="absolute top-3/4 left-1/3 w-72 h-72 bg-gray-400/4 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '6s' }} />
-          
-          {/* Grid pattern */}
-          <div className="absolute inset-0 opacity-6">
-            <div 
-              className="w-full h-full"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-                `,
-                backgroundSize: '120px 120px'
-              }}
-            />
-          </div>
-          
-          {/* Noise overlay */}
-          <div className="absolute inset-0">
-            <div 
-              className="w-full h-full opacity-15"
-              style={{
-                background: `
-                  radial-gradient(circle at 20% 30%, rgba(0,0,0,0.02) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 70%, rgba(0,0,0,0.015) 0%, transparent 50%),
-                  radial-gradient(circle at 40% 80%, rgba(0,0,0,0.018) 0%, transparent 50%)
-                `
-              }}
-            />
-          </div>
-        </div>
-
+      <section className="w-full pt-16 md:pt-20 lg:pt-24 pb-0 bg-white relative overflow-hidden">
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div 
+          <div
             ref={featuredWorksWrapperRef}
             className="perspective-[1000px] cursor-default"
-            style={{ transformStyle: 'preserve-3d' }}
+            style={{ transformStyle: "preserve-3d" }}
           >
             <h2
               ref={featuredWorksHeadingRef}
-              className="[font-family:'Fahkwang',Helvetica] font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[40px] text-center tracking-[0] leading-tight mb-6"
-              style={{ 
-                transformStyle: 'preserve-3d',
-                transform: 'translateZ(0)',
-              }}
+              className="[font-family:'Fahkwang',Helvetica] font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[40px] text-center leading-tight mb-6"
+              style={{ transformStyle: "preserve-3d", transform: "translateZ(0)" }}
             >
               <span className="text-[#0d1529]">Recent </span>
               <span className="text-secondary">Projects</span>
             </h2>
           </div>
 
-          <p 
+          <p
             ref={subtitleRef}
             className="text-sm md:text-base lg:text-lg text-[#626161] max-w-2xl md:max-w-3xl lg:max-w-4xl mx-auto leading-relaxed [font-family:'Fahkwang',Helvetica]"
           >
@@ -397,50 +367,6 @@ export const ProjectsSection = (): JSX.Element => {
         className="w-full min-h-screen overflow-hidden relative bg-white"
         style={{ zIndex: 2 }}
       >
-        {/* Background elements: orbs, grid, noise */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/8 rounded-full blur-3xl animate-pulse" />
-          <div
-            className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gray-300/6 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: "2s" }}
-          />
-          <div
-            className="absolute top-1/2 right-1/3 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: "4s" }}
-          />
-          <div
-            className="absolute top-3/4 left-1/3 w-72 h-72 bg-gray-400/4 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: "6s" }}
-          />
-          {/* Grid pattern */}
-          <div className="absolute inset-0 opacity-6">
-            <div
-              className="w-full h-full"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-                `,
-                backgroundSize: "120px 120px",
-              }}
-            />
-          </div>
-          {/* Noise overlay */}
-          <div className="absolute inset-0">
-            <div
-              className="w-full h-full opacity-15"
-              style={{
-                background: `
-                  radial-gradient(circle at 20% 30%, rgba(0,0,0,0.02) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 70%, rgba(0,0,0,0.015) 0%, transparent 50%),
-                  radial-gradient(circle at 40% 80%, rgba(0,0,0,0.018) 0%, transparent 50%)
-                `,
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Card container with stacking layout */}
         <div
           ref={containerRef}
           className="relative w-full h-full flex items-center justify-center pt-0"
@@ -462,7 +388,7 @@ export const ProjectsSection = (): JSX.Element => {
               {/* Main card */}
               <div
                 className="w-full rounded-2xl sm:rounded-3xl overflow-hidden relative mx-auto cursor-pointer"
-                onClick={handleViewProject}
+                onClick={() => handleViewProject(project.id)} // <<< changed
                 style={{
                   width: "90%",
                   maxWidth:
@@ -471,10 +397,9 @@ export const ProjectsSection = (): JSX.Element => {
                       : windowWidth < 1024
                       ? "600px"
                       : `${1200 + index * 40}px`,
-                  height: windowWidth < 640 ? '70vh' 
-                    : windowWidth < 1024 ? '60vh' 
-                    : '80vh',
-                  minHeight: windowWidth < 640 ? '500px' : '600px',
+                  height:
+                    windowWidth < 640 ? "70vh" : windowWidth < 1024 ? "60vh" : "80vh",
+                  minHeight: windowWidth < 640 ? "500px" : "600px",
                   background: project.color,
                   transform: "translateZ(0)",
                   willChange: "transform",
@@ -492,41 +417,30 @@ export const ProjectsSection = (): JSX.Element => {
                       </span>
                     </div>
 
-                    <h2
-                      className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-white mb-3 md:mb-4 leading-tight"
-                      style={{ textShadow: "0 2px 10px rgba(0, 0, 0, 0.3)" }}
-                    >
+                    <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-white mb-3 md:mb-4 leading-tight"
+                        style={{ textShadow: "0 2px 10px rgba(0, 0, 0, 0.3)" }}>
                       {project.title}
                     </h2>
 
-                    <p
-                      className="text-sm sm:text-base md:text-base text-white mb-4 md:mb-6 leading-relaxed"
-                      style={{ textShadow: "0 1px 6px rgba(255, 255, 255, 0.2)" }}
-                    >
+                    <p className="text-sm sm:text-base md:text-base text-white mb-4 md:mb-6 leading-relaxed"
+                       style={{ textShadow: "0 1px 6px rgba(255, 255, 255, 0.2)" }}>
                       {project.description}
                     </p>
 
                     <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleViewProject();
-                      }}
+                      onClick={(e) => { e.stopPropagation(); handleViewProject(project.id); }} // <<< changed
                       className="group inline-flex items-center px-4 py-2 sm:px-6 sm:py-3 rounded-full text-white font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl w-fit relative overflow-hidden"
                       style={{ background: "rgba(255, 255, 255, 0.2)" }}
                       onMouseEnter={(e) => {
                         (e.currentTarget as HTMLElement).style.transform = "scale(1.05)";
-                        (e.currentTarget as HTMLElement).style.background =
-                          "rgba(255, 255, 255, 0.3)";
+                        (e.currentTarget as HTMLElement).style.background = "rgba(255, 255, 255, 0.3)";
                       }}
                       onMouseLeave={(e) => {
                         (e.currentTarget as HTMLElement).style.transform = "scale(1)";
-                        (e.currentTarget as HTMLElement).style.background =
-                          "rgba(255, 255, 255, 0.2)";
+                        (e.currentTarget as HTMLElement).style.background = "rgba(255, 255, 255, 0.2)";
                       }}
                     >
-                      {/* shine effect */}
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-700 ease-out" />
-
                       <span className="mr-2 text-xs sm:text-sm">View Project</span>
                       <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </button>
@@ -548,8 +462,7 @@ export const ProjectsSection = (): JSX.Element => {
                           alt={project.title}
                           className="w-full h-full object-cover"
                           onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src =
+                            (e.target as HTMLImageElement).src =
                               "/create-an-image-for-interior-design-about-us-section.png";
                           }}
                         />
@@ -571,57 +484,12 @@ export const ProjectsSection = (): JSX.Element => {
 
       {/* Explore All Projects Section */}
       <section className="w-full py-8 md:py-12 relative overflow-hidden bg-white">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-black/8 rounded-full blur-3xl animate-pulse" />
-          <div
-            className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gray-300/6 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: "2s" }}
-          />
-          <div
-            className="absolute top-1/2 right-1/3 w-64 h-64 bg-black/5 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: "4s" }}
-          />
-          <div
-            className="absolute top-3/4 left-1/3 w-72 h-72 bg-gray-400/4 rounded-full blur-3xl animate-pulse"
-            style={{ animationDelay: "6s" }}
-          />
-          {/* grid pattern */}
-          <div className="absolute inset-0 opacity-6">
-            <div
-              className="w-full h-full"
-              style={{
-                backgroundImage: `
-                  linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)
-                `,
-                backgroundSize: "120px 120px",
-              }}
-            />
-          </div>
-          {/* noise overlay */}
-          <div className="absolute inset-0">
-            <div
-              className="w-full h-full opacity-15"
-              style={{
-                background: `
-                  radial-gradient(circle at 20% 30%, rgba(0,0,0,0.02) 0%, transparent 50%),
-                  radial-gradient(circle at 80% 70%, rgba(0,0,0,0.015) 0%, transparent 50%),
-                  radial-gradient(circle at 40% 80%, rgba(0,0,0,0.018) 0%, transparent 50%)
-                `,
-              }}
-            />
-          </div>
-        </div>
-
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
             <button
               onClick={handleExploreAllProjects}
               className="group flex items-center gap-2 sm:gap-3 px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full text-white text-sm sm:text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-500 hover:scale-105 border border-gray-700 relative z-10 mx-auto"
-              style={{
-                boxShadow: "0 15px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.2)",
-                minWidth: "180px",
-              }}
+              style={{ boxShadow: "0 15px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.2)", minWidth: "180px" }}
             >
               <span className="[font-family:'Fahkwang',Helvetica] font-medium">
                 Explore All Projects
