@@ -1,44 +1,25 @@
-import React, { useLayoutEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Card, CardContent } from "../../../../ui/card";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
+// ❌ DO NOT import SplitText statically
+// import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.registerPlugin(ScrollTrigger);
 
 // Unique gradient background tones per card
 const bgColors = [
   "from-[#fff7e6] to-[#ffe9cc]",
   "from-[#e6f7ff] to-[#ccf2ff]",
   "from-[#f0f5ff] to-[#d6e4ff]",
-  "from-[#f6ffed] to-[#d9f7be]"
+  "from-[#f6ffed] to-[#d9f7be]",
 ];
 
 const approaches = [
-  {
-    icon: "🔍",
-    title: "Discovery & Planning",
-    description:
-      "We begin by understanding your needs, preferences, and lifestyle to create a tailored design plan."
-  },
-  {
-    icon: "🎨",
-    title: "Design Development",
-    description:
-      "Our team develops detailed designs, including material selections, layouts, and 3D visualizations."
-  },
-  {
-    icon: "🔨",
-    title: "Execution & Management",
-    description:
-      "We manage all aspects of the project, from sourcing materials to overseeing construction and installation."
-  },
-  {
-    icon: "✨",
-    title: "Final Touches",
-    description:
-      "We add the finishing touches to bring your vision to life, ensuring every detail is perfect."
-  }
+  { icon: "🔍", title: "Discovery & Planning", description: "We begin by understanding your needs, preferences, and lifestyle to create a tailored design plan." },
+  { icon: "🎨", title: "Design Development", description: "Our team develops detailed designs, including material selections, layouts, and 3D visualizations." },
+  { icon: "🔨", title: "Execution & Management", description: "We manage all aspects of the project, from sourcing materials to overseeing construction and installation." },
+  { icon: "✨", title: "Final Touches", description: "We add the finishing touches to bring your vision to life, ensuring every detail is perfect." },
 ];
 
 export const ApproachSection = (): JSX.Element => {
@@ -48,130 +29,164 @@ export const ApproachSection = (): JSX.Element => {
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const cardsContainerRef = useRef<HTMLDivElement>(null);
 
+  // Wait for fonts/images + 2 RAFs before initializing ScrollTrigger
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    let mounted = true;
+
+    const kick = () => {
+      if (!mounted) return;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => setReady(true));
+      });
+    };
+
+    // fonts
+    // @ts-ignore
+    (document as any).fonts?.ready?.then(kick).catch(kick);
+    // images
+    window.addEventListener("load", kick);
+
+    return () => {
+      mounted = false;
+      window.removeEventListener("load", kick);
+    };
+  }, []);
+
+  // Entrance animations — use gsap.from with immediateRender:false
   useLayoutEffect(() => {
+    if (!ready) return;
     const ctx = gsap.context(() => {
       if (headingRef.current) {
-        gsap.fromTo(
-          headingRef.current,
-          { opacity: 0, y: 50, scale: 0.95 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: headingRef.current,
-              start: "top 95%",
-              end: "top 70%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
+        gsap.from(headingRef.current, {
+          opacity: 0,
+          y: 50,
+          scale: 0.95,
+          duration: 0.9,
+          ease: "power3.out",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 92%",
+            invalidateOnRefresh: true,
+          },
+        });
       }
 
       if (descriptionRef.current) {
-        gsap.fromTo(
-          descriptionRef.current,
-          { opacity: 0, y: 30, filter: "blur(5px)" },
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: descriptionRef.current,
-              start: "top 95%",
-              end: "top 75%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
+        gsap.from(descriptionRef.current, {
+          opacity: 0,
+          y: 30,
+          filter: "blur(5px)",
+          duration: 0.7,
+          ease: "power2.out",
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: descriptionRef.current,
+            start: "top 92%",
+            invalidateOnRefresh: true,
+          },
+        });
       }
 
       if (cardsContainerRef.current) {
-        gsap.fromTo(
-          cardsContainerRef.current.children,
-          {
-            opacity: 0,
-            y: 60,
-            rotationX: -15,
-            scale: 0.9
+        const items = cardsContainerRef.current.children;
+        gsap.from(items, {
+          opacity: 0,
+          y: 60,
+          rotationX: -15,
+          scale: 0.9,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.15,
+          immediateRender: false,
+          scrollTrigger: {
+            trigger: cardsContainerRef.current,
+            start: "top 96%",
+            invalidateOnRefresh: true,
           },
-          {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            scale: 1,
-            duration: 1,
-            ease: "power3.out",
-            stagger: 0.15,
-            scrollTrigger: {
-              trigger: cardsContainerRef.current,
-              start: "top 95%",
-              end: "bottom 70%",
-              toggleActions: "play none none reverse"
-            }
-          }
-        );
+        });
       }
+
+      // multiple refresh passes catch late layout shifts
+      const refresh = () => ScrollTrigger.refresh();
+      refresh();
+      setTimeout(refresh, 50);
+      setTimeout(refresh, 250);
+
+      const ro = new ResizeObserver(refresh);
+      ro.observe(document.body);
+      window.addEventListener("load", refresh);
+
+      return () => {
+        ro.disconnect();
+        window.removeEventListener("load", refresh);
+      };
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [ready]);
 
+  // SplitText hover — lazy-load so prod build is safe even if plugin missing
   useLayoutEffect(() => {
-    if (!headingRef.current || !headingWrapperRef.current) return;
+    let cleanup: (() => void) | undefined;
 
-    const splitText = new SplitText(headingRef.current, {
-      type: "chars,words",
-      charsClass: "char",
-      wordsClass: "word"
-    });
+    (async () => {
+      try {
+        const mod = await import("gsap/SplitText");
+        const SplitText = (mod as any).SplitText;
+        if (!SplitText || !headingRef.current || !headingWrapperRef.current) return;
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = headingWrapperRef.current!.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width;
-      const y = (e.clientY - rect.top) / rect.height;
+        gsap.registerPlugin(SplitText);
+        const split = new SplitText(headingRef.current, {
+          type: "chars,words",
+          charsClass: "char",
+          wordsClass: "word",
+        });
 
-      gsap.to(splitText.chars, {
-        duration: 0.5,
-        y: (i) => (y - 0.5) * 15 * Math.sin((i + 1) * 0.5),
-        x: (i) => (x - 0.5) * 15 * Math.cos((i + 1) * 0.5),
-        rotationY: (x - 0.5) * 20,
-        rotationX: (y - 0.5) * -20,
-        ease: "power2.out",
-        stagger: {
-          amount: 0.3,
-          from: "center"
-        }
-      });
-    };
+        const handleMouseMove = (e: MouseEvent) => {
+          const rect = headingWrapperRef.current!.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width;
+          const y = (e.clientY - rect.top) / rect.height;
 
-    const handleMouseLeave = () => {
-      gsap.to(splitText.chars, {
-        duration: 1,
-        y: 0,
-        x: 0,
-        rotationY: 0,
-        rotationX: 0,
-        ease: "elastic.out(1, 0.3)",
-        stagger: {
-          amount: 0.3,
-          from: "center"
-        }
-      });
-    };
+          gsap.to(split.chars, {
+            duration: 0.5,
+            y: (i: number) => (y - 0.5) * 15 * Math.sin((i + 1) * 0.5),
+            x: (i: number) => (x - 0.5) * 15 * Math.cos((i + 1) * 0.5),
+            rotationY: (x - 0.5) * 20,
+            rotationX: (y - 0.5) * -20,
+            ease: "power2.out",
+            stagger: { amount: 0.3, from: "center" },
+          });
+        };
 
-    headingWrapperRef.current.addEventListener("mousemove", handleMouseMove);
-    headingWrapperRef.current.addEventListener("mouseleave", handleMouseLeave);
+        const handleMouseLeave = () => {
+          gsap.to(split.chars, {
+            duration: 1,
+            y: 0,
+            x: 0,
+            rotationY: 0,
+            rotationX: 0,
+            ease: "elastic.out(1, 0.3)",
+            stagger: { amount: 0.3, from: "center" },
+          });
+        };
 
-    return () => {
-      splitText.revert();
-      headingWrapperRef.current?.removeEventListener("mousemove", handleMouseMove);
-      headingWrapperRef.current?.removeEventListener("mouseleave", handleMouseLeave);
-    };
+        const el = headingWrapperRef.current!;
+        el.addEventListener("mousemove", handleMouseMove);
+        el.addEventListener("mouseleave", handleMouseLeave);
+
+        cleanup = () => {
+          el.removeEventListener("mousemove", handleMouseMove);
+          el.removeEventListener("mouseleave", handleMouseLeave);
+          split.revert();
+        };
+      } catch {
+        // SplitText not available — skip effect silently
+      }
+    })();
+
+    return () => cleanup?.();
   }, []);
 
   return (
@@ -189,10 +204,7 @@ export const ApproachSection = (): JSX.Element => {
             <h2
               ref={headingRef}
               className="text-3xl md:text-3xl lg:text-4xl font-semibold [font-family:'Fahkwang',Helvetica] text-[#01190c] dark:text-white mb-6"
-              style={{
-                transformStyle: "preserve-3d",
-                transform: "translateZ(0)"
-              }}
+              style={{ transformStyle: "preserve-3d", transform: "translateZ(0)" }}
             >
               Our <span className="text-secondary">Approach</span>
             </h2>
@@ -201,10 +213,7 @@ export const ApproachSection = (): JSX.Element => {
             ref={descriptionRef}
             className="text-base [font-family:'Fahkwang',Helvetica] text-[#626161] dark:text-[#dddddd] max-w-5xl mx-auto leading-relaxed"
           >
-            At Interior Villa, we believe that your home should be a reflection
-            of your unique personality and lifestyle. We are a leading interior
-            design firm in Bangladesh, passionate about creating spaces that are
-            not only beautiful but also functional, comfortable, and inspiring.
+            At Interior Villa, we believe that your home should be a reflection of your unique personality and lifestyle. We are a leading interior design firm in Bangladesh, passionate about creating spaces that are not only beautiful but also functional, comfortable, and inspiring.
           </p>
         </div>
 
@@ -234,7 +243,7 @@ export const ApproachSection = (): JSX.Element => {
                   rotateY,
                   scale: 1.05,
                   transformPerspective: 1000,
-                  transformOrigin: "center"
+                  transformOrigin: "center",
                 });
               }}
               onMouseLeave={(e) => {
@@ -243,12 +252,12 @@ export const ApproachSection = (): JSX.Element => {
                   rotateX: 0,
                   rotateY: 0,
                   scale: 1,
-                  ease: "elastic.out(1, 0.4)"
+                  ease: "elastic.out(1, 0.4)",
                 });
               }}
             >
               {/* Shimmer effect */}
-              <div className="pointer-events-none absolute inset-0 before:absolute before:inset-0 before:content-[''] before:bg-[linear-gradient(120deg,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_50%,transparent_100%)] before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-700 before:animate-[shine_2.5s_infinite]" />
+              <div className="pointer-events-none absolute inset-0 before:absolute before:inset-0 before:content-[''] before:bg-[linear-gradient(120deg,rgba(255,255,255,0.15)_0%,rgba(255,255,255,0.05)_50%,transparent_100%)] before:opacity-0 group-hover:before:opacity-100 before:transition-opacity before:duration-700" />
 
               <CardContent className="p-0 text-justify relative z-10">
                 <div className="text-4xl mb-4 transition-all duration-500 group-hover:scale-110">
