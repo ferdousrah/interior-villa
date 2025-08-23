@@ -11,7 +11,7 @@ import { SplitText } from "gsap/SplitText";
 gsap.registerPlugin(ScrollTrigger, SplitText);
 
 /* -------- CMS image helpers (jpg->webp + absolute URLs) -------- */
-const CMS_ORIGIN = "https://cms.interiorvillabd.com";
+const CMS_ORIGIN = "https://interiorvillabd.com";
 const MEDIA_BASE = `${CMS_ORIGIN}/api/media/file/`;
 const absolutize = (u: string) =>
   /^https?:\/\//i.test(u) ? u : new URL(u, CMS_ORIGIN).href;
