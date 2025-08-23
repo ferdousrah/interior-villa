@@ -55,7 +55,7 @@ interface Project {
 interface ProjectsApiResponse { docs: any[]; }
 
 /* Palette */
-const palette = ["#794a48", "#7f4d4b", "#6f4241", "#8a5653", "#7b4c49"];
+const palette = ["#698C7E", "#739688", "#7F9F92", "#8BA79C", "#96B0A6"];
 
 export const ProjectsSection = (): JSX.Element => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -516,24 +516,27 @@ export const ProjectsSection = (): JSX.Element => {
 
       {/* Explore All Projects Section */}
       <section className="w-full py-8 md:py-12 relative overflow-hidden bg-white">
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <button
-              onClick={handleExploreAllProjects}
-              className="group flex items-center gap-2 sm:gap-3 px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full text-white text-sm sm:text-base font-semibold bg-black hover:bg-gray-800 transition-all duration-500 hover:scale-105 border border-gray-700 relative z-10 mx-auto"
-              style={{
-                boxShadow: "0 15px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.2)",
-                minWidth: "180px",
-              }}
-            >
-              <span className="[font-family:'Fahkwang',Helvetica] font-medium">
-                Explore All Projects
-              </span>
-              <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
-            </button>
-          </div>
+      <div className="container mx-auto px-4 text-center relative z-10">
+        <div className="max-w-4xl mx-auto">
+          <button
+            onClick={handleExploreAllProjects}
+            className="group flex items-center gap-2 sm:gap-3 px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 rounded-full text-white text-sm sm:text-base font-semibold transition-all duration-500 hover:scale-105 border border-gray-700 relative z-10 mx-auto"
+            style={{
+              backgroundColor: "#2C3A35",
+              boxShadow:
+                "0 15px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.2)",
+              minWidth: "180px",
+            }}
+          >
+            <span className="[font-family:'Fahkwang',Helvetica] font-medium">
+              Explore All Projects
+            </span>
+            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-2" />
+          </button>
         </div>
-      </section>
+      </div>
+    </section>
+
     </>
   );
 };

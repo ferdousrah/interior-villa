@@ -53,7 +53,7 @@ interface Project {
 interface ProjectsApiResponse { docs: any[]; }
 
 /* Fallback palette */
-const palette = ["#794a48", "#7f4d4b", "#6f4241", "#8a5653", "#7b4c49"];
+const palette = ["#2D3142", "#3A3F55", "#424861", "#4A516D", "#535A79"];
 
 export const ProjectsSection = (): JSX.Element => {
   const sectionRef = useRef<HTMLElement>(null);
