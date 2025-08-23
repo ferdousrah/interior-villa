@@ -90,9 +90,8 @@ export const TestimonialSection = (): JSX.Element => {
     let cancelled = false;
     (async () => {
       try {
-        const res = await fetch(`${CMS_ORIGIN}/api/testimonials?limit=12`, {
-          cache: "no-store",
-        });
+       
+        const res = await fetch('/api/testimonials');
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         const docs = Array.isArray(data?.docs) ? data.docs : Array.isArray(data) ? data : [];
