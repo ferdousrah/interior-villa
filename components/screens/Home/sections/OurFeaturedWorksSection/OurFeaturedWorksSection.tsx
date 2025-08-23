@@ -33,7 +33,7 @@ interface ProjectsApiResponse {
   totalPages?: number;
 }
 
-const CMS_ORIGIN = "https://cms.interiorvillabd.com";
+const CMS_ORIGIN = "https://interiorvillabd.com";
 const MEDIA_BASE = `${CMS_ORIGIN}/api/media/file/`;
 
 const absolutize = (u: string) =>
