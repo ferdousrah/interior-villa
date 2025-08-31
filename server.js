@@ -35,11 +35,112 @@ app.post('/api/send-email', sendEmailHandler);
 app.get('/api/team-members', (req, res) => {
   // Proxy request to Payload CMS
   fetch('https://cms.interiorvillabd.com/api/team-members?depth=1')
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => res.json(data))
     .catch(error => {
       console.error('Error fetching team members:', error);
       res.status(500).json({ error: 'Failed to fetch team members' });
+    });
+});
+
+// Projects API endpoint
+app.get('/api/projects', (req, res) => {
+  // Build query string from request parameters
+  const queryParams = new URLSearchParams();
+  
+  // Forward all query parameters
+  Object.keys(req.query).forEach(key => {
+    if (req.query[key]) {
+      queryParams.append(key, req.query[key]);
+    }
+  });
+  
+  const url = `https://cms.interiorvillabd.com/api/projects${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+  
+  console.log('Proxying request to:', url);
+  
+  // Proxy request to Payload CMS
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => res.json(data))
+    .catch(error => {
+      console.error('Error fetching projects:', error);
+      // Return empty docs array instead of error to prevent crashes
+      res.json({ docs: [], totalDocs: 0, totalPages: 0, page: 1, limit: 10 });
+    });
+});
+
+// Testimonials API endpoint
+app.get('/api/testimonials', (req, res) => {
+  // Build query string from request parameters
+  const queryParams = new URLSearchParams();
+  
+  // Forward all query parameters
+  Object.keys(req.query).forEach(key => {
+    if (req.query[key]) {
+      queryParams.append(key, req.query[key]);
+    }
+  });
+  
+  const url = `https://cms.interiorvillabd.com/api/testimonials${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+  
+  console.log('Proxying testimonials request to:', url);
+  
+  // Proxy request to Payload CMS
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => res.json(data))
+    .catch(error => {
+      console.error('Error fetching testimonials:', error);
+      // Return empty docs array instead of error to prevent crashes
+      res.json({ docs: [], totalDocs: 0, totalPages: 0, page: 1, limit: 10 });
+    });
+});
+
+// Offices API endpoint
+app.get('/api/offices', (req, res) => {
+  // Build query string from request parameters
+  const queryParams = new URLSearchParams();
+  
+  // Forward all query parameters
+  Object.keys(req.query).forEach(key => {
+    if (req.query[key]) {
+      queryParams.append(key, req.query[key]);
+    }
+  });
+  
+  const url = `https://cms.interiorvillabd.com/api/offices${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+  
+  console.log('Proxying offices request to:', url);
+  
+  // Proxy request to Payload CMS
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => res.json(data))
+    .catch(error => {
+      console.error('Error fetching offices:', error);
+      // Return empty docs array instead of error to prevent crashes
+      res.json({ docs: [], totalDocs: 0, totalPages: 0, page: 1, limit: 10 });
     });
 });
 

@@ -11,6 +11,7 @@ import { useProject } from "../../ProjectContext";
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ---------------- helpers ---------------- */
 type PhotoItem = {
   id: string | number;
   type: "photo" | "plan";
@@ -20,17 +21,20 @@ type PhotoItem = {
 };
 type VideoItem = { id: string; videoUrl: string; title: string };
 
-const youtubeId = (u?: string) => {
+const getYouTubeId = (u?: string) => {
   if (!u) return "";
   try {
     const url = new URL(u);
-    if (url.hostname.includes("youtu.be")) return url.pathname.slice(1);
+    if (url.hostname.includes("youtu.be")) return url.pathname.replace("/", "");
     if (url.pathname.startsWith("/shorts/")) return url.pathname.split("/")[2] || "";
     if (url.pathname.startsWith("/embed/")) return url.pathname.split("/")[2] || "";
     return url.searchParams.get("v") || "";
-  } catch { return ""; }
+  } catch {
+    return "";
+  }
 };
 
+/* ---------------- component ---------------- */
 export const ProjectGallerySection = (): JSX.Element => {
   const { gallery, title } = useProject();
 
@@ -41,44 +45,53 @@ export const ProjectGallerySection = (): JSX.Element => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
+  /* map from ProjectContext.gallery (already normalized) */
   const photoItems: PhotoItem[] = useMemo(
-    () => gallery.photos.map((p, i) => ({
-      id: p.id,
-      type: "photo",
-      alt: p.alt || title || "Photo",
-      full: p.src,
-      thumb: p.src
-    })),
+    () =>
+      gallery.photos.map((p, i) => ({
+        id: p.id ?? `photo-${i}`,
+        type: "photo",
+        alt: p.alt || title || "Photo",
+        full: p.src,
+        thumb: p.src,
+      })),
     [gallery.photos, title]
   );
 
   const planItems: PhotoItem[] = useMemo(
-    () => gallery.plans.map((p, i) => ({
-      id: p.id,
-      type: "plan",
-      alt: p.alt || "Plan",
-      full: p.src,
-      thumb: p.src
-    })),
+    () =>
+      gallery.plans.map((p, i) => ({
+        id: p.id ?? `plan-${i}`,
+        type: "plan",
+        alt: p.alt || "Plan",
+        full: p.src,
+        thumb: p.src,
+      })),
     [gallery.plans]
   );
 
   const videoItems: VideoItem[] = useMemo(
-    () => gallery.videos.map((v) => ({
-      id: youtubeId(v.src) || v.id,
-      videoUrl: v.src,
-      title: title || "Video"
-    })),
+    () =>
+      (gallery.videos || []).map((v, i) => {
+        const id = getYouTubeId(v.src);
+        return {
+          id: id || v.id || `video-${i}`,
+          videoUrl: v.src,
+          title: v.alt || title || "Video",
+        };
+      }),
     [gallery.videos, title]
   );
 
-  // Fancybox
+  /* Fancybox bind (use watch URLs and let Fancybox handle embeds) */
   useEffect(() => {
     Fancybox.destroy();
+
     const hasAny =
       (activeTab === "photos" && photoItems.length) ||
       (activeTab === "plans" && planItems.length) ||
       (activeTab === "videos" && videoItems.length);
+
     if (!hasAny) return;
 
     const t = setTimeout(() => {
@@ -87,30 +100,78 @@ export const ProjectGallerySection = (): JSX.Element => {
         showClass: "fancybox-fadeIn",
         hideClass: "fancybox-fadeOut",
         dragToClose: true,
-        Toolbar: { display: { left: [], middle: [], right: ["zoom", "slideshow", "thumbs", "download", "close"] } },
+        Toolbar: {
+          display: {
+            left: [],
+            middle: [],
+            right: ["zoom", "slideshow", "thumbs", "download", "close"],
+          },
+        },
         wheel: "slide",
         touch: { vertical: true, momentum: true },
+        Iframe: {
+          preload: true,
+          attr: {
+            allow:
+              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen",
+            allowfullscreen: "true",
+            referrerpolicy: "strict-origin-when-cross-origin",
+          },
+        },
       });
     }, 0);
-    return () => { clearTimeout(t); Fancybox.destroy(); };
+
+    return () => {
+      clearTimeout(t);
+      Fancybox.destroy();
+    };
   }, [activeTab, photoItems.length, planItems.length, videoItems.length]);
 
-  // Entrance anims
+  /* entrance animations */
   useEffect(() => {
     if (!sectionRef.current) return;
+
     if (headingRef.current) {
-      gsap.fromTo(headingRef.current, { opacity: 0, y: 40 }, {
-        opacity: 1, y: 0, duration: 0.8, ease: "power3.out",
-        scrollTrigger: { trigger: headingRef.current, start: "top 85%", toggleActions: "play none none none" }
-      });
+      gsap.fromTo(
+        headingRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: headingRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
     }
+
     if (gridRef.current) {
-      gsap.fromTo(gridRef.current.children, { opacity: 0, y: 60, scale: 0.96 }, {
-        opacity: 1, y: 0, scale: 1, duration: 0.9, stagger: 0.12, ease: "power3.out",
-        scrollTrigger: { trigger: gridRef.current, start: "top 85%", toggleActions: "play none none none" }
-      });
+      gsap.fromTo(
+        gridRef.current.children,
+        { opacity: 0, y: 60, scale: 0.96 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.9,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
     }
-    return () => ScrollTrigger.getAll().forEach(t => t.kill());
+
+    return () => {
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
   }, [activeTab]);
 
   const tabs = [
@@ -144,28 +205,40 @@ export const ProjectGallerySection = (): JSX.Element => {
         </div>
         <div
           className="absolute inset-0 flex items-center justify-center transition-all duration-500 z-20"
-          style={{ opacity: hovered === item.id ? 1 : 0, transform: hovered === item.id ? "scale(1)" : "scale(0.9)" }}
+          style={{
+            opacity: hovered === item.id ? 1 : 0,
+            transform: hovered === item.id ? "scale(1)" : "scale(0.9)",
+          }}
         >
           <div className="w-14 h-14 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-xl border border-white/20">
             <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
             </svg>
           </div>
         </div>
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
-          <h4 className="text-white font-medium text-sm [font-family:'Fahkwang',Helvetica] truncate">{item.alt}</h4>
+          <h4 className="text-white font-medium text-sm [font-family:'Fahkwang',Helvetica] truncate">
+            {item.alt}
+          </h4>
         </div>
       </div>
     </a>
   );
 
   const renderVideo = (v: VideoItem) => {
-    const id = v.id;
+    const id = v.id || getYouTubeId(v.videoUrl);
     const thumb = id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : "";
-    const href = id ? `https://www.youtube.com/watch?v=${id}` : v.videoUrl;
+    const watchUrl = id ? `https://www.youtube.com/watch?v=${id}` : v.videoUrl;
+
     return (
-      <a key={v.id} href={href} data-fancybox={`gallery-${activeTab}`} data-caption={v.title} className="block w-full cursor-pointer group">
+      <a
+        key={v.id}
+        href={watchUrl}
+        data-fancybox={`gallery-${activeTab}`}
+        data-type="iframe"
+        data-caption={v.title}
+        className="block w-full cursor-pointer group"
+      >
         <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl shadow-lg group-hover:shadow-2xl transition-all duration-500">
           {!!thumb && (
             <img
@@ -178,7 +251,9 @@ export const ProjectGallerySection = (): JSX.Element => {
           )}
           <div className="absolute inset-0 flex items-center justify-center z-20">
             <div className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center shadow-xl">
-              <svg viewBox="0 0 24 24" className="w-8 h-8 text-primary" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+              <svg viewBox="0 0 24 24" className="w-8 h-8 text-primary" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
             </div>
           </div>
         </div>
@@ -186,31 +261,35 @@ export const ProjectGallerySection = (): JSX.Element => {
     );
   };
 
-  const current = activeTab === "photos" ? photoItems : activeTab === "plans" ? planItems : videoItems;
+  const current =
+    activeTab === "photos" ? photoItems : activeTab === "plans" ? planItems : videoItems;
 
   return (
     <section ref={sectionRef} className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4 max-w-6xl">
         <div className="text-center mb-12 md:mb-16">
-          <h2 ref={headingRef} className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-2">
+          <h2
+            ref={headingRef}
+            className="text-2xl md:text-3xl lg:text-4xl font-medium [font-family:'Fahkwang',Helvetica] text-[#01190c] mb-2"
+          >
             Project Gallery
           </h2>
-          {!!title && <p className="text-sm text-[#626161] [font-family:'Fahkwang',Helvetica]">{title}</p>}
+          {!!title && (
+            <p className="text-sm text-[#626161] [font-family:'Fahkwang',Helvetica]">{title}</p>
+          )}
         </div>
 
         {/* tabs */}
         <div className="flex justify-center mb-16">
           <div className="relative bg-white rounded-2xl p-2 shadow-lg border border-gray-100 inline-flex space-x-2">
-            {[
-              { id: "photos" as const, label: `Photos (${photoItems.length})` },
-              { id: "videos" as const, label: `Videos (${videoItems.length})` },
-              { id: "plans" as const, label: `Plans (${planItems.length})` },
-            ].map((t) => (
+            {tabs.map((t) => (
               <button
                 key={t.id}
                 onClick={() => setActiveTab(t.id)}
                 className={`relative px-6 py-3 text-base [font-family:'Fahkwang',Helvetica] font-medium transition-all duration-300 rounded-xl z-10 min-w-[140px] ${
-                  activeTab === t.id ? "bg-primary text-white shadow-lg" : "bg-transparent text-[#626161] hover:text-[#01190c] hover:bg-gray-50"
+                  activeTab === t.id
+                    ? "bg-primary text-white shadow-lg"
+                    : "bg-transparent text-[#626161] hover:text-[#01190c] hover:bg-gray-50"
                 }`}
               >
                 {t.label}

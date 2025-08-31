@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Badge } from "../../../../ui/badge";
 import { Button } from "../../../../ui/button";
 import { Card, CardContent } from "../../../../ui/card";
+import { PerformanceImage } from "../../../../ui/performance-image";
 import VanillaTilt from 'vanilla-tilt';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -31,6 +32,24 @@ export const BlogSection = (): JSX.Element => {
 
   const navigate = useNavigate();
 
+  // Wait for fonts to load before using SplitText
+  const [fontsReady, setFontsReady] = useState(false);
+  
+  useEffect(() => {
+    const checkFonts = async () => {
+      try {
+        if (document.fonts && document.fonts.ready) {
+          await document.fonts.ready;
+        }
+        setFontsReady(true);
+      } catch (error) {
+        // Fallback if fonts API not available
+        setTimeout(() => setFontsReady(true), 1000);
+      }
+    };
+    checkFonts();
+  }, []);
+
   useEffect(() => {
     if (imageRef.current) {
       VanillaTilt.init(imageRef.current, {
@@ -48,7 +67,7 @@ export const BlogSection = (): JSX.Element => {
 
   // Add hover animation for main heading
   useEffect(() => {
-    if (!headingRef.current) return;
+    if (!headingRef.current || !fontsReady) return;
 
     // Split text into characters
     const splitText = new SplitText(headingRef.current, { 
@@ -102,7 +121,7 @@ export const BlogSection = (): JSX.Element => {
         headingWrapperRef.current.removeEventListener('mouseleave', () => {});
       }
     };
-  }, []);
+  }, [fontsReady]);
 
   // Parallax and animation effects
   useEffect(() => {
@@ -110,6 +129,8 @@ export const BlogSection = (): JSX.Element => {
 
     // Split text animation for heading
     if (headingRef.current) {
+      if (!fontsReady) return;
+      
       const splitText = new SplitText(headingRef.current, { 
         type: "words,chars",
         charsClass: "char",
@@ -427,7 +448,7 @@ export const BlogSection = (): JSX.Element => {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, []);
+  }, [fontsReady]);
 
   // Blog post data for mapping
   const blogPosts = [
@@ -545,11 +566,15 @@ export const BlogSection = (): JSX.Element => {
                 transform: 'translate3d(0, 0, 0)'
               }}
             >
-              <img
+              <PerformanceImage
                 ref={imageRef}
                 className="w-full h-auto object-cover rounded-lg transition-transform duration-500 ease-out hover:scale-110 will-change-transform"
                 alt="Interior design blog post"
                 src="/create-an-image-for-a-residential-interior-design-blog-post.svg"
+                loading="lazy"
+                sizes="(max-width: 768px) 100vw, 50vw"
+                quality={80}
+                placeholder="blur"
                 style={{
                   transformStyle: 'preserve-3d',
                   backfaceVisibility: 'hidden',

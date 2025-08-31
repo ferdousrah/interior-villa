@@ -46,9 +46,29 @@ export const OurProcessSection: React.FC = () => {
     typeof window !== 'undefined' &&
     window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 
+  // Wait for fonts to load before using SplitText
+  const [fontsReady, setFontsReady] = useState(false);
+  
+  useEffect(() => {
+    const checkFonts = async () => {
+      try {
+        if (document.fonts && document.fonts.ready) {
+          await document.fonts.ready;
+        }
+        setFontsReady(true);
+      } catch (error) {
+        // Fallback if fonts API not available
+        setTimeout(() => setFontsReady(true), 1000);
+      }
+    };
+    checkFonts();
+  }, []);
+
   // ---- Heading hover (SplitText loaded dynamically to keep bundle small)
   useEffect(() => {
-    if (!headingRef.current || !headingWrapperRef.current) return;
+    const headingEl = headingRef.current;
+    const wrapperEl = headingWrapperRef.current;
+    if (!headingEl || !wrapperEl || !fontsReady) return;
     if (prefersReducedMotion) return;
 
     let split: any | null = null;
@@ -58,14 +78,14 @@ export const OurProcessSection: React.FC = () => {
       const { SplitText } = await import('gsap/SplitText');
       gsap.registerPlugin(SplitText);
 
-      split = new SplitText(headingRef.current!, {
+      split = new SplitText(headingEl, {
         type: 'chars,words',
         charsClass: 'char',
         wordsClass: 'word',
       });
 
       const onMove = (e: MouseEvent) => {
-        const rect = headingWrapperRef.current!.getBoundingClientRect();
+        const rect = wrapperEl.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width;
         const y = (e.clientY - rect.top) / rect.height;
 
@@ -92,18 +112,18 @@ export const OurProcessSection: React.FC = () => {
         });
       };
 
-      headingWrapperRef.current!.addEventListener('mousemove', onMove);
-      headingWrapperRef.current!.addEventListener('mouseleave', onLeave);
+      wrapperEl.addEventListener('mousemove', onMove);
+      wrapperEl.addEventListener('mouseleave', onLeave);
 
       cleanup = () => {
-        headingWrapperRef.current?.removeEventListener('mousemove', onMove);
-        headingWrapperRef.current?.removeEventListener('mouseleave', onLeave);
+        wrapperEl.removeEventListener('mousemove', onMove);
+        wrapperEl.removeEventListener('mouseleave', onLeave);
         split?.revert?.();
       };
     })();
 
     return () => cleanup();
-  }, [prefersReducedMotion]);
+  }, [prefersReducedMotion, fontsReady]);
 
   // ---- Entrance animations (scoped)
   useLayoutEffect(() => {

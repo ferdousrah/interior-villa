@@ -380,6 +380,8 @@ const Home = (): JSX.Element => {
   };
 
   const handleSubmenuNavigation = (href: string) => {
+    // Ensure scroll to top before navigation
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     navigate(href);
     setIsMobileMenuOpen(false);
   };
@@ -391,7 +393,7 @@ const Home = (): JSX.Element => {
       
       <div ref={heroContainerRef} className="w-full relative overflow-hidden">
         <section className="w-full h-[800px] bg-gradient-to-br from-black via-gray-900 to-black">
-          <GLBModelViewer className="w-full h-full" modelPath="/intro.glb" />
+          <GLBModelViewer className="w-full h-full" modelPath="https://assets.interiorvillabd.com/intro.glb" />
         </section>
 
         <header 
@@ -488,13 +490,17 @@ const Home = (): JSX.Element => {
                              height: (isScrolled && isScrollingUp) ? "36px" : "38px",
                              fontSize: (isScrolled && isScrollingUp) ? "13px" : "14px"
                             }}
+                            onClick={() => {
+                              window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                            }}
                           >
                             <span className="[font-family:'Fahkwang',Helvetica] font-medium text-center transition-all duration-300">
                               {item.name}
                             </span>
                             {item.subItems && (
-                              <motion.span 
-                                animate={{ rotate: hoveredMenu === item.name ? 45 : 0 }}
+                              <motion.span
+                                className="ml-1 text-xs transition-all duration-300"
+                                animate={{ rotate: hoveredMenu === item.name ? 180 : 0 }}
                               >
                                 +
                               </motion.span>
@@ -811,10 +817,6 @@ const Home = (): JSX.Element => {
         }
 
         /* Smooth transitions for all interactive elements */
-        * {
-          transition-property: transform, opacity, background-color, border-color, color, box-shadow;
-          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
 
         /* Sidebar scrollbar styling */
         .sidebar-scroll::-webkit-scrollbar {
