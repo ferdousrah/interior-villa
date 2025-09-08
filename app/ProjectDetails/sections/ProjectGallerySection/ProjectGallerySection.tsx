@@ -104,7 +104,7 @@ export const ProjectGallerySection = (): JSX.Element => {
           display: {
             left: [],
             middle: [],
-            right: ["zoom", "slideshow", "thumbs", "download", "close"],
+            right: ["zoom", "slideshow", "thumbs", "close"],
           },
         },
         wheel: "slide",
