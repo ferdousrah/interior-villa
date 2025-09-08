@@ -107,6 +107,10 @@ export const ProjectGallerySection = (): JSX.Element => {
             right: ["zoom", "slideshow", "thumbs", "close"],
           },
         },
+        // Make images harder to save (disables right-click & drag on images)
+        Images: {
+          protected: true,
+        },
         wheel: "slide",
         touch: { vertical: true, momentum: true },
         Iframe: {
