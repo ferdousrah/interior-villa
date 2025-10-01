@@ -2,9 +2,9 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useLayoutEffect } from 'react'
 import { useLocation, Navigate } from 'react-router-dom'
-import SEO, { seoData } from './utils/SEO'
 import { AccessibilityImprovements } from '../components/ui/accessibility-improvements'
 import { LazyComponent } from '../components/ui/lazy-component'
+import SEO from './utils/SEO';
 
 // Lazy load ALL components to reduce initial bundle size
 const Home = React.lazy(() => import('../components/screens/Home/Home').then(m => ({ default: m.Home })));
@@ -20,6 +20,14 @@ const ApartmentInteriorDesign = React.lazy(() => import('../app/ResidentialInter
 const HomeInteriorDesign = React.lazy(() => import('../app/ResidentialInterior/HomeInteriorDesign').then(m => ({ default: m.HomeInteriorDesign })));
 const DuplexInteriorDesign = React.lazy(() => import('../app/ResidentialInterior/DuplexInteriorDesign').then(m => ({ default: m.DuplexInteriorDesign })));
 const CorporateOfficeInterior = React.lazy(() => import('../app/CommercialInterior/CorporateOfficeInterior').then(m => ({ default: m.CorporateOfficeInterior })));
+const BuyingHouseOfficeInterior = React.lazy(() => import('../app/CommercialInterior/BuyingHouseOfficeInterior').then(m => ({ default: m.BuyingHouseOfficeInterior })));
+const TravelAgencyOfficeInterior = React.lazy(() => import('../app/CommercialInterior/TravelAgencyOfficeInterior').then(m => ({ default: m.TravelAgencyOfficeInterior })));
+const HotelHospitalityInterior = React.lazy(() => import('../app/CommercialInterior/HotelHospitalityInterior').then(m => ({ default: m.HotelHospitalityInterior })));
+const RestaurantCafeInterior = React.lazy(() => import('../app/CommercialInterior/RestaurantCafeInterior').then(m => ({ default: m.RestaurantCafeInterior })));
+const BrandShowroomInterior = React.lazy(() => import('../app/CommercialInterior/BrandShowroomInterior').then(m => ({ default: m.BrandShowroomInterior })));
+const SalonLifestyleInterior = React.lazy(() => import('../app/CommercialInterior/SalonLifestyleInterior').then(m => ({ default: m.SalonLifestyleInterior })));
+const HospitalClinicInterior = React.lazy(() => import('../app/CommercialInterior/HospitalClinicInterior').then(m => ({ default: m.HospitalClinicInterior })));
+
 const CommercialInterior = React.lazy(() => import('../app/CommercialInterior').then(m => ({ default: m.CommercialInterior })));
 const ArchitecturalConsultancy = React.lazy(() => import('../app/ArchitecturalConsultancy').then(m => ({ default: m.ArchitecturalConsultancy })));
 const BookAppointment = React.lazy(() => import('../app/BookAppointment').then(m => ({ default: m.BookAppointment })));
@@ -62,8 +70,7 @@ function App() {
         <Route
           path="/"
           element={
-            <>
-              <SEO {...seoData.home} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <Home />
               </LazyComponent>
@@ -73,8 +80,7 @@ function App() {
         <Route
           path="/about"
           element={
-            <>
-              <SEO {...seoData.about} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <About />
               </LazyComponent>
@@ -84,8 +90,7 @@ function App() {
         <Route
           path="/contact"
           element={
-            <>
-              <SEO {...seoData.contact} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <Contact />
               </LazyComponent>
@@ -95,8 +100,7 @@ function App() {
         <Route
           path="/blog"
           element={
-            <>
-              <SEO {...seoData.blog} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <Blog />
               </LazyComponent>
@@ -107,8 +111,6 @@ function App() {
           path="/blog/:slug"
           element={
             <>
-              {/* For dynamic blog posts, override SEO manually inside BlogDetails */}
-              <SEO {...seoData.blog} />
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <BlogDetails />
               </LazyComponent>
@@ -118,8 +120,7 @@ function App() {
         <Route
           path="/portfolio"
           element={
-            <>
-              <SEO {...seoData.portfolio} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <Portfolio />
               </LazyComponent>
@@ -129,9 +130,7 @@ function App() {
         <Route
           path="/portfolio/project-details/:slug"
           element={
-            <>
-              {/* For dynamic project pages, override SEO inside ProjectDetails */}
-              <SEO {...seoData.portfolio} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <ProjectDetails />
               </LazyComponent>
@@ -141,8 +140,7 @@ function App() {
         <Route
           path="/services/residential-interior"
           element={
-            <>
-              <SEO {...seoData.residentialInterior} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <ResidentialInterior />
               </LazyComponent>
@@ -152,14 +150,7 @@ function App() {
         <Route
           path="/services/residential/apartment-interior-design"
           element={
-            <>
-              {/* No predefined seoData, add one if needed */}
-              <SEO
-                title="Apartment Interior Design - Interior Villa"
-                description="Expert apartment interior design services tailored to maximize space and aesthetics. Discover smart, functional, and stylish interiors."
-                url="https://interiorvillabd.com/services/residential/apartment-interior-design"
-                type="service"
-              />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <ApartmentInteriorDesign />
               </LazyComponent>
@@ -169,14 +160,7 @@ function App() {
         <Route
           path="/services/residential/home-interior-design"
           element={
-            <>
-              {/* No predefined seoData, add one if needed */}
-              <SEO
-                title="Home Interior Design - Interior Villa"
-                description="Expert home interior design services tailored to maximize space and aesthetics. Discover smart, functional, and stylish interiors."
-                url="https://interiorvillabd.com/services/residential/home-interior-design"
-                type="service"
-              />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <HomeInteriorDesign />
               </LazyComponent>
@@ -186,14 +170,7 @@ function App() {
         <Route
           path="/services/residential/duplex-interior-design"
           element={
-            <>
-              {/* No predefined seoData, add one if needed */}
-              <SEO
-                title="Duplex Interior Design - Interior Villa"
-                description="Expert duplex interior design services tailored to maximize space and aesthetics. Discover smart, functional, and stylish interiors."
-                url="https://interiorvillabd.com/services/residential/duplex-interior-design"
-                type="service"
-              />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <DuplexInteriorDesign />
               </LazyComponent>
@@ -203,8 +180,7 @@ function App() {
         <Route
           path="/services/commercial-interior"
           element={
-            <>
-              <SEO {...seoData.commercialInterior} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <CommercialInterior />
               </LazyComponent>
@@ -214,14 +190,7 @@ function App() {
         <Route
           path="/services/commercial-interior/corporate-and-office-interior-design"
           element={
-            <>
-              {/* No predefined seoData, add one if needed */}
-              <SEO
-                title="Corporate and Office Interior Design - Interior Villa"
-                description="Corporate and Office Interior Design services tailored to maximize space and aesthetics. Discover smart, functional, and stylish interiors."
-                url="https://interiorvillabd.com/services/commercial/corporate-and-office-interior-design"
-                type="service"
-              />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <CorporateOfficeInterior />
               </LazyComponent>
@@ -229,10 +198,79 @@ function App() {
           }
         />
         <Route
+          path="/services/commercial-interior/buying-house-office-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <BuyingHouseOfficeInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/travel-agency-office-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <TravelAgencyOfficeInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/hotel-and-hospitality-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <HotelHospitalityInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/restaurant-and-cafe-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <RestaurantCafeInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/brand-showroom-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <BrandShowroomInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/mens-salon-and-lifestyle-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <SalonLifestyleInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/hospital-and-clinic-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <HospitalClinicInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
           path="/services/architectural-consultancy"
           element={
-            <>
-              <SEO {...seoData.architecturalConsultancy} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <ArchitecturalConsultancy />
               </LazyComponent>
@@ -242,8 +280,7 @@ function App() {
         <Route
           path="/book-appointment"
           element={
-            <>
-              <SEO {...seoData.bookAppointment} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <BookAppointment />
               </LazyComponent>
@@ -253,22 +290,13 @@ function App() {
         <Route
           path="/faq"
           element={
-            <>
-              <SEO {...seoData.faq} />
+            <>              
               <LazyComponent fallback={<PageLoadingFallback />}>
                 <FAQ />
               </LazyComponent>
             </>
           }
-        />
-        <Route
-          path="/services"
-          element={
-            <div className="min-h-screen flex items-center justify-center">
-              Services Page Coming Soon
-            </div>
-          }
-        />
+        />        
         <Route
           path="*"
            element={<Navigate to="/" replace />}

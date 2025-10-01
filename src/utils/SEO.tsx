@@ -1,21 +1,17 @@
+// utils/SEO.tsx
 import React from "react";
 import { Helmet } from "react-helmet-async";
 
-export interface SEOProps {
+interface SEOProps {
   title: string;
   description: string;
   keywords?: string;
   image?: string;
   url?: string;
-  type?: string; // "website" | "article" | "service" etc.
-  siteName?: string;
-  noindex?: boolean;
-  jsonLd?: Record<string, any> | Record<string, any>[]; // JSON-LD object or array
+  type?: string;
+  extraJsonLd?: string | object; // ✅ accept raw string or object
 }
 
-/**
- * SEO component → adds meta tags + optional JSON-LD
- */
 const SEO: React.FC<SEOProps> = ({
   title,
   description,
@@ -23,11 +19,22 @@ const SEO: React.FC<SEOProps> = ({
   image,
   url,
   type = "website",
-  siteName = "Interior Villa",
-  noindex = false,
-  jsonLd,
+  extraJsonLd,
 }) => {
-  const jsonLdArray = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
+  // Normalize extraJsonLd (handle string <script>...</script> from Payload)
+  let jsonLdContent: object | null = null;
+
+  if (typeof extraJsonLd === "string") {
+    try {
+      // Strip <script> tags if present
+      const clean = extraJsonLd.replace(/<script[^>]*>|<\/script>/g, "").trim();
+      jsonLdContent = JSON.parse(clean);
+    } catch (err) {
+      console.error("Invalid JSON-LD string in SEO:", err);
+    }
+  } else if (typeof extraJsonLd === "object") {
+    jsonLdContent = extraJsonLd;
+  }
 
   return (
     <Helmet>
@@ -36,10 +43,8 @@ const SEO: React.FC<SEOProps> = ({
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
       {url && <link rel="canonical" href={url} />}
-      <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
 
       {/* Open Graph */}
-      <meta property="og:site_name" content={siteName} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       {image && <meta property="og:image" content={image} />}
@@ -47,25 +52,23 @@ const SEO: React.FC<SEOProps> = ({
       <meta property="og:type" content={type} />
 
       {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       {image && <meta name="twitter:image" content={image} />}
+      <meta name="twitter:card" content="summary_large_image" />
 
-      {/* Page-level JSON-LD */}
-      {jsonLdArray.map((node, i) => (
-        <script
-          key={i}
-          type="application/ld+json"
-          // JSON-LD must be raw JSON string
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(node) }}
-        />
-      ))}
+      {/* Structured Data */}
+      {jsonLdContent && (
+        <script type="application/ld+json">
+          {JSON.stringify(jsonLdContent)}
+        </script>
+      )}
     </Helmet>
   );
 };
 
 export default SEO;
+
 
 /* -----------------------------------------------
    Page-specific SEO data presets

@@ -77,10 +77,10 @@ const filterOptions = [
 type Filter = typeof filterOptions[number];
 
 const API_BY_FILTER: Record<Filter, string> = {
-  All: `https://interiorvillabd.com/api/projects?sort=position`,
-  "Residential Interior": `https://interiorvillabd.com/api/projects?where[category][equals]=1&sort=position`,
-  "Commercial Interior": `https://interiorvillabd.com/api/projects?where[category][equals]=2&sort=position`,
-  "Architectural Consultancy": `https://interiorvillabd.com/api/projects?where[category][equals]=3&sort=position`,
+  All: `https://interiorvillabd.com/api/projects?sort=portfolio_position`,
+  "Residential Interior": `https://interiorvillabd.com/api/projects?where[category][equals]=1&sort=portfolio_position`,
+  "Commercial Interior": `https://interiorvillabd.com/api/projects?where[category][equals]=2&sort=portfolio_position`,
+  "Architectural Consultancy": `https://interiorvillabd.com/api/projects?where[category][equals]=3&sort=portfolio_position`,
 };
 
 const PAGE_SIZE = 4;

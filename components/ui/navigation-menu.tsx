@@ -181,9 +181,20 @@ const MainMenu: React.FC = () => {
     };
   }, [isMobileMenuOpen]);
 
+  // Animations
   const submenuVariants = {
-    hidden: { opacity: 0, y: -10, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1 },
+    hidden: { opacity: 0, y: -15, scale: 0.97 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.35,
+        ease: "easeOut",
+        when: "beforeChildren",
+        staggerChildren: 0.07,
+      },
+    },
   };
   const itemVariants = { hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } };
   const sidebarVariants = { closed: { x: "-100%" }, open: { x: "0%" } };
@@ -319,56 +330,55 @@ const MainMenu: React.FC = () => {
                                                         overflowY: "auto",
                                                         boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15), 0 0 30px rgba(0, 0, 0, 0.1)",
                                                         top: isScrolled && isScrollingUp ? "60px" : "70px",
-                                                        width: "50vw",
+                                                        width: "52vw",
                                                         margin: "0 auto",
                                                       }}
                                                       onMouseEnter={() => handleMouseEnter(item.name)}
                                                       onMouseLeave={handleMouseLeave}
                                                     >
-                                                      <div className="w-full px-8">
-                                                        <div className="max-w-7xl mx-auto">
+                                                      <div className="w-full px-0">
+                                                        <div className="max-w-8xl mx-auto">
                                                           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
                                                             {item.megaMenu.sections.map((section, sectionIndex) => (
                                                               <motion.div
                                                                 key={sectionIndex}
                                                                 variants={itemVariants}
                                                                 transition={{ delay: sectionIndex * 0.1 }}
-                                                                className="p-8 hover:bg-gray-50/50 transition-colors duration-300 border-r border-gray-100 last:border-r-0"
+                                                                className="p-6 group transition-all duration-300 hover:bg-gray-50/70 border-r border-gray-100 last:border-r-0 hover:shadow-md hover:scale-[1.01] rounded-lg"
                                                               >
-                                                                <div className="flex items-center mb-6">                                            
-                                                                  <div>
-                                                                    <h4
-                                                                      className="text-xl font-semibold [font-family:'Fahkwang',Helvetica] mb-1"
-                                                                      style={{ color: section.color }}
-                                                                    >
-                                                                      {section.title}
-                                                                    </h4>
-                                                                    <p className="text-sm text-gray-500">{section.description}</p>
-                                                                  </div>
+                                                                <div className="flex flex-col mb-4">
+                                                                  <Link
+                                                                    to={section.links[section.links.length - 1].href}
+                                                                    onClick={() => navigate(section.links[section.links.length - 1].href)}
+                                                                    className="flex items-center text-xl font-semibold [font-family:'Fahkwang',Helvetica] transition-all duration-300 relative"
+                                                                    style={{ color: section.color }}
+                                                                  >
+                                                                    <span className="mr-2">{section.icon}</span>
+                                                                    {section.title}
+                                                                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
+                                                                  </Link>
+                                                                  <p className="text-sm text-gray-500 mt-2">{section.description}</p>
                                                                 </div>
-                      
-                                                                <div className="space-y-2">
-                                                                  {section.links.map((link, linkIndex) => (
-                                                                    <motion.button
-                                                                      key={linkIndex}
-                                                                      role="menuitem"
-                                                                      variants={itemVariants}
-                                                                      transition={{ delay: sectionIndex * 0.1 + linkIndex * 0.05 }}
-                                                                      onClick={() => navigate(link.href)}
-                                                                      className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-300 [font-family:'Fahkwang',Helvetica] relative group overflow-hidden ${
-                                                                        link.featured
-                                                                          ? "bg-gradient-to-r from-primary/10 to-secondary/10 text-[#01190c] font-medium border border-primary/20 hover:border-primary/40 hover:shadow-md"
-                                                                          : "text-[#626161] hover:text-[#01190c] hover:bg-gray-100/80"
-                                                                      }`}
-                                                                    >
-                                                                      <span className="relative z-10 text-sm">{link.name}</span>
-                                                                      {link.featured && (
-                                                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-700 ease-out" />
-                                                                      )}
-                                                                    </motion.button>
-                                                                  ))}
+
+                                                                <div className="space-y-1">
+                                                                  {section.links
+                                                                    .filter(link => !link.featured)
+                                                                    .map((link, linkIndex) => (
+                                                                      <motion.button
+                                                                        key={linkIndex}
+                                                                        role="menuitem"
+                                                                        variants={itemVariants}
+                                                                        transition={{ delay: sectionIndex * 0.1 + linkIndex * 0.05 }}
+                                                                        onClick={() => navigate(link.href)}
+                                                                        className="w-full flex items-center justify-between px-4 py-2 rounded-md text-sm text-gray-600 hover:text-primary hover:bg-primary/10 transition-all duration-300 group"
+                                                                      >
+                                                                        <span className="relative z-10">{link.name}</span>
+                                                                        <span className="opacity-0 group-hover:opacity-100 transform translate-x-[-5px] group-hover:translate-x-0 transition-all duration-300">→</span>
+                                                                      </motion.button>
+                                                                    ))}
                                                                 </div>
                                                               </motion.div>
+
                                                             ))}
                                                           </div>
                                                         </div>
@@ -629,6 +639,11 @@ const MainMenu: React.FC = () => {
         .sidebar-scroll::-webkit-scrollbar-thumb:hover {
           background: rgba(117, 191, 68, 0.5);
         }
+          /* Smooth hover underline animation */
+        .group:hover .group-hover\:w-full {
+          width: 100% !important;
+        }
+
       `}</style>
     </>
   );
