@@ -56,7 +56,7 @@ const MainMenu: React.FC = () => {
               { name: "Apartment Interior Design", href: "/services/residential/apartment-interior-design" },
               { name: "Home Interior Design", href: "/services/residential/home-interior-design" },
               { name: "Duplex Interior Design", href: "/services/residential/duplex-interior-design" },
-              { name: "View All", href: "/services/residential-interior", featured: true },
+              
             ],
           },
           {
@@ -80,7 +80,7 @@ const MainMenu: React.FC = () => {
               { name: "Retail Shop Interior Design", href: "/services/commercial-interior/retail-shop-interior-design" },
               { name: "Educational Institute Interior Design", href: "/services/commercial-interior/educational-institute-interior-design" },
               { name: "Fitness Center Interior Design", href: "/services/commercial-interior/fitness-center-interior-design" },
-              { name: "View All", href: "/services/commercial-interior", featured: true },
+              
             ],
           },
           {
@@ -89,7 +89,7 @@ const MainMenu: React.FC = () => {
             icon: "📐",
             color: "#4F46E5",
             links: [
-              { name: "View All Services", href: "/services/architectural-consultancy", featured: true },
+              
             ],
           },
         ],
@@ -314,79 +314,112 @@ const MainMenu: React.FC = () => {
                         </Link>
 
                       {/* Mega menu / submenus */}
-                      <AnimatePresence>
-                                                {item.subItems && hoveredMenu === item.name && (
-                                                  item.name === "Services" && item.megaMenu ? (
-                                                    <motion.div
-                                                      variants={submenuVariants}
-                                                      initial="hidden"
-                                                      animate="visible"
-                                                      exit="hidden"
-                                                      role="menu"
-                                                      aria-label="Services mega menu"
-                                                      className="fixed left-0 right-0 bg-white shadow-2xl overflow-hidden z-[999] border-t border-gray-200 rounded-xl mega-menu-scroll"
-                                                      style={{
-                                                        maxHeight: "70vh",
-                                                        overflowY: "auto",
-                                                        boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15), 0 0 30px rgba(0, 0, 0, 0.1)",
-                                                        top: isScrolled && isScrollingUp ? "60px" : "70px",
-                                                        width: "52vw",
-                                                        margin: "0 auto",
-                                                      }}
-                                                      onMouseEnter={() => handleMouseEnter(item.name)}
-                                                      onMouseLeave={handleMouseLeave}
-                                                    >
-                                                      <div className="w-full px-0">
-                                                        <div className="max-w-8xl mx-auto">
-                                                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0">
-                                                            {item.megaMenu.sections.map((section, sectionIndex) => (
-                                                              <motion.div
-                                                                key={sectionIndex}
-                                                                variants={itemVariants}
-                                                                transition={{ delay: sectionIndex * 0.1 }}
-                                                                className="p-6 group transition-all duration-300 hover:bg-gray-50/70 border-r border-gray-100 last:border-r-0 hover:shadow-md hover:scale-[1.01] rounded-lg"
-                                                              >
-                                                                <div className="flex flex-col mb-4">
-                                                                  <Link
-                                                                    to={section.links[section.links.length - 1].href}
-                                                                    onClick={() => navigate(section.links[section.links.length - 1].href)}
-                                                                    className="flex items-center text-xl font-semibold [font-family:'Fahkwang',Helvetica] transition-all duration-300 relative"
-                                                                    style={{ color: section.color }}
-                                                                  >
-                                                                    <span className="mr-2">{section.icon}</span>
-                                                                    {section.title}
-                                                                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
-                                                                  </Link>
-                                                                  <p className="text-sm text-gray-500 mt-2">{section.description}</p>
-                                                                </div>
+                      {/* Mega menu */}
+<AnimatePresence>
+  {item.subItems && hoveredMenu === item.name && (
+    item.name === "Services" && item.megaMenu ? (
+      <motion.div
+  variants={submenuVariants}
+  initial="hidden"
+  animate="visible"
+  exit="hidden"
+  className="fixed left-0 right-0 bg-[#111111] text-white shadow-2xl z-[999] rounded-xl mega-menu-scroll"
+  style={{
+    top: isScrolled && isScrollingUp ? "60px" : "70px",
+    width: "52vw",
+    margin: "0 auto",
+  }}
+>
+  <div className="flex">
+    {/* Residential */}
+    <motion.div
+      variants={itemVariants}
+      className="p-8 w-[23%] border-r border-gray-800"
+    >
+      <Link
+        to="/services/residential-interior"
+        onClick={() => navigate("/services/residential-interior")}
+        className="menu-title mb-4 block hover:text-[#75BF44] transition-colors duration-300"
+        style={{ color: "#75BF44" }}
+      >
+        Residential
+      </Link>
 
-                                                                <div className="space-y-1">
-                                                                  {section.links
-                                                                    .filter(link => !link.featured)
-                                                                    .map((link, linkIndex) => (
-                                                                      <motion.button
-                                                                        key={linkIndex}
-                                                                        role="menuitem"
-                                                                        variants={itemVariants}
-                                                                        transition={{ delay: sectionIndex * 0.1 + linkIndex * 0.05 }}
-                                                                        onClick={() => navigate(link.href)}
-                                                                        className="w-full flex items-center justify-between px-4 py-2 rounded-md text-sm text-gray-600 hover:text-primary hover:bg-primary/10 transition-all duration-300 group"
-                                                                      >
-                                                                        <span className="relative z-10">{link.name}</span>
-                                                                        <span className="opacity-0 group-hover:opacity-100 transform translate-x-[-5px] group-hover:translate-x-0 transition-all duration-300">→</span>
-                                                                      </motion.button>
-                                                                    ))}
-                                                                </div>
-                                                              </motion.div>
+      <ul className="space-y-2 pt-4">
+        {item.megaMenu.sections[0].links.map((link, j) => (
+          <li key={j}>
+            <button
+              onClick={() => navigate(link.href)}
+              className="mega-sublink"
+            >
+              {link.name}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </motion.div>
 
-                                                            ))}
-                                                          </div>
-                                                        </div>
-                                                        <div className="bg-gray-50/50 px-8 py-6 border-t border-gray-100">
+    {/* Commercial */}
+    <motion.div
+      variants={itemVariants}
+      className="p-8 w-[60%] border-r border-gray-800"
+    >
+      <Link
+        to="/services/commercial-interior"
+        onClick={() => navigate("/services/commercial-interior")}
+        className="menu-title mb-4 block hover:text-[#EE5428] transition-colors duration-300"
+        style={{ color: "#EE5428" }}
+      >
+        Commercial
+      </Link>
+
+      <ul className="space-y-2 pt-4 grid grid-cols-2">
+        {item.megaMenu.sections[1].links.map((link, j) => (
+          <li key={j}>
+            <button
+              onClick={() => navigate(link.href)}
+              className="mega-sublink"
+            >
+              {link.name}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+
+    {/* Architectural */}
+    <motion.div
+      variants={itemVariants}
+      className="pt-6 pl-4 pr-4 pb-6 w-[17%]"
+    >
+      <Link
+        to="/services/architectural-consultancy"
+        onClick={() => navigate("/services/architectural-consultancy")}
+        className="menu-title-arch mb-4 block hover:text-[#4F46E5] transition-colors duration-300"
+        style={{ color: "#4F46E5" }}
+      >
+        Architectural
+      </Link>
+
+      <ul className="space-y-2">
+        {item.megaMenu.sections[2].links.map((link, j) => (
+          <li key={j}>
+            <button
+              onClick={() => navigate(link.href)}
+              className="mega-sublink"
+            >
+              {link.name}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  </div>
+  <div className="bg-[#111111] text-white px-8 py-6 rounded-b-xl mt-4 border-t border-gray-800">
                                                           <div className="max-w-7xl mx-auto">
                                                             <div className="flex items-center justify-between">
-                                                              <div className="text-sm text-[#626161] [font-family:'Fahkwang',Helvetica]">
-                                                                Need help choosing? <span className="text-primary font-medium">Contact our experts</span>
+                                                              <div className="text-sm text-[#fff] [font-family:'Fahkwang',Helvetica]">
+                                                                Need help choosing? <span className="text-primary font-medium pl-6">Contact our experts</span>
                                                               </div>
                                                               <button
                                                                 onClick={() => navigate("/contact")}
@@ -397,51 +430,12 @@ const MainMenu: React.FC = () => {
                                                             </div>
                                                           </div>
                                                         </div>
-                                                      </div>
-                                                    </motion.div>
-                                                  ) : (
-                                                    <motion.div
-                                                      variants={submenuVariants}
-                                                      initial="hidden"
-                                                      animate="visible"
-                                                      exit="hidden"
-                                                      role="menu"
-                                                      aria-label={`${item.name} submenu`}
-                                                      className="absolute top-full left-0 mt-2 min-w-[200px] bg-[#1b1b1b] rounded-lg shadow-2xl overflow-hidden z-[999] border border-[#333333]"
-                                                      style={{
-                                                        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.3)",
-                                                      }}
-                                                      onMouseEnter={() => handleMouseEnter(item.name)}
-                                                      onMouseLeave={handleMouseLeave}
-                                                    >
-                                                      <motion.div className="py-2">
-                                                        {item.subItems.map((subItem, subIndex) => (
-                                                          <motion.button
-                                                            key={subIndex}
-                                                            role="menuitem"
-                                                            ref={(el) => {
-                                                              const key = `${item.name}-${subIndex}`;
-                                                              if (el && !(el as any).dataset?.animationKey) {
-                                                                addSubmenuItemAnimation(el, key);
-                                                              }
-                                                            }}
-                                                            variants={itemVariants}
-                                                            transition={{ delay: subIndex * 0.1 }}
-                                                            onClick={() => navigate(subItem.href)}
-                                                            className="w-full px-4 py-3 text-left text-sm text-white hover:text-primary transition-colors duration-300 [font-family:'Fahkwang',Helvetica] relative group overflow-hidden"
-                                                            style={{
-                                                              transformStyle: "preserve-3d",
-                                                              perspective: "500px",
-                                                            }}
-                                                          >
-                                                            <span className="relative z-10">{subItem.name}</span>
-                                                          </motion.button>
-                                                        ))}
-                                                      </motion.div>
-                                                    </motion.div>
-                                                  )
-                                                )}
-                                              </AnimatePresence>
+</motion.div>
+
+    ) : null
+  )}
+</AnimatePresence>
+
                     </div>
                   ))}
                 </nav>
@@ -643,6 +637,68 @@ const MainMenu: React.FC = () => {
         .group:hover .group-hover\:w-full {
           width: 100% !important;
         }
+
+        .mega-menu-scroll {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255,255,255,.2) transparent;
+        }
+        .mega-menu-scroll::-webkit-scrollbar {
+          width: 6px;
+        }
+        .mega-menu-scroll::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.2);
+          border-radius: 3px;
+        }
+        .mega-menu-scroll::-webkit-scrollbar-thumb:hover {
+          background: rgba(255,255,255,0.4);
+        }
+
+        .mega-sublink {
+  position: relative;
+  padding: 6px 0;
+  display: block;
+  color: #ccc;
+  font-size: 14px;   /* 👈 set font size here */
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+.mega-sublink:hover {
+  color: #75BF44;
+}
+.mega-sublink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 0;
+  background: #75BF44;
+  transition: width 0.3s ease;
+}
+.mega-sublink:hover::after {
+  width: 100%;
+}
+
+
+.menu-title {
+  font-size: 16px;   /* 👈 set section title font size */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #222222ff;
+}
+
+.menu-title-arch {
+  font-size: 16px;   /* 👈 set section title font size */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding-bottom: 8px;
+  
+}
+
+
 
       `}</style>
     </>
