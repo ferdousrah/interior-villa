@@ -80,7 +80,7 @@ export const ProjectsSection = (): JSX.Element => {
     (async () => {
       try {
         const res = await fetch(
-          `https://interiorvillabd.com/api/projects?where[category][equals]=3&limit=5`,
+          `https://interiorvillabd.com/api/projects?where[isArchitectural][equals]=true&limit=5`,
           { cache: "no-store" }
         );
         if (!res.ok) throw new Error(`HTTP ${res.status}`);

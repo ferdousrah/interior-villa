@@ -4,6 +4,7 @@ import { useLayoutEffect } from 'react'
 import { useLocation, Navigate } from 'react-router-dom'
 import { AccessibilityImprovements } from '../components/ui/accessibility-improvements'
 import { LazyComponent } from '../components/ui/lazy-component'
+import { WhatsAppWidget } from '../components/ui/whatsapp-widget.jsx'
 import SEO from './utils/SEO';
 
 // Lazy load ALL components to reduce initial bundle size
@@ -27,6 +28,13 @@ const RestaurantCafeInterior = React.lazy(() => import('../app/CommercialInterio
 const BrandShowroomInterior = React.lazy(() => import('../app/CommercialInterior/BrandShowroomInterior').then(m => ({ default: m.BrandShowroomInterior })));
 const SalonLifestyleInterior = React.lazy(() => import('../app/CommercialInterior/SalonLifestyleInterior').then(m => ({ default: m.SalonLifestyleInterior })));
 const HospitalClinicInterior = React.lazy(() => import('../app/CommercialInterior/HospitalClinicInterior').then(m => ({ default: m.HospitalClinicInterior })));
+const PharmacyInterior = React.lazy(() => import('../app/CommercialInterior/PharmacyInterior').then(m => ({ default: m.PharmacyInterior })));
+const DentalChamberInterior = React.lazy(() => import('../app/CommercialInterior/DentalChamberInterior').then(m => ({ default: m.DentalChamberInterior })));
+const SpaAndBeautyParlorInterior = React.lazy(() => import('../app/CommercialInterior/SpaAndBeautyParlorInterior').then(m => ({ default: m.SpaAndBeautyParlorInterior })));
+const ResortInterior = React.lazy(() => import('../app/CommercialInterior/ResortInterior').then(m => ({ default: m.ResortInterior })));
+const RetailShopInterior = React.lazy(() => import('../app/CommercialInterior/RetailShopInterior').then(m => ({ default: m.RetailShopInterior })));
+const EducationalInstituteInterior = React.lazy(() => import('../app/CommercialInterior/EducationalInstituteInterior').then(m => ({ default: m.EducationalInstituteInterior })));
+const FitnessCenterInterior = React.lazy(() => import('../app/CommercialInterior/FitnessCenterInterior').then(m => ({ default: m.FitnessCenterInterior })));
 
 const CommercialInterior = React.lazy(() => import('../app/CommercialInterior').then(m => ({ default: m.CommercialInterior })));
 const ArchitecturalConsultancy = React.lazy(() => import('../app/ArchitecturalConsultancy').then(m => ({ default: m.ArchitecturalConsultancy })));
@@ -268,6 +276,76 @@ function App() {
           }
         />
         <Route
+          path="/services/commercial-interior/pharmacy-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <PharmacyInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/dental-chamber-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <DentalChamberInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/spa-and-beauty-parlor-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <SpaAndBeautyParlorInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/resort-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <ResortInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/retail-shop-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <RetailShopInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/educational-institute-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <EducationalInstituteInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
+          path="/services/commercial-interior/fitness-center-interior-design"
+          element={
+            <>              
+              <LazyComponent fallback={<PageLoadingFallback />}>
+                <FitnessCenterInterior />
+              </LazyComponent>
+            </>
+          }
+        />
+        <Route
           path="/services/architectural-consultancy"
           element={
             <>              
@@ -303,6 +381,7 @@ function App() {
         />
       </Routes>
       <AccessibilityImprovements />
+      <WhatsAppWidget />
     </Router>
   )
 }
