@@ -6,6 +6,8 @@ const BASE_URL = "https://interiorvillabd.com"; // frontend domain
 const CMS_URL = "https://cms.interiorvillabd.com/api"; // Payload CMS API
 
 async function generateSitemap() {
+  const distPath = "/var/www/interior-villa/dist/sitemap.xml"; // ✅ full path to deployed dist
+
   const staticRoutes = [
     { path: '/', priority: 1.0 },
           { path: '/about', priority: 0.9 },
@@ -72,7 +74,6 @@ async function generateSitemap() {
     const projects = await projectsRes.json();
     const blogs = await blogsRes.json();
 
-    // ✅ Build static page XML
     let urls = staticRoutes.map(
       (r) => `
     <url>
@@ -82,7 +83,6 @@ async function generateSitemap() {
     </url>`
     );
 
-    // ✅ Projects with lastmod
     if (projects?.docs) {
       urls = urls.concat(
         projects.docs.map((p) => {
@@ -97,7 +97,6 @@ async function generateSitemap() {
       );
     }
 
-    // ✅ Blogs with lastmod
     if (blogs?.docs) {
       urls = urls.concat(
         blogs.docs.map((b) => {
@@ -112,14 +111,13 @@ async function generateSitemap() {
       );
     }
 
-    // ✅ Final XML
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.join("\n")}
 </urlset>`;
 
-    fs.writeFileSync("./dist/sitemap.xml", xml);
-    console.log("✅ Sitemap generated with <lastmod> included!");
+    fs.writeFileSync(distPath, xml);
+    console.log("✅ Sitemap updated:", distPath);
   } catch (err) {
     console.error("❌ Error generating sitemap:", err);
     process.exit(1);
