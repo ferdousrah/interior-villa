@@ -125,3 +125,20 @@ ${urls.join("\n")}
 }
 
 generateSitemap();
+
+
+
+// Notify Google & Bing after update
+const notifySearchEngines = async () => {
+  const sitemapUrl = `${BASE_URL}/sitemap.xml`;
+  try {
+    await fetch(`https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`);
+    await fetch(`https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`);
+    console.log("✅ Notified Google & Bing about sitemap update.");
+  } catch (err) {
+    console.error("⚠️ Failed to notify search engines:", err);
+  }
+};
+
+notifySearchEngines();
+
