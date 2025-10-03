@@ -315,126 +315,125 @@ const MainMenu: React.FC = () => {
 
                       {/* Mega menu / submenus */}
                       {/* Mega menu */}
-<AnimatePresence>
-  {item.subItems && hoveredMenu === item.name && (
-    item.name === "Services" && item.megaMenu ? (
-      <motion.div
-  variants={submenuVariants}
-  initial="hidden"
-  animate="visible"
-  exit="hidden"
-  className="fixed left-0 right-0 bg-[#111111] text-white shadow-2xl z-[999] rounded-xl mega-menu-scroll"
-  style={{
-    top: isScrolled && isScrollingUp ? "60px" : "70px",
-    width: "52vw",
-    margin: "0 auto",
-  }}
->
-  <div className="flex">
-    {/* Residential */}
-    <motion.div
-      variants={itemVariants}
-      className="p-8 w-[23%] border-r border-gray-800"
-    >
-      <Link
-        to="/services/residential-interior"
-        onClick={() => navigate("/services/residential-interior")}
-        className="menu-title mb-4 block hover:text-[#75BF44] transition-colors duration-300"
-        style={{ color: "#75BF44" }}
-      >
-        Residential
-      </Link>
+                      <AnimatePresence>
+                        {item.subItems && hoveredMenu === item.name && (
+                          item.name === "Services" && item.megaMenu ? (
+                            <motion.div
+                        variants={submenuVariants}
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        className="fixed left-1/2 -translate-x-1/2 bg-[#111111] text-white shadow-2xl z-[999] rounded-xl mega-menu-scroll overflow-y-auto max-h-[80vh]"
+                        style={{
+                          top: isScrolled && isScrollingUp ? "60px" : "70px",
+                          width: "min(96vw, 1500px)",
+                        }}
+                      >
+                        <div className="flex flex-col lg:flex-row">
+                          {/* Residential */}
+                          <motion.div
+                            variants={itemVariants}
+                            className="p-4 lg:p-5 lg:w-[18%] lg:border-r border-gray-800"
+                          >
+                            <Link
+                              to="/services/residential-interior"
+                              onClick={() => navigate("/services/residential-interior")}
+                              className="menu-title mb-4 block hover:text-[#75BF44] transition-colors duration-300"
+                              style={{ color: "#75BF44" }}
+                            >
+                              Residential
+                            </Link>
 
-      <ul className="space-y-2 pt-4">
-        {item.megaMenu.sections[0].links.map((link, j) => (
-          <li key={j}>
-            <button
-              onClick={() => navigate(link.href)}
-              className="mega-sublink"
-            >
-              {link.name}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </motion.div>
+                            <ul className="space-y-2 pt-4">
+                              {item.megaMenu.sections[0].links.map((link, j) => (
+                                <li key={j}>
+                                  <button
+                                    onClick={() => navigate(link.href)}
+                                    className="mega-sublink"
+                                  >
+                                    {link.name}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </motion.div>
 
-    {/* Commercial */}
-    <motion.div
-      variants={itemVariants}
-      className="p-8 w-[60%] border-r border-gray-800"
-    >
-      <Link
-        to="/services/commercial-interior"
-        onClick={() => navigate("/services/commercial-interior")}
-        className="menu-title mb-4 block hover:text-[#EE5428] transition-colors duration-300"
-        style={{ color: "#EE5428" }}
-      >
-        Commercial
-      </Link>
+                          {/* Commercial */}
+                          <motion.div
+                            variants={itemVariants}
+                            className="p-4 lg:p-5 lg:w-[62%] lg:border-r border-gray-800 border-t lg:border-t-0"
+                          >
+                            <Link
+                              to="/services/commercial-interior"
+                              onClick={() => navigate("/services/commercial-interior")}
+                              className="menu-title mb-4 block hover:text-[#EE5428] transition-colors duration-300"
+                              style={{ color: "#EE5428" }}
+                            >
+                              Commercial
+                            </Link>
 
-      <ul className="space-y-2 pt-4 grid grid-cols-2">
-        {item.megaMenu.sections[1].links.map((link, j) => (
-          <li key={j}>
-            <button
-              onClick={() => navigate(link.href)}
-              className="mega-sublink"
-            >
-              {link.name}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </motion.div>
+                            <ul className="space-y-2 pt-4 grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-1">
+                              {item.megaMenu.sections[1].links.map((link, j) => (
+                                <li key={j}>
+                                  <button
+                                    onClick={() => navigate(link.href)}
+                                    className="mega-sublink"
+                                  >
+                                    {link.name}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </motion.div>
 
-    {/* Architectural */}
-    <motion.div
-      variants={itemVariants}
-      className="pt-6 pl-4 pr-4 pb-6 w-[17%]"
-    >
-      <Link
-        to="/services/architectural-consultancy"
-        onClick={() => navigate("/services/architectural-consultancy")}
-        className="menu-title-arch mb-4 block hover:text-[#4F46E5] transition-colors duration-300"
-        style={{ color: "#4F46E5" }}
-      >
-        Architectural
-      </Link>
+                          {/* Architectural */}
+                          <motion.div
+                            variants={itemVariants}
+                            className="p-4 lg:p-5 lg:w-[20%] border-t lg:border-t-0 border-gray-800"
+                          >
+                            <Link
+                              to="/services/architectural-consultancy"
+                              onClick={() => navigate("/services/architectural-consultancy")}
+                              className="menu-title-arch mb-4 block hover:text-[#4F46E5] transition-colors duration-300"
+                              style={{ color: "#4F46E5" }}
+                            >
+                              Architectural
+                            </Link>
 
-      <ul className="space-y-2">
-        {item.megaMenu.sections[2].links.map((link, j) => (
-          <li key={j}>
-            <button
-              onClick={() => navigate(link.href)}
-              className="mega-sublink"
-            >
-              {link.name}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </motion.div>
-  </div>
-  <div className="bg-[#111111] text-white px-8 py-6 rounded-b-xl mt-4 border-t border-gray-800">
-                                                          <div className="max-w-7xl mx-auto">
-                                                            <div className="flex items-center justify-between">
-                                                              <div className="text-sm text-[#fff] [font-family:'Fahkwang',Helvetica]">
-                                                                Need help choosing? <span className="text-primary font-medium pl-6">Contact our experts</span>
-                                                              </div>
-                                                              <button
-                                                                onClick={() => navigate("/contact")}
-                                                                className="px-6 py-3 bg-primary text-white rounded-lg text-sm font-medium [font-family:'Fahkwang',Helvetica] hover:bg-primary-hover transition-all duration-300 hover:scale-105"
-                                                              >
-                                                                Get Consultation
-                                                              </button>
-                                                            </div>
-                                                          </div>
-                                                        </div>
-</motion.div>
+                            <ul className="space-y-2">
+                              {item.megaMenu.sections[2].links.map((link, j) => (
+                                <li key={j}>
+                                  <button
+                                    onClick={() => navigate(link.href)}
+                                    className="mega-sublink"
+                                  >
+                                    {link.name}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </motion.div>
+                        </div>
+                        <div className="bg-[#111111] text-white px-4 lg:px-5 py-3 lg:py-4 rounded-b-xl border-t border-gray-800">
+                          <div className="mx-auto">
+                            <div className="flex flex-col lg:flex-row items-center justify-between gap-3 lg:gap-4">
+                              <div className="text-xs lg:text-sm text-[#fff] [font-family:'Fahkwang',Helvetica] text-center lg:text-left">
+                                Need help choosing? <span className="text-primary font-medium lg:pl-6">Contact our experts</span>
+                              </div>
+                              <button
+                                onClick={() => navigate("/contact")}
+                                className="px-4 lg:px-6 py-2 lg:py-3 bg-primary text-white rounded-lg text-xs lg:text-sm font-medium [font-family:'Fahkwang',Helvetica] hover:bg-primary-hover transition-all duration-300 hover:scale-105 whitespace-nowrap"
+                              >
+                                Get Consultation
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
 
-    ) : null
-  )}
-</AnimatePresence>
+                          ) : null
+                        )}
+                      </AnimatePresence>
 
                     </div>
                   ))}
@@ -654,49 +653,48 @@ const MainMenu: React.FC = () => {
         }
 
         .mega-sublink {
-  position: relative;
-  padding: 6px 0;
-  display: block;
-  color: #ccc;
-  font-size: 14px;   /* 👈 set font size here */
-  line-height: 1.5;
-  transition: color 0.3s ease;
-}
-.mega-sublink:hover {
-  color: #75BF44;
-}
-.mega-sublink::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 1px;
-  width: 0;
-  background: #75BF44;
-  transition: width 0.3s ease;
-}
-.mega-sublink:hover::after {
-  width: 100%;
-}
+          position: relative;
+          padding: 6px 0;
+          display: block;
+          color: #ccc;
+          font-size: 14px;   /* 👈 set font size here */
+          line-height: 1.5;
+          transition: color 0.3s ease;
+        }
+        .mega-sublink:hover {
+          color: #75BF44;
+        }
+        .mega-sublink::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          height: 1px;
+          width: 0;
+          background: #75BF44;
+          transition: width 0.3s ease;
+        }
+        .mega-sublink:hover::after {
+          width: 100%;
+        }
 
 
-.menu-title {
-  font-size: 16px;   /* 👈 set section title font size */
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #222222ff;
-}
+        .menu-title {
+          font-size: 16px;   /* 👈 set section title font size */
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          padding-bottom: 8px;
+          border-bottom: 2px solid #222222ff;
+        }
 
-.menu-title-arch {
-  font-size: 16px;   /* 👈 set section title font size */
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding-bottom: 8px;
-  
-}
+        .menu-title-arch {
+          font-size: 16px;   /* 👈 set section title font size */
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          padding-bottom: 8px;          
+        }
 
 
 

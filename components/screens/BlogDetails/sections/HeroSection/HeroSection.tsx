@@ -116,7 +116,7 @@ export const HeroSection = (): JSX.Element => {
       {/* Hero Content */}
       <div className="absolute inset-0 bg-black/40 flex items-center justify-start">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-          <div className="text-left text-white max-w-3xl">
+          <div className="text-left text-white max-w-4xl">
             {/* Page Title */}
             <motion.h1
               initial={{ opacity: 0, x: -50 }}
