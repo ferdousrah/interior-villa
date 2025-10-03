@@ -118,7 +118,7 @@ async function generateSitemap() {
 ${urls.join("\n")}
 </urlset>`;
 
-    fs.writeFileSync("./public/sitemap.xml", xml);
+    fs.writeFileSync("./dist/sitemap.xml", xml);
     console.log("✅ Sitemap generated with <lastmod> included!");
   } catch (err) {
     console.error("❌ Error generating sitemap:", err);
