@@ -56,7 +56,7 @@ const MainMenu: React.FC = () => {
               { name: "Apartment Interior Design", href: "/services/residential/apartment-interior-design" },
               { name: "Home Interior Design", href: "/services/residential/home-interior-design" },
               { name: "Duplex Interior Design", href: "/services/residential/duplex-interior-design" },
-              
+              { name: "View All", href: "/services/residential-interior", featured: true },
             ],
           },
           {
@@ -80,7 +80,7 @@ const MainMenu: React.FC = () => {
               { name: "Retail Shop Interior Design", href: "/services/commercial-interior/retail-shop-interior-design" },
               { name: "Educational Institute Interior Design", href: "/services/commercial-interior/educational-institute-interior-design" },
               { name: "Fitness Center Interior Design", href: "/services/commercial-interior/fitness-center-interior-design" },
-              
+              { name: "View All", href: "/services/commercial-interior", featured: true },
             ],
           },
           {
@@ -89,7 +89,7 @@ const MainMenu: React.FC = () => {
             icon: "📐",
             color: "#4F46E5",
             links: [
-              
+              { name: "View All Services", href: "/services/architectural-consultancy", featured: true },
             ],
           },
         ],
@@ -314,127 +314,142 @@ const MainMenu: React.FC = () => {
                         </Link>
 
                       {/* Mega menu / submenus */}
-                      {/* Mega menu */}
                       <AnimatePresence>
-                        {item.subItems && hoveredMenu === item.name && (
-                          item.name === "Services" && item.megaMenu ? (
-                            <motion.div
-                        variants={submenuVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        className="fixed left-1/2 -translate-x-1/2 bg-[#111111] text-white shadow-2xl z-[999] rounded-xl mega-menu-scroll overflow-y-auto max-h-[80vh]"
-                        style={{
-                          top: isScrolled && isScrollingUp ? "60px" : "70px",
-                          width: "min(96vw, 1500px)",
-                        }}
-                      >
-                        <div className="flex flex-col lg:flex-row">
-                          {/* Residential */}
-                          <motion.div
-                            variants={itemVariants}
-                            className="p-4 lg:p-5 lg:w-[18%] lg:border-r border-gray-800"
-                          >
-                            <Link
-                              to="/services/residential-interior"
-                              onClick={() => navigate("/services/residential-interior")}
-                              className="menu-title mb-4 block hover:text-[#75BF44] transition-colors duration-300"
-                              style={{ color: "#75BF44" }}
-                            >
-                              Residential
-                            </Link>
+                                                {item.subItems && hoveredMenu === item.name && (
+                                                  item.name === "Services" && item.megaMenu ? (
+                                                    <motion.div
+                                                      variants={submenuVariants}
+                                                      initial="hidden"
+                                                      animate="visible"
+                                                      exit="hidden"
+                                                      role="menu"
+                                                      aria-label="Services mega menu"
+                                                      className="fixed left-0 right-0 bg-white shadow-2xl overflow-hidden z-[999] border-t border-gray-200 rounded-xl"
+                                                      style={{
+                                                        maxHeight: "70vh",
+                                                        boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15), 0 0 30px rgba(0, 0, 0, 0.1)",
+                                                        top: isScrolled && isScrollingUp ? "60px" : "70px",
+                                                        width: "52vw",
+                                                        margin: "0 auto",
+                                                      }}
+                                                      onMouseEnter={() => handleMouseEnter(item.name)}
+                                                      onMouseLeave={handleMouseLeave}
+                                                    >
+                                                      <div className="w-full px-0">
+                                                        <div className="max-w-8xl mx-auto">
+                                                          <div className="flex gap-0">
+                                                            {item.megaMenu.sections.map((section, sectionIndex) => (
+                                                              <motion.div
+                                                                key={sectionIndex}
+                                                                variants={itemVariants}
+                                                                transition={{ delay: sectionIndex * 0.1 }}
+                                                                className="p-6 group transition-all duration-300 border-r border-gray-100 last:border-r-0 hover:shadow-md hover:scale-[1.01] rounded-lg flex flex-col"
+                                                                style={{
+                                                                  backgroundColor: sectionIndex === 0 ? '#f0f9eb' : sectionIndex === 1 ? '#fff5f0' : '#f0f4ff',
+                                                                  width: sectionIndex === 0 ? '27%' : sectionIndex === 1 ? '48%' : '25%',
+                                                                }}
+                                                              >
+                                                                <div className="flex flex-col mb-4">
+                                                                  <Link
+                                                                    to={section.links[section.links.length - 1].href}
+                                                                    onClick={() => navigate(section.links[section.links.length - 1].href)}
+                                                                    className="flex items-center text-xl font-semibold [font-family:'Fahkwang',Helvetica] transition-all duration-300 relative"
+                                                                    style={{ color: section.color }}
+                                                                  >
+                                                                    
+                                                                    {section.title}
+                                                                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-current transition-all duration-300 group-hover:w-full"></span>
+                                                                  </Link>
+                                                                  <p className="text-sm text-gray-500 mt-2">{section.description}</p>
+                                                                </div>
 
-                            <ul className="space-y-2 pt-4">
-                              {item.megaMenu.sections[0].links.map((link, j) => (
-                                <li key={j}>
-                                  <button
-                                    onClick={() => navigate(link.href)}
-                                    className="mega-sublink"
-                                  >
-                                    {link.name}
-                                  </button>
-                                </li>
-                              ))}
-                            </ul>
-                          </motion.div>
+                                                                <div
+                                                                  className={`space-y-1 ${sectionIndex === 1 ? 'commercial-column-scroll' : ''}`}
+                                                                  style={{
+                                                                    maxHeight: sectionIndex === 1 ? 'calc(70vh - 120px)' : 'auto',
+                                                                    overflowY: sectionIndex === 1 ? 'auto' : 'visible',
+                                                                  }}
+                                                                >
+                                                                  {section.links
+                                                                    .filter(link => !link.featured)
+                                                                    .map((link, linkIndex) => (
+                                                                      <motion.button
+                                                                        key={linkIndex}
+                                                                        role="menuitem"
+                                                                        variants={itemVariants}
+                                                                        transition={{ delay: sectionIndex * 0.1 + linkIndex * 0.05 }}
+                                                                        onClick={() => navigate(link.href)}
+                                                                        className="w-full flex items-center justify-between px-4 py-2 rounded-md text-sm text-gray-600 hover:text-primary hover:bg-white/50 transition-all duration-300 group"
+                                                                      >
+                                                                        <span className="relative z-10">{link.name}</span>
+                                                                      </motion.button>
+                                                                    ))}
+                                                                </div>
+                                                              </motion.div>
 
-                          {/* Commercial */}
-                          <motion.div
-                            variants={itemVariants}
-                            className="p-4 lg:p-5 lg:w-[62%] lg:border-r border-gray-800 border-t lg:border-t-0"
-                          >
-                            <Link
-                              to="/services/commercial-interior"
-                              onClick={() => navigate("/services/commercial-interior")}
-                              className="menu-title mb-4 block hover:text-[#EE5428] transition-colors duration-300"
-                              style={{ color: "#EE5428" }}
-                            >
-                              Commercial
-                            </Link>
-
-                            <ul className="space-y-2 pt-4 grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-1">
-                              {item.megaMenu.sections[1].links.map((link, j) => (
-                                <li key={j}>
-                                  <button
-                                    onClick={() => navigate(link.href)}
-                                    className="mega-sublink"
-                                  >
-                                    {link.name}
-                                  </button>
-                                </li>
-                              ))}
-                            </ul>
-                          </motion.div>
-
-                          {/* Architectural */}
-                          <motion.div
-                            variants={itemVariants}
-                            className="p-4 lg:p-5 lg:w-[20%] border-t lg:border-t-0 border-gray-800"
-                          >
-                            <Link
-                              to="/services/architectural-consultancy"
-                              onClick={() => navigate("/services/architectural-consultancy")}
-                              className="menu-title-arch mb-4 block hover:text-[#4F46E5] transition-colors duration-300"
-                              style={{ color: "#4F46E5" }}
-                            >
-                              Architectural
-                            </Link>
-
-                            <ul className="space-y-2">
-                              {item.megaMenu.sections[2].links.map((link, j) => (
-                                <li key={j}>
-                                  <button
-                                    onClick={() => navigate(link.href)}
-                                    className="mega-sublink"
-                                  >
-                                    {link.name}
-                                  </button>
-                                </li>
-                              ))}
-                            </ul>
-                          </motion.div>
-                        </div>
-                        <div className="bg-[#111111] text-white px-4 lg:px-5 py-3 lg:py-4 rounded-b-xl border-t border-gray-800">
-                          <div className="mx-auto">
-                            <div className="flex flex-col lg:flex-row items-center justify-between gap-3 lg:gap-4">
-                              <div className="text-xs lg:text-sm text-[#fff] [font-family:'Fahkwang',Helvetica] text-center lg:text-left">
-                                Need help choosing? <span className="text-primary font-medium lg:pl-6">Contact our experts</span>
-                              </div>
-                              <button
-                                onClick={() => navigate("/contact")}
-                                className="px-4 lg:px-6 py-2 lg:py-3 bg-primary text-white rounded-lg text-xs lg:text-sm font-medium [font-family:'Fahkwang',Helvetica] hover:bg-primary-hover transition-all duration-300 hover:scale-105 whitespace-nowrap"
-                              >
-                                Get Consultation
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-
-                          ) : null
-                        )}
-                      </AnimatePresence>
-
+                                                            ))}
+                                                          </div>
+                                                        </div>
+                                                        <div className="bg-gray-50/50 px-8 py-6 border-t border-gray-100">
+                                                          <div className="max-w-7xl mx-auto">
+                                                            <div className="flex items-center justify-between">
+                                                              <div className="text-sm text-[#626161] [font-family:'Fahkwang',Helvetica]">
+                                                                Need help choosing? <span className="text-primary font-medium">Contact our experts</span>
+                                                              </div>
+                                                              <button
+                                                                onClick={() => navigate("/contact")}
+                                                                className="px-6 py-3 bg-primary text-white rounded-lg text-sm font-medium [font-family:'Fahkwang',Helvetica] hover:bg-primary-hover transition-all duration-300 hover:scale-105"
+                                                              >
+                                                                Get Consultation
+                                                              </button>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </motion.div>
+                                                  ) : (
+                                                    <motion.div
+                                                      variants={submenuVariants}
+                                                      initial="hidden"
+                                                      animate="visible"
+                                                      exit="hidden"
+                                                      role="menu"
+                                                      aria-label={`${item.name} submenu`}
+                                                      className="absolute top-full left-0 mt-2 min-w-[200px] bg-[#1b1b1b] rounded-lg shadow-2xl overflow-hidden z-[999] border border-[#333333]"
+                                                      style={{
+                                                        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 0, 0, 0.3)",
+                                                      }}
+                                                      onMouseEnter={() => handleMouseEnter(item.name)}
+                                                      onMouseLeave={handleMouseLeave}
+                                                    >
+                                                      <motion.div className="py-2">
+                                                        {item.subItems.map((subItem, subIndex) => (
+                                                          <motion.button
+                                                            key={subIndex}
+                                                            role="menuitem"
+                                                            ref={(el) => {
+                                                              const key = `${item.name}-${subIndex}`;
+                                                              if (el && !(el as any).dataset?.animationKey) {
+                                                                addSubmenuItemAnimation(el, key);
+                                                              }
+                                                            }}
+                                                            variants={itemVariants}
+                                                            transition={{ delay: subIndex * 0.1 }}
+                                                            onClick={() => navigate(subItem.href)}
+                                                            className="w-full px-4 py-3 text-left text-sm text-white hover:text-primary transition-colors duration-300 [font-family:'Fahkwang',Helvetica] relative group overflow-hidden"
+                                                            style={{
+                                                              transformStyle: "preserve-3d",
+                                                              perspective: "500px",
+                                                            }}
+                                                          >
+                                                            <span className="relative z-10">{subItem.name}</span>
+                                                          </motion.button>
+                                                        ))}
+                                                      </motion.div>
+                                                    </motion.div>
+                                                  )
+                                                )}
+                                              </AnimatePresence>
                     </div>
                   ))}
                 </nav>
@@ -549,23 +564,23 @@ const MainMenu: React.FC = () => {
           scroll-behavior: smooth;
         }
 
-        /* Desktop mega menu scrollbar */
-        .mega-menu-scroll {
+        /* Commercial column scrollbar only */
+        .commercial-column-scroll {
           scrollbar-width: thin; /* Firefox */
-          scrollbar-color: rgba(0,0,0,.25) transparent;
+          scrollbar-color: rgba(238, 84, 40, 0.3) transparent;
         }
-        .mega-menu-scroll::-webkit-scrollbar {
+        .commercial-column-scroll::-webkit-scrollbar {
           width: 6px;
         }
-        .mega-menu-scroll::-webkit-scrollbar-track {
+        .commercial-column-scroll::-webkit-scrollbar-track {
           background: transparent;
         }
-        .mega-menu-scroll::-webkit-scrollbar-thumb {
-          background: rgba(0, 0, 0, 0.25);
+        .commercial-column-scroll::-webkit-scrollbar-thumb {
+          background: rgba(238, 84, 40, 0.3);
           border-radius: 3px;
         }
-        .mega-menu-scroll::-webkit-scrollbar-thumb:hover {
-          background: rgba(0, 0, 0, 0.4);
+        .commercial-column-scroll::-webkit-scrollbar-thumb:hover {
+          background: rgba(238, 84, 40, 0.5);
         }
 
         /* Mobile sidebar submenu scrollbar */
@@ -636,67 +651,6 @@ const MainMenu: React.FC = () => {
         .group:hover .group-hover\:w-full {
           width: 100% !important;
         }
-
-        .mega-menu-scroll {
-          scrollbar-width: thin;
-          scrollbar-color: rgba(255,255,255,.2) transparent;
-        }
-        .mega-menu-scroll::-webkit-scrollbar {
-          width: 6px;
-        }
-        .mega-menu-scroll::-webkit-scrollbar-thumb {
-          background: rgba(255,255,255,0.2);
-          border-radius: 3px;
-        }
-        .mega-menu-scroll::-webkit-scrollbar-thumb:hover {
-          background: rgba(255,255,255,0.4);
-        }
-
-        .mega-sublink {
-          position: relative;
-          padding: 6px 0;
-          display: block;
-          color: #ccc;
-          font-size: 14px;   /* 👈 set font size here */
-          line-height: 1.5;
-          transition: color 0.3s ease;
-        }
-        .mega-sublink:hover {
-          color: #75BF44;
-        }
-        .mega-sublink::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          height: 1px;
-          width: 0;
-          background: #75BF44;
-          transition: width 0.3s ease;
-        }
-        .mega-sublink:hover::after {
-          width: 100%;
-        }
-
-
-        .menu-title {
-          font-size: 16px;   /* 👈 set section title font size */
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          padding-bottom: 8px;
-          border-bottom: 2px solid #222222ff;
-        }
-
-        .menu-title-arch {
-          font-size: 16px;   /* 👈 set section title font size */
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          padding-bottom: 8px;          
-        }
-
-
 
       `}</style>
     </>
