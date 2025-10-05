@@ -1,6 +1,6 @@
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
 import { Button } from "../../../../ui/button";
 import { Clock, User, Calendar, ArrowRight } from "lucide-react";
 import gsap from "gsap";
@@ -18,10 +18,8 @@ function renderLexical(node: any): string {
   switch (node.type) {
     case "root":
       return (node.children || []).map(renderLexical).join("");
-
     case "paragraph":
       return `<p>${(node.children || []).map(renderLexical).join("")}</p>`;
-
     case "text": {
       let text = node.text || "";
       if (node.format & 1) text = `<strong>${text}</strong>`;
@@ -29,35 +27,29 @@ function renderLexical(node: any): string {
       if (node.format & 4) text = `<u>${text}</u>`;
       return text;
     }
-
     case "heading":
       return `<${node.tag || "h2"}>${(node.children || [])
         .map(renderLexical)
         .join("")}</${node.tag || "h2"}>`;
-
     case "quote":
       return `<blockquote>${(node.children || [])
         .map(renderLexical)
         .join("")}</blockquote>`;
-
     case "list": {
       const listTag = node.listType === "ordered" ? "ol" : "ul";
       return `<${listTag}>${(node.children || [])
         .map(renderLexical)
         .join("")}</${listTag}>`;
     }
-
     case "listitem":
       return `<li>${(node.children || []).map(renderLexical).join("")}</li>`;
-
     case "upload":
       if (node.value?.url) {
         return `<div class="my-6"><img src="${CMS_ORIGIN}${node.value.url}" alt="${
           node.value.alt || ""
-        }" class="rounded-lg"/></div>`;
+        }" class="rounded-lg w-full h-auto"/></div>`;
       }
       return "";
-
     default:
       return (node.children || []).map(renderLexical).join("");
   }
@@ -95,91 +87,110 @@ export const BlogContentSection = (): JSX.Element => {
   /* ---------------- Fetch Blog Post ---------------- */
   useEffect(() => {
     if (!slug) return;
+    const controller = new AbortController();
 
     const fetchPost = async () => {
       try {
         setLoading(true);
         setErr(null);
         const res = await fetch(
-          `${CMS_ORIGIN}/api/blog-posts?where[slug][equals]=${slug}&depth=2`
+          `${CMS_ORIGIN}/api/blog-posts?where[slug][equals]=${slug}&depth=2`,
+          { signal: controller.signal }
         );
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         setPost(data.docs?.[0] || null);
       } catch (e: any) {
-        setErr(e.message || "Failed to load post");
+        if (e.name !== "AbortError")
+          setErr(e.message || "Failed to load post");
       } finally {
         setLoading(false);
       }
     };
 
     fetchPost();
+    return () => controller.abort();
   }, [slug]);
 
   /* ---------------- Fetch Categories ---------------- */
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await fetch(`${CMS_ORIGIN}/api/blog-categories`);
-        if (res.ok) {
-          const data = await res.json();
-          setCategories(data.docs || []);
-        }
-      } catch {
-        // silent fail
-      }
-    };
-    fetchCategories();
+    fetch(`${CMS_ORIGIN}/api/blog-categories`)
+      .then((res) => res.json())
+      .then((data) => setCategories(data.docs || []))
+      .catch(() => {});
   }, []);
 
   /* ---------------- GSAP Animations ---------------- */
   useEffect(() => {
-    if (!sectionRef.current) return;
+    if (!post) return;
 
-    if (contentRef.current) {
-      gsap.fromTo(
-        contentRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: contentRef.current,
-            start: "top 85%",
-            end: "top 55%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }
+    const ctx = gsap.context(() => {
+      if (contentRef.current) {
+        gsap.fromTo(
+          contentRef.current,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: contentRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
 
-    if (sidebarRef.current) {
-      gsap.fromTo(
-        sidebarRef.current,
-        { opacity: 0, x: 50 },
-        {
-          opacity: 1,
-          x: 0,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sidebarRef.current,
-            start: "top 85%",
-            end: "top 55%",
-            toggleActions: "play none none reverse",
+      if (sidebarRef.current) {
+        gsap.fromTo(
+          sidebarRef.current,
+          { opacity: 0, x: 50 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: sidebarRef.current,
+              start: "top 85%",
+              toggleActions: "play none none reverse",
+            },
+          }
+        );
+      }
+    }, sectionRef);
+
+    // ✅ Refresh ScrollTrigger after content & images are loaded
+    const refreshAfterImages = () => {
+      const imgs = sectionRef.current?.querySelectorAll("img") || [];
+      let loaded = 0;
+      const total = imgs.length;
+      if (total === 0) ScrollTrigger.refresh();
+      imgs.forEach((img) => {
+        img.addEventListener(
+          "load",
+          () => {
+            loaded++;
+            if (loaded === total) ScrollTrigger.refresh();
           },
-        }
-      );
-    }
+          { once: true }
+        );
+      });
+    };
+    refreshAfterImages();
+
+    // Small delayed refresh (in case of Lexical async hydration)
+    const timeout = setTimeout(() => ScrollTrigger.refresh(), 800);
 
     return () => {
+      ctx.revert();
+      clearTimeout(timeout);
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, [post]);
 
-  /* ---------------- Helpers ---------------- */
   const formatDate = (dateString?: string) => {
     if (!dateString) return "—";
     try {
@@ -193,10 +204,11 @@ export const BlogContentSection = (): JSX.Element => {
     }
   };
 
+  /* ---------------- Render ---------------- */
   return (
     <section
       ref={sectionRef}
-      className="py-16 md:py-20 bg-white -mt-48 relative z-10"
+      className="py-16 md:py-20 bg-white relative z-10"
     >
       <div className="container mx-auto px-4 max-w-7xl grid grid-cols-1 lg:grid-cols-3 gap-12">
         {/* Main Content */}
@@ -221,6 +233,7 @@ export const BlogContentSection = (): JSX.Element => {
                     src={`${CMS_ORIGIN}${post.featuredImage.url}`}
                     alt={post.featuredImage.alt || post.title}
                     className="w-full h-full object-cover"
+                    onLoad={() => ScrollTrigger.refresh()}
                   />
                 </div>
               )}
@@ -280,7 +293,6 @@ export const BlogContentSection = (): JSX.Element => {
 
         {/* Sidebar */}
         <div ref={sidebarRef} className="lg:col-span-1 space-y-8">
-          {/* Categories */}
           <div className="bg-white border border-gray-200 rounded-lg p-6">
             <h3 className="text-lg font-medium text-[#01190c] mb-6 uppercase tracking-wider">
               Categories
@@ -305,16 +317,15 @@ export const BlogContentSection = (): JSX.Element => {
             </div>
           </div>
 
-          {/* Help Widget */}
           <div className="bg-[#1d1e24] text-white rounded-lg p-6 text-center">
             <h3 className="text-xl font-medium mb-4">How Can We Help?</h3>
             <p className="text-sm text-gray-300 mb-6">
               Contact our experts for personalized interior design consultation
             </p>
             <Link to="/contact">
-              <Button className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-hover transition-colors duration-300 w-full">
+              <Button className="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary-hover transition-colors duration-300 w-full flex justify-center items-center gap-2">
                 Start Consultation
-                <ArrowRight className="ml-2 w-4 h-4" />
+                <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
           </div>

@@ -1,3 +1,4 @@
+// footer section
 import { CopyrightIcon, Youtube } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "../../../../ui/button";
@@ -108,6 +109,10 @@ export const FooterSection = (): JSX.Element => {
       const elementsToAnimate = Array.from(children).slice(1);
       
       if (elementsToAnimate.length > 0) {
+        // Set initial state immediately
+        gsap.set(elementsToAnimate, { opacity: 1, y: 0, scale: 1 });
+        
+        // Then add scroll animation
         gsap.fromTo(elementsToAnimate,
           {
             opacity: 0,
@@ -125,7 +130,8 @@ export const FooterSection = (): JSX.Element => {
               trigger: leftContentRef.current,
               start: "top 85%",
               end: "top 55%",
-              toggleActions: "play none none reverse"
+              toggleActions: "play none none reverse",
+              once: false
             }
           }
         );
@@ -176,6 +182,9 @@ export const FooterSection = (): JSX.Element => {
     if (footerMenusRef.current) {
       const menuColumns = footerMenusRef.current.children;
       
+      // Set initial state immediately
+      gsap.set(menuColumns, { opacity: 1, y: 0, scale: 1 });
+      
       gsap.fromTo(menuColumns,
         {
           opacity: 0,
@@ -193,7 +202,8 @@ export const FooterSection = (): JSX.Element => {
             trigger: footerMenusRef.current,
             start: "top 85%",
             end: "top 55%",
-            toggleActions: "play none none reverse"
+            toggleActions: "play none none reverse",
+            once: false
           }
         }
       );
@@ -214,6 +224,9 @@ export const FooterSection = (): JSX.Element => {
 
     // Bottom section animation
     if (bottomSectionRef.current) {
+      // Set initial state immediately
+      gsap.set(bottomSectionRef.current, { opacity: 1, y: 0 });
+      
       gsap.fromTo(bottomSectionRef.current,
         {
           opacity: 0,
@@ -228,7 +241,8 @@ export const FooterSection = (): JSX.Element => {
             trigger: bottomSectionRef.current,
             start: "top 90%",
             end: "top 70%",
-            toggleActions: "play none none reverse"
+            toggleActions: "play none none reverse",
+            once: false
           }
         }
       );
@@ -276,22 +290,14 @@ export const FooterSection = (): JSX.Element => {
     },
   ];
 
-  // Social media containers
-  const socialMediaContainers = [
-    "/container-2.svg",
-    "/container-1.svg",
-    "/container-3.svg",
-    "/container.svg",
-  ];
-
+  
   return (
     <section 
       ref={sectionRef}
-      className="w-full bg-[#1b1b1b] py-20 relative overflow-hidden"
+      className="w-full bg-[#1b1b1b] py-20 relative overflow-hidden z-20"
       style={{
         transformStyle: 'preserve-3d',
-        perspective: '1000px',
-        zIndex: 1
+        perspective: '1000px'
       }}
     >
       {/* Background decorative elements */}
@@ -541,7 +547,7 @@ export const FooterSection = (): JSX.Element => {
             </div>
             
             <div className="flex items-center gap-6">
-              <a
+             {/* <a
                 href="/privacy-policy"
                 className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6 transition-colors duration-300 hover:text-primary relative group overflow-hidden cursor-pointer"
               >
@@ -555,13 +561,13 @@ export const FooterSection = (): JSX.Element => {
               >
                 <span className="relative z-10">Terms of Service</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-primary transition-all duration-500 ease-out group-hover:w-full"></span>
-              </a>
+              </a>*/}
             </div>
           </div>
 
           <div className="flex items-center gap-4 mt-4 sm:mt-0">
             <div className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6">
-              {/*Designed with ❤️ by Technocrats*/}
+              Design & Developed by <a href="https://technocratsbd.com" target="_blank">Technocrats</a>
             </div>
           </div>
         </div>

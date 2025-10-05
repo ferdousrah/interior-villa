@@ -427,20 +427,10 @@ const MainMenu: React.FC = () => {
                                                           <motion.button
                                                             key={subIndex}
                                                             role="menuitem"
-                                                            ref={(el) => {
-                                                              const key = `${item.name}-${subIndex}`;
-                                                              if (el && !(el as any).dataset?.animationKey) {
-                                                                addSubmenuItemAnimation(el, key);
-                                                              }
-                                                            }}
                                                             variants={itemVariants}
                                                             transition={{ delay: subIndex * 0.1 }}
                                                             onClick={() => navigate(subItem.href)}
                                                             className="w-full px-4 py-3 text-left text-sm text-white hover:text-primary transition-colors duration-300 [font-family:'Fahkwang',Helvetica] relative group overflow-hidden"
-                                                            style={{
-                                                              transformStyle: "preserve-3d",
-                                                              perspective: "500px",
-                                                            }}
                                                           >
                                                             <span className="relative z-10">{subItem.name}</span>
                                                           </motion.button>
@@ -534,7 +524,7 @@ const MainMenu: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <style jsx>{`
+      <style>{`
         header {
           height: var(--header-height, 90px);
           background-color: var(--header-bg, transparent);

@@ -81,7 +81,7 @@ export const HeroSection = (): JSX.Element => {
                 lineHeight: "1.1",
               }}
             >
-              Blog
+              Blogg
             </motion.h1>
 
             {/* Breadcrumb */}
