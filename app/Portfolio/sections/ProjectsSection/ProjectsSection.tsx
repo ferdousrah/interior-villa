@@ -1,3 +1,4 @@
+// app/Portfolio/sections/ProjectsSection/ProjectsSection.tsx
 'use client';
 
 import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
@@ -103,6 +104,9 @@ export const ProjectsSection = (): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(false);
   const [err, setErr] = useState<string | null>(null);
   const [totalCount, setTotalCount] = useState<number | null>(null);
+  
+  // Prevent duplicate requests
+  const fetchingRef = useRef<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -116,13 +120,23 @@ export const ProjectsSection = (): JSX.Element => {
   };
 
   /* ---------- fetch helper ---------- */
+  const activeFilterRef = useRef(activeFilter);
+  activeFilterRef.current = activeFilter;
+
   const fetchPage = useCallback(
     async (pageToLoad: number, replace: boolean, signal?: AbortSignal) => {
+      // Prevent duplicate requests
+      if (fetchingRef.current) {
+        console.log('Fetch already in progress, skipping...');
+        return;
+      }
+      
+      fetchingRef.current = true;
       setLoading(true);
       setErr(null);
 
       try {
-        const base = API_BY_FILTER[activeFilter];
+        const base = API_BY_FILTER[activeFilterRef.current];
         const url = new URL(base);
         url.searchParams.set("depth", "1");
         url.searchParams.set("limit", PAGE_SIZE.toString());
@@ -144,7 +158,7 @@ export const ProjectsSection = (): JSX.Element => {
             id: Number(doc?.id ?? (pageToLoad - 1) * PAGE_SIZE + i + 1),
             category: categoryText,
             title: doc?.title || doc?.name || `Project ${(pageToLoad - 1) * PAGE_SIZE + i + 1}`,
-            slug: doc?.slug || "",   // 👈 FIX: add slug from API
+            slug: doc?.slug || "",
             description: doc?.shortDescription || doc?.description || "",
             image,
             year: doc?.year || "",
@@ -167,9 +181,10 @@ export const ProjectsSection = (): JSX.Element => {
         if (e?.name !== "AbortError") setErr(e?.message || "Failed to load projects");
       } finally {
         setLoading(false);
+        fetchingRef.current = false;
       }
     },
-    [activeFilter]
+    []
   );
 
   /* ---------- reset on filter ---------- */
@@ -180,53 +195,44 @@ export const ProjectsSection = (): JSX.Element => {
     setHasMore(true);
     setTotalCount(null);
     setErr(null);
+    fetchingRef.current = false; // Reset fetching state
     fetchPage(1, true, controller.signal);
-    return () => controller.abort();
-  }, [activeFilter, fetchPage]);
+    return () => {
+      controller.abort();
+      fetchingRef.current = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeFilter]);
 
   /* ---------- IntersectionObserver for infinite scroll ---------- */
   useEffect(() => {
-    if (page < 1 || !hasMore) return;
+    if (page < 1 || !hasMore || loading) return;
     const sentinel = loadMoreRef.current;
     if (!sentinel) return;
 
-    let controller: AbortController | null = null;
-
     const onIntersect: IntersectionObserverCallback = (entries) => {
       const first = entries[0];
-      if (first.isIntersecting && hasMore && !loading) {
-        controller?.abort();
-        controller = new AbortController();
-        fetchPage(page + 1, false, controller.signal);
+      if (first.isIntersecting && hasMore && !loading && !fetchingRef.current) {
+        console.log('Intersection triggered, loading page:', page + 1);
+        fetchPage(page + 1, false);
       }
     };
 
     const io = new IntersectionObserver(onIntersect, {
       root: null,
-      // generous margins so we prefetch before the user actually hits the bottom
-      rootMargin: "1200px 0px 1200px 0px",
-      threshold: 0,
+      rootMargin: "200px", // Reduced from 1200px
+      threshold: 0.1,
     });
 
     io.observe(sentinel);
 
     return () => {
       io.disconnect();
-      controller?.abort();
     };
-  }, [page, hasMore, loading, fetchPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, hasMore, loading]);
 
-  /* ---------- Manual “nudge” if sentinel starts in view ---------- */
-  useEffect(() => {
-    if (page < 1 || !hasMore || loading) return;
-    const s = loadMoreRef.current;
-    if (!s) return;
-    const r = s.getBoundingClientRect();
-    const inView = r.top <= window.innerHeight && r.bottom >= 0;
-    if (inView) {
-      fetchPage(page + 1, false);
-    }
-  }, [loading, page, hasMore, fetchPage]);
+  /* ---------- Manual "nudge" removed - causes issues ---------- */
 
   /* ---------- Heading hover animation ---------- */
   useEffect(() => {
@@ -283,8 +289,8 @@ export const ProjectsSection = (): JSX.Element => {
   );
 
   const handleProjectClick = (slug: string) => {
-  navigate(`/portfolio/project-details/${slug}`);
-};
+    navigate(`/portfolio/project-details/${slug}`);
+  };
 
 
   return (
@@ -431,7 +437,7 @@ export const ProjectsSection = (): JSX.Element => {
           <div className="flex items-center justify-center mt-6 min-h-[32px]">
             {loading && <div className="text-sm text-[#626161]">Loading more…</div>}
             {!loading && !hasMore && (
-              <div className="text-sm text-[#626161]">You’ve reached the end.</div>
+              <div className="text-sm text-[#626161]">You've reached the end.</div>
             )}
             {!loading && err && (
               <button
