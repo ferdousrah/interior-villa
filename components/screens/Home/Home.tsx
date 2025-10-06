@@ -61,6 +61,7 @@ const Home = (): JSX.Element => {
             showControls={true}
             showIndicators={false}
             transitionEffect="fade"
+            imageSize="large"
           />
         </section>
 

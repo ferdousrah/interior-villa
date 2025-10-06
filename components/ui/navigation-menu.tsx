@@ -345,7 +345,7 @@ const MainMenu: React.FC = () => {
                                                                 transition={{ delay: sectionIndex * 0.1 }}
                                                                 className="p-6 group transition-all duration-300 border-r border-gray-100 last:border-r-0 hover:shadow-md hover:scale-[1.01] rounded-lg flex flex-col"
                                                                 style={{
-                                                                  backgroundColor: sectionIndex === 0 ? '#f0f9eb' : sectionIndex === 1 ? '#fff5f0' : '#f0f4ff',
+                                                                  backgroundColor: sectionIndex === 0 ? '#41AB5D' : sectionIndex === 1 ? '#74C476' : '#A1D99B',
                                                                   width: sectionIndex === 0 ? '27%' : sectionIndex === 1 ? '48%' : '25%',
                                                                 }}
                                                               >

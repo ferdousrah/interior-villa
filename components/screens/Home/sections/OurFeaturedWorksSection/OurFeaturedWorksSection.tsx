@@ -68,7 +68,7 @@ const getMediumImageUrl = (img?: Media | null): string => {
   if (!img) return "/placeholder.webp";
 
   // Try medium size first
-  let url = img.sizes?.medium?.url || img.url;
+  let url = img.sizes?.small?.url || img.url;
   if (!url) return "/placeholder.webp";
 
   const abs = absolutize(url);

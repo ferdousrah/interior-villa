@@ -192,6 +192,10 @@ export const OurProcessSection: React.FC = () => {
       }
     }, sectionRef);
 
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+
     return () => ctx.revert();
   }, [prefersReducedMotion]);
 

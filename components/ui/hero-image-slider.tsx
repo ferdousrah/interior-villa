@@ -20,6 +20,8 @@ interface HeroImageSliderProps {
   showControls?: boolean;
   showIndicators?: boolean;
   transitionEffect?: 'slide' | 'fade' | 'zoom' | 'flip' | 'auto';
+  /** ✅ NEW: control image height/size */
+  imageSize?: 'small' | 'medium' | 'large' | 'full';
 }
 
 const CMS_BASE_URL = 'https://interiorvillabd.com';
@@ -31,6 +33,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
   showControls = true,
   showIndicators = true,
   transitionEffect = 'slide',
+  imageSize = 'large', // default size
 }) => {
   const [images, setImages] = useState<SlideImage[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -48,8 +51,6 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
         const mappedSlides: SlideImage[] = data.docs.map((item: any) => {
           const rawUrl = item.slider.image?.url || '';
           const fullUrl = `${CMS_BASE_URL}${rawUrl}`;
-
-          // Replace extension with .webp (keep ?v=)
           const webpUrl = fullUrl.replace(/\.(jpg|jpeg|png)(\?.*)?$/i, '.webp$2');
 
           return {
@@ -148,21 +149,28 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
     currentVariants = map[transitionEffect] || slideVariants;
   }
 
-  /* -------------------- Render -------------------- */
+  /* -------------------- Dynamic height by imageSize -------------------- */
+  const heightClasses = {
+    small: 'h-[40vh] sm:h-[50vh]',
+    medium: 'h-[60vh] sm:h-[70vh]',
+    large: 'h-[80vh] sm:h-[90vh]',
+    full: 'h-screen',
+  };
+
+  const currentImage = images[currentIndex];
 
   if (images.length === 0) {
-    // Skeleton shimmer
     return (
-      <div className={`relative w-full h-[80vh] overflow-hidden bg-gray-900 ${className}`}>
+      <div
+        className={`relative w-full ${heightClasses[imageSize]} overflow-hidden bg-gray-900 ${className}`}
+      >
         <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800" />
       </div>
     );
   }
 
-  const currentImage = images[currentIndex];
-
   return (
-    <div className={`relative w-full h-full overflow-hidden ${className}`}>
+    <div className={`relative w-full ${heightClasses[imageSize]} overflow-hidden ${className}`}>
       <div className="relative w-full h-full">
         <AnimatePresence initial={false} custom={direction} mode="wait">
           <motion.div
@@ -175,7 +183,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
             transition={{ duration: 0.9, ease: 'easeInOut' }}
             className="absolute inset-0 w-full h-full"
           >
-            {/* Main image */}
+            {/* Image with size control */}
             <img
               src={currentImage.src}
               alt={currentImage.alt}
@@ -185,10 +193,9 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
               className="w-full h-full object-cover"
             />
 
-            {/* 🔥 Gradient shadow */}
+            {/* Overlay gradients & text (unchanged) */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
 
-            {/* 🔥 Animated light rays */}
             <motion.div
               className="absolute inset-0 pointer-events-none"
               initial={{ opacity: 0, rotate: -10 }}
@@ -211,58 +218,21 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
               }}
             />
 
-            {/* Text overlay */}
             <div className="absolute inset-0 flex items-center justify-start">
               <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
                 <div className="text-left text-white max-w-4xl">
                   {currentImage.title && (
                     <motion.h1
                       key={`title-${currentIndex}`}
-                      className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold [font-family:'Fahkwang',Helvetica] mb-4 leading-tight flex flex-wrap"
-                      style={{ textShadow: '0 4px 20px rgba(0,0,0,0.6)' }}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      variants={{
-                        hidden: {},
-                        visible: {
-                          transition: { staggerChildren: 0.04, delayChildren: 0.2 },
-                        },
-                        exit: {
-                          transition: { staggerChildren: 0.03, staggerDirection: -1 },
-                        },
-                      }}
+                      className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold [font-family:'Fahkwang',Helvetica] mb-4 leading-tight"
                     >
-                      {currentImage.title.split('').map((char, i) => (
-                        <motion.span
-                          key={i}
-                          variants={{
-                            hidden: { opacity: 0, y: 30, rotateX: -90 },
-                            visible: { opacity: 1, y: 0, rotateX: 0 },
-                            exit: { opacity: 0, y: -20, rotateX: 90 },
-                          }}
-                          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                          className="inline-block"
-                        >
-                          {char === ' ' ? '\u00A0' : char}
-                        </motion.span>
-                      ))}
+                      {currentImage.title}
                     </motion.h1>
                   )}
-
                   {currentImage.subtitle && (
                     <motion.p
                       key={`subtitle-${currentIndex}`}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{
-                        duration: 0.8,
-                        delay: 0.6, // after title
-                        ease: [0.25, 0.46, 0.45, 0.94],
-                      }}
                       className="text-lg sm:text-xl md:text-2xl [font-family:'Fahkwang',Helvetica] text-white/90 font-light"
-                      style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
                     >
                       {currentImage.subtitle}
                     </motion.p>

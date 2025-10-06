@@ -1,134 +1,57 @@
-// Client-side email service that calls the server-side API
+// src/services/emailService.js
+import axios from "axios";
 
-export const sendContactEmail = async (formData) => {
+/**
+ * This file sends form data to your backend API endpoint.
+ * The backend will handle sending emails using Resend securely.
+ *
+ * Example backend endpoint: /api/send-email/
+ */
+
+// 🔧 Change this to match your backend API URL
+// If using Next.js API route: '/api/send-email'
+// If using Django backend: 'https://your-backend.com/api/send-email/'
+const BACKEND_EMAIL_ENDPOINT = "/api/send-email/";
+
+/* -------------------------------------------------------
+   🧩 Appointment Email
+------------------------------------------------------- */
+export async function sendAppointmentEmail(data) {
   try {
-    console.log('Sending contact email with data:', formData);
-    
-    const response = await fetch('/api/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: 'contact',
-        formData
-      })
-    });
+    const payload = {
+      type: "appointment",
+      name: data.name,
+      mobile: data.mobile,
+      address: data.address,
+      email: data.email || "",
+    };
 
-    console.log('Response status:', response.status);
-    console.log('Response headers:', response.headers);
-
-    // Check if response is ok before trying to parse JSON
-    if (!response.ok) {
-      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-      
-      try {
-        const errorData = await response.text();
-        console.log('Error response text:', errorData);
-        
-        // Try to parse as JSON if possible
-        try {
-          const errorJson = JSON.parse(errorData);
-          errorMessage = errorJson.error || errorMessage;
-        } catch (parseError) {
-          // If not JSON, use the text as error message
-          errorMessage = errorData || errorMessage;
-        }
-      } catch (textError) {
-        console.log('Could not read error response:', textError);
-      }
-      
-      throw new Error(errorMessage);
-    }
-
-    // Get response text first to check if it's valid JSON
-    const responseText = await response.text();
-    console.log('Response text:', responseText);
-
-    if (!responseText) {
-      throw new Error('Empty response from server');
-    }
-
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (parseError) {
-      console.error('JSON parse error:', parseError);
-      console.error('Response text that failed to parse:', responseText);
-      throw new Error('Invalid JSON response from server');
-    }
-
-    console.log('Parsed response data:', data);
-    return { success: true, data };
-    
+    const response = await axios.post(BACKEND_EMAIL_ENDPOINT, payload);
+    return response.data;
   } catch (error) {
-    console.error('Email service error:', error);
-    throw new Error(error.message || 'Failed to send email');
+    console.error("Failed to send appointment email:", error?.response?.data || error.message);
+    throw new Error("Failed to send email");
   }
-};
+}
 
-export const sendAppointmentEmail = async (formData) => {
+/* -------------------------------------------------------
+   💬 Contact Email
+------------------------------------------------------- */
+export async function sendContactEmail(data) {
   try {
-    console.log('Sending appointment email with data:', formData);
-    
-    const response = await fetch('/api/send-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        type: 'appointment',
-        formData
-      })
-    });
+    const payload = {
+      type: "contact",
+      name: data.name,
+      email: data.email,
+      mobile: data.mobile || "",
+      subject: data.subject || "",
+      message: data.message,
+    };
 
-    console.log('Response status:', response.status);
-
-    // Check if response is ok before trying to parse JSON
-    if (!response.ok) {
-      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
-      
-      try {
-        const errorData = await response.text();
-        console.log('Error response text:', errorData);
-        
-        // Try to parse as JSON if possible
-        try {
-          const errorJson = JSON.parse(errorData);
-          errorMessage = errorJson.error || errorMessage;
-        } catch (parseError) {
-          // If not JSON, use the text as error message
-          errorMessage = errorData || errorMessage;
-        }
-      } catch (textError) {
-        console.log('Could not read error response:', textError);
-      }
-      
-      throw new Error(errorMessage);
-    }
-
-    // Get response text first to check if it's valid JSON
-    const responseText = await response.text();
-    console.log('Response text:', responseText);
-
-    if (!responseText) {
-      throw new Error('Empty response from server');
-    }
-
-    let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (parseError) {
-      console.error('JSON parse error:', parseError);
-      console.error('Response text that failed to parse:', responseText);
-      throw new Error('Invalid JSON response from server');
-    }
-
-    console.log('Parsed response data:', data);
-    return { success: true, data };
-    
+    const response = await axios.post(BACKEND_EMAIL_ENDPOINT, payload);
+    return response.data;
   } catch (error) {
-    console.error('Email service error:', error);
-    throw new Error(error.message || 'Failed to send email');
+    console.error("Failed to send contact email:", error?.response?.data || error.message);
+    throw new Error("Failed to send email");
   }
-};
+}
