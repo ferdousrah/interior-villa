@@ -34,8 +34,6 @@ function useFontsReady() {
 
 // Hardcoded CMS origin (no env usage)
 const CMS_ORIGIN = "https://interiorvillabd.com";
-const absolutize = (u: string) =>
-  /^https?:\/\//i.test(u) ? u : new URL(u, CMS_ORIGIN).href;
 
 type MediaSize = { url?: string | null };
 type Media = {
@@ -44,18 +42,32 @@ type Media = {
   sizes?: Record<string, MediaSize | undefined>;
 };
 
-const getBestImageUrl = (m?: Media | string | null): string => {
-  const placeholder = "/placeholder.webp";
-  if (!m) return placeholder;
-  if (typeof m === "string") return absolutize(m);
+/* ---------- Utils ---------- */
+const absolutize = (u?: string | null): string => {
+  if (!u) return '/placeholder.webp';
+  if (/^https?:\/\//i.test(u)) return u;
+  const CMS_ORIGIN = 'https://interiorvillabd.com'; // adjust if using local dev domain
+  return new URL(u, CMS_ORIGIN).href;
+};
 
-  const order = ["large", "xlarge", "medium", "small", "og", "square", "thumbnail"];
-  for (const k of order) {
-    const u = m?.sizes?.[k]?.url;
-    if (u) return absolutize(u);
-  }
-  if (m?.url) return absolutize(m.url);
-  return placeholder;
+/** Prefer best size, fallback to original */
+const getBestImageUrl = (img?: Media | null): string => {
+  if (!img) return "/placeholder.webp";
+
+  // Prefer medium, then small, then original
+  const url =
+    img.sizes?.square?.url ||
+    img.sizes?.thumbnail?.url ||
+    img.url;
+
+  if (!url) return "/placeholder.webp";
+
+  const abs = absolutize(url);
+
+  // Always prefer .webp variant for Payload images
+  if (abs.endsWith(".webp")) return abs;
+
+  return abs.replace(/\.(jpg|jpeg|png)(\?.*)?$/i, ".webp$2");
 };
 
 const getImageAlt = (m?: Media | string | null, fallback = "Client story") => {

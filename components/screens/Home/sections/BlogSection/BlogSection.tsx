@@ -159,8 +159,10 @@ export const BlogSection = (): JSX.Element => {
                       : "/a-residential-interior-image.png"
                   }
                   loading="lazy"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 600px, 900px"
+                 placeholder="blur"
                 />
+                
               </div>
             </div>
             <div className="lg:w-1/2">

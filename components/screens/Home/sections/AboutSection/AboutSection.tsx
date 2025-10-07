@@ -45,31 +45,36 @@ type AboutSectionData = {
 };
 
 /* ---------- Constants ---------- */
-const CMS_BASE = "https://cms.interiorvillabd.com";
+const CMS_BASE = "https://interiorvillabd.com";
 const HOME_ENDPOINT = `${CMS_BASE}/api/globals/home?depth=1&draft=false`;
 
 /* ---------- Utils ---------- */
-const absUrl = (u?: string | null) => (u ? (u.startsWith("/") ? `${CMS_BASE}${u}` : u) : "");
+const absolutize = (u?: string | null): string => {
+  if (!u) return '/placeholder.webp';
+  if (/^https?:\/\//i.test(u)) return u;
+  const CMS_ORIGIN = 'https://interiorvillabd.com'; // adjust if using local dev domain
+  return new URL(u, CMS_ORIGIN).href;
+};
 
 /** Prefer best size, fallback to original */
-function getBestImageUrl(image?: Media | null): string {
-  if (!image) return "";
-  const order: (keyof NonNullable<Media["sizes"]>)[] = [
-    "large",
-    "xlarge",
-    "medium",
-    "small",
-    "og",
-    "square",
-    "thumbnail",
-  ];
-  for (const k of order) {
-    const u = image.sizes?.[k]?.url;
-    if (u) return u.startsWith("/") ? `${CMS_BASE}${u}` : u;
-  }
-  const u = image.url;
-  return u ? (u.startsWith("/") ? `${CMS_BASE}${u}` : u) : "";
-}
+const getBestImageUrl = (img?: Media | null): string => {
+  if (!img) return "/placeholder.webp";
+
+  // Prefer medium, then small, then original
+  const url =
+    img.sizes?.square?.url ||
+    img.sizes?.thumbnail?.url ||
+    img.url;
+
+  if (!url) return "/placeholder.webp";
+
+  const abs = absolutize(url);
+
+  // Always prefer .webp variant for Payload images
+  if (abs.endsWith(".webp")) return abs;
+
+  return abs.replace(/\.(jpg|jpeg|png)(\?.*)?$/i, ".webp$2");
+};
 
 /** Compose alt text with a safe fallback */
 function buildAlt(baseAlt: string | null | undefined, suffix: string) {
