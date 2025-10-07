@@ -4,6 +4,8 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Play, Pause } from 'lucide-react';
 import { PerformanceImage } from './performance-image';
+import SplitType from 'split-type';
+import gsap from 'gsap';
 import './hero-slider.css';
 
 interface SlideImage {
@@ -42,7 +44,8 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [direction, setDirection] = useState(0);
   const [isDarkImage, setIsDarkImage] = useState(true);
-
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
   const intervalRef = useRef<number | null>(null);
 
   /* ---------- Fetch slides ---------- */
@@ -147,6 +150,26 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
     }
   }, [currentIndex, slides, analyzeBrightness]);
 
+  /* ---------- Animate text with GSAP (depth reveal) ---------- */
+  useEffect(() => {
+    if (!titleRef.current) return;
+    const split = new SplitType(titleRef.current, { types: 'chars' });
+    gsap.fromTo(
+      split.chars,
+      { y: 50, opacity: 0, filter: 'blur(6px)', rotateX: 25 },
+      {
+        y: 0,
+        opacity: 1,
+        filter: 'blur(0px)',
+        rotateX: 0,
+        duration: 1,
+        stagger: 0.035,
+        ease: 'power3.out',
+      }
+    );
+    return () => split.revert();
+  }, [currentIndex]);
+
   const goToSlide = (index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
     setCurrentIndex(index);
@@ -164,8 +187,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
 
   const togglePlayPause = () => setIsPlaying((p) => !p);
 
-  /* ---------- Framer Variants ---------- */
-  const slideVariants = {
+  const variants = {
     enter: (dir: number) => ({
       x: transitionEffect === 'slide' ? (dir > 0 ? '100%' : '-100%') : 0,
       opacity: 0,
@@ -178,22 +200,6 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
       scale: transitionEffect === 'zoom' ? 0.95 : 1,
       zIndex: 0,
     }),
-  };
-
-  const textVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.8, ease: 'easeOut' } },
-    exit: { opacity: 0, y: -20, scale: 0.98, transition: { duration: 0.5, ease: 'easeIn' } },
-  };
-
-  const subtitleVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { delay: 0.25, duration: 0.8, ease: 'easeOut' },
-    },
-    exit: { opacity: 0, y: -10, transition: { duration: 0.4 } },
   };
 
   const heightMap = {
@@ -224,7 +230,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
         <motion.div
           key={currentIndex}
           custom={direction}
-          variants={slideVariants}
+          variants={variants}
           initial="enter"
           animate="center"
           exit="exit"
@@ -242,7 +248,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
             className="w-full h-full object-cover"
           />
 
-          {/* Animated overlay */}
+          {/* Dynamic overlay */}
           <AnimatePresence mode="wait">
             <motion.div
               key={isDarkImage ? 'dark' : 'light'}
@@ -256,37 +262,29 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
             />
           </AnimatePresence>
 
-          {/* Animated text content */}
+          {/* Text content */}
           <div className="absolute inset-0 flex items-center justify-start px-8 sm:px-12 md:px-20">
             <div className="text-white max-w-3xl">
-              <AnimatePresence mode="wait">
-                {slide.title && (
-                  <motion.h1
-                    key={`title-${slide.id}`}
-                    variants={textVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 hero-slide-title"
-                  >
-                    {slide.title}
-                  </motion.h1>
-                )}
-              </AnimatePresence>
-              <AnimatePresence mode="wait">
-                {slide.subtitle && (
-                  <motion.p
-                    key={`subtitle-${slide.id}`}
-                    variants={subtitleVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="text-lg sm:text-xl hero-slide-subtitle text-white/90"
-                  >
-                    {slide.subtitle}
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              {slide.title && (
+                <h1
+                  ref={titleRef}
+                  className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 leading-tight hero-slide-title"
+                >
+                  {slide.title}
+                </h1>
+              )}
+              {slide.subtitle && (
+                <motion.p
+                  ref={subtitleRef}
+                  key={`subtitle-${slide.id}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.8, ease: 'power2.out' }}
+                  className="text-lg sm:text-xl hero-slide-subtitle text-white/90"
+                >
+                  {slide.subtitle}
+                </motion.p>
+              )}
             </div>
           </div>
         </motion.div>
