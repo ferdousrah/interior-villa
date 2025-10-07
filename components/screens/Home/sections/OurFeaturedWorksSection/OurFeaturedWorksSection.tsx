@@ -12,28 +12,21 @@ import { PerformanceImage } from "../../../../ui/performance-image";
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 interface Project {
-  id: number | string;
+  id: string | number;
   category: string;
   title: string;
   slug: string;
   description: string;
   image: string;
-  imageAlt: string;        // ← new
+  imageAlt: string;
+  blurPlaceholder?: string;
   color: string;
   accent: string;
 }
 
 interface ProjectsApiResponse {
   docs: any[];
-  hasNextPage?: boolean;
-  hasPrevPage?: boolean;
-  limit?: number;
-  nextPage?: number | null;
-  page?: number;
-  pagingCounter?: number;
-  prevPage?: number | null;
   totalDocs?: number;
-  totalPages?: number;
 }
 
 /** If your CMS is reverse-proxied through the site domain, keep this.
@@ -42,8 +35,12 @@ interface ProjectsApiResponse {
 const CMS_ORIGIN = "https://interiorvillabd.com";
 
 // Build absolute URLs when API returns "/api/media/file/..."
-const absolutize = (u: string) =>
-  /^https?:\/\//i.test(u) ? u : CMS_ORIGIN ? new URL(u, CMS_ORIGIN).href : u;
+const absolutize = (u?: string | null): string => {
+  if (!u) return '/placeholder.webp';
+  if (/^https?:\/\//i.test(u)) return u;
+  const CMS_ORIGIN = 'https://interiorvillabd.com'; // adjust if using local dev domain
+  return new URL(u, CMS_ORIGIN).href;
+};
 
 /* ---------- Size + Alt helpers ---------- */
 type MediaSize = { url?: string | null };
@@ -63,27 +60,46 @@ type Media = {
   };
 };
 
-/** Prefer best size, fallback to original */
-const getMediumImageUrl = (img?: Media | null): string => {
+/** 
+ * Choose the best WebP variant automatically.
+ * Prefers small/medium sizes that Payload already generated.
+ */
+const getOptimizedImageUrl = (img?: Media | null): string => {
   if (!img) return "/placeholder.webp";
 
-  // Try medium size first
-  let url = img.sizes?.small?.url || img.url;
+  // Prefer medium, then small, then original
+  const url =
+    img.sizes?.medium?.url ||
+    img.sizes?.small?.url ||
+    img.url;
+
   if (!url) return "/placeholder.webp";
 
   const abs = absolutize(url);
 
-  // Swap to .webp if possible, keeping ?v=...
-  const webp = abs.replace(/\.(jpg|jpeg|png)(\?.*)?$/i, ".webp$2");
+  // Always prefer .webp variant for Payload images
+  if (abs.endsWith(".webp")) return abs;
 
-  return webp || abs;
+  return abs.replace(/\.(jpg|jpeg|png)(\?.*)?$/i, ".webp$2");
 };
 
 
+/**
+ * Get the URL for Payload's pre-generated blur placeholder.
+ */
+const getBlurPlaceholderUrl = (img?: any | null): string | undefined => {
+  const blurUrl = img?.sizes?.blur?.url;
+  return blurUrl ? absolutize(blurUrl) : undefined;
+};
 
-const getImageAlt = (img: Media | null | undefined, fallback: string) => {
-  const fromApi = (img?.alt || "").trim();
-  return fromApi || (fallback ? `${fallback}` : "Project image");
+
+/**
+ * Generate accessible, SEO-friendly alt text.
+ */
+const getImageAlt = (img?: any | null, fallback?: string): string => {
+  const altText = img?.alt?.trim?.();
+  if (altText && altText.length > 0) return altText;
+  return fallback || 'Project image';
 };
 
 /* ---------- Palette ---------- */
@@ -92,15 +108,30 @@ const palette = [
   "#437724", "#72bd45", "#3c6a20", "#7bc54a"
 ];
 
-class Boundary extends React.Component<{children: React.ReactNode}, {err?: string}> {
-  constructor(props:any){ super(props); this.state = {}; }
-  static getDerivedStateFromError(e: any){ return { err: e?.message || 'Render error' }; }
-  componentDidCatch(e:any){ console.error('Render error:', e); }
-  render(){
+class Boundary extends React.Component<{ children: React.ReactNode }, { err?: string }> {
+  constructor(props: any) {
+    super(props);
+    this.state = {};
+  }
+  static getDerivedStateFromError(e: any) {
+    return { err: e?.message || 'Render error' };
+  }
+  componentDidCatch(e: any) {
+    console.error('Render error:', e);
+  }
+  render() {
     if (this.state.err) {
       return (
-        <div style={{padding:16}}>
-          <div style={{background:'#fee2e2', border:'1px solid #fecaca', color:'#991b1b', borderRadius:8, padding:12}}>
+        <div style={{ padding: 16 }}>
+          <div
+            style={{
+              background: '#fee2e2',
+              border: '1px solid #fecaca',
+              color: '#991b1b',
+              borderRadius: 8,
+              padding: 12,
+            }}
+          >
             <b>Something went wrong:</b> {this.state.err}
           </div>
         </div>
@@ -134,24 +165,19 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
         const data: ProjectsApiResponse = await res.json();
 
         const mapped: Project[] = (data.docs || []).map((doc: any, i: number) => {
-          const media: Media | null =
-            typeof doc?.featuredImage === "object" ? doc.featuredImage : null;
+          const media = typeof doc?.featuredImage === 'object' ? doc.featuredImage : null;
 
           return {
             id: doc.id ?? i + 1,
-            category:
-              doc?.category?.title ||
-              doc?.category?.name ||
-              (typeof doc?.category === "string" ? doc.category : undefined) ||
-              doc?.type ||
-              "Project",
-            title: doc.title || doc.name || `Project ${i + 1}`,
-            slug: doc?.slug || "",   // 👈 FIX: add slug from API
-            description: doc.shortDescription || doc.description || "",
-            image: getMediumImageUrl(media),                 // ← size-aware URL
-            imageAlt: getImageAlt(media, doc.title),       // ← proper alt
-            color: doc.color || palette[i % palette.length],
-            accent: doc.accent || palette[i % palette.length],
+            category: doc?.category?.title || 'Project',
+            title: doc.title || `Project ${i + 1}`,
+            slug: doc.slug || '',
+            description: doc.shortDescription || '',
+            image: getOptimizedImageUrl(media),
+            imageAlt: getImageAlt(media, doc.title),
+            blurPlaceholder: getBlurPlaceholderUrl(media),
+            color: doc.color || '#6db53e',
+            accent: doc.accent || '#6db53e',
           };
         });
 
@@ -374,11 +400,11 @@ export const OurFeaturedWorksSection = (): JSX.Element => {
                           src={project.image}          // ← sized URL
                           alt={project.imageAlt}       // ← real alt
                           className="w-full h-full object-cover"
-                          fallbackSrc="/create-an-image-for-interior-design-about-us-section.png"
-                          loading={index === 0 ? "eager" : "lazy"}
+                          blurDataURL={project.blurPlaceholder}                          
+                          loading={index === 0 ? 'eager' : 'lazy'}
                           priority={index === 0}
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 600px, 1200px"
-                          quality={80}
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 600px, 900px"
+                          quality={70}
                           placeholder="blur"
                         />
                       </div>

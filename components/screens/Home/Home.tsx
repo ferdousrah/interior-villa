@@ -54,7 +54,7 @@ const Home = (): JSX.Element => {
 
       {/* Hero Section */}
       <div ref={heroContainerRef} className="w-full relative">
-        <section className="w-full h-[800px] relative">
+        <section className="w-full relative">
           <HeroImageSlider
             autoPlay={true}
             autoPlayInterval={6000}
