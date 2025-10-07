@@ -53,8 +53,8 @@ const About = (): JSX.Element => {
       <PageHero
         title={hero?.title || "About Us"}
         bgImage={
-          hero?.heroImage?.sizes?.xlarge?.url
-            ? `${hero.heroImage.sizes.xlarge.url.replace(/\.[^.]+$/, ".webp")}`
+          hero?.heroImage?.sizes?.large?.url
+            ? `${hero.heroImage.sizes.large.url.replace(/\.[^.]+$/, ".webp")}`
             : "/image.webp" // ✅ fallback also in webp
         }
         breadcrumbs={[

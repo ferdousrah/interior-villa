@@ -13,7 +13,6 @@ import { MessageCircle, Lightbulb, CheckCircle, Rocket, Heart } from 'lucide-rea
 export const OurProcessSection: React.FC = () => {
   const [hoveredStep, setHoveredStep] = useState<number | null>(null);
   const [tooltipPos, setTooltipPos] = useState<any>(null);
-  const [headingActive, setHeadingActive] = useState(false);
 
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -171,7 +170,7 @@ export const OurProcessSection: React.FC = () => {
     })();
   }, [prefersReducedMotion]);
 
-  /* ---------------- Lazy-load SplitText only when visible ---------------- */
+  /* ---------------- Lazy-load SplitText on scroll ---------------- */
   useEffect(() => {
     if (!headingRef.current || prefersReducedMotion) return;
 
@@ -231,7 +230,6 @@ export const OurProcessSection: React.FC = () => {
   const TOOLTIP_WIDTH = 256;
   const GAP = 12;
   const CLAMP = 12;
-  const TOOLTIP_HEIGHT_GUESS = 120;
 
   const computeAndSetTooltip = (stepId: number, intended: 'top' | 'bottom', color: string) => {
     const container = stepsDesktopRef.current;
@@ -281,7 +279,6 @@ export const OurProcessSection: React.FC = () => {
               style={{
                 transform: 'translateZ(0)',
                 transformStyle: 'preserve-3d',
-                transition: 'transform 0.3s ease-out',
               }}
             >
               <span className="text-[#0d1529]">Our </span>
@@ -293,7 +290,7 @@ export const OurProcessSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Desktop layout (same as before) */}
+        {/* Desktop layout */}
         <div className="hidden lg:block relative">
           <div ref={stepsDesktopRef} className="relative grid grid-cols-5 gap-8 py-20 overflow-visible">
             {steps.map((step, index) => {
@@ -304,8 +301,9 @@ export const OurProcessSection: React.FC = () => {
                   key={step.id}
                   className={`relative flex flex-col items-center ${isBottomRow ? 'mt-32' : 'mt-0'}`}
                 >
+                  {/* Diamond with pulse glow */}
                   <motion.button
-                    whileHover={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.08 }}
                     transition={{ duration: 0.3 }}
                     className="relative cursor-pointer group outline-none"
                     style={{ willChange: 'transform, opacity', transform: 'translateZ(0)' }}
@@ -318,9 +316,27 @@ export const OurProcessSection: React.FC = () => {
                       setTooltipPos(null);
                     }}
                   >
+                    {/* Pulse glow layer */}
+                    <motion.div
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: step.color,
+                        filter: 'blur(25px)',
+                        opacity: 0.3,
+                        scale: 0.9,
+                      }}
+                      animate={
+                        hoveredStep === step.id
+                          ? { opacity: [0.3, 0.6, 0.3], scale: [0.9, 1.1, 0.9] }
+                          : { opacity: 0, scale: 0.9 }
+                      }
+                      transition={{ duration: 1.5, repeat: hoveredStep === step.id ? Infinity : 0 }}
+                    />
+
+                    {/* Diamond shape */}
                     <div
                       ref={(el) => (diamondRefs.current[step.id] = el)}
-                      className="w-48 h-48 rotate-45 border-4 shadow-lg rounded-3xl transition-all duration-300"
+                      className="w-48 h-48 rotate-45 border-4 shadow-lg rounded-3xl transition-all duration-300 relative z-10"
                       style={{
                         backgroundColor: hoveredStep === step.id ? step.color : 'white',
                         borderColor: step.color,
@@ -330,7 +346,9 @@ export const OurProcessSection: React.FC = () => {
                             : '0 10px 30px rgba(0,0,0,0.1)',
                       }}
                     />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 pointer-events-none">
+
+                    {/* Icon + Text */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 pointer-events-none z-20">
                       <div
                         className="transition-all duration-300 mb-2"
                         style={{ color: hoveredStep === step.id ? 'white' : step.color }}
@@ -349,6 +367,7 @@ export const OurProcessSection: React.FC = () => {
               );
             })}
 
+            {/* Tooltip */}
             <AnimatePresence>
               {tooltipPos && hoveredStep === tooltipPos.id && (
                 <motion.div

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../../../../ui/button";
@@ -16,7 +16,15 @@ interface BlogPost {
   title: string;
   slug: string;
   shortDescription: string;
-  featuredImage?: { url: string; alt?: string };
+  featuredImage?: {
+    url?: string;
+    alt?: string;
+    sizes?: {
+      small?: { url: string };
+      medium?: { url: string };
+      blur?: { url: string };
+    };
+  };
   category?: { title: string };
   publishedDate?: string;
   author?: string;
@@ -26,13 +34,11 @@ interface BlogPost {
 const CMS_ORIGIN = "https://interiorvillabd.com";
 const PAGE_SIZE = 2;
 
-/** Waits for all <img> inside a container to complete (or times out). */
 function waitForImages(container: HTMLElement | null, timeoutMs = 2000) {
   if (!container) return Promise.resolve();
   const imgs = Array.from(container.querySelectorAll("img"));
   const pending = imgs.filter((img) => !img.complete);
   if (pending.length === 0) return Promise.resolve();
-
   return new Promise<void>((resolve) => {
     let done = false;
     const finish = () => {
@@ -41,7 +47,6 @@ function waitForImages(container: HTMLElement | null, timeoutMs = 2000) {
       resolve();
     };
     const timer = setTimeout(finish, timeoutMs);
-
     let left = pending.length;
     const onOne = () => {
       left -= 1;
@@ -50,7 +55,6 @@ function waitForImages(container: HTMLElement | null, timeoutMs = 2000) {
         finish();
       }
     };
-
     pending.forEach((img) => {
       img.addEventListener("load", onOne, { once: true });
       img.addEventListener("error", onOne, { once: true });
@@ -99,19 +103,16 @@ export const BlogGridSection = (): JSX.Element => {
           { signal }
         );
         if (!res.ok) throw new Error(`Failed to fetch (${res.status})`);
-
         const data = await res.json();
         if (!Array.isArray(data.docs)) throw new Error("Invalid data");
 
         setPosts((prev) => {
           const combined = replace ? data.docs : [...prev, ...data.docs];
-          const unique = combined.filter(
+          return combined.filter(
             (post, index, self) =>
               index === self.findIndex((p) => p.slug === post.slug)
           );
-          return unique;
         });
-
         setHasMore(!!data.hasNextPage);
         setPage(pageToLoad);
       } catch (err: any) {
@@ -141,7 +142,6 @@ export const BlogGridSection = (): JSX.Element => {
   useEffect(() => {
     const sentinel = loadMoreRef.current;
     if (!sentinel || !hasMore || loading) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && hasMore && !loading && !fetchingRef.current) {
@@ -150,27 +150,18 @@ export const BlogGridSection = (): JSX.Element => {
       },
       { rootMargin: "200px", threshold: 0.1 }
     );
-
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [page, hasMore, loading, fetchPage]);
 
-  /* ---------------- GSAP SETUP AFTER IMAGES READY ----------------
-     Key idea: only (re)build ScrollTriggers AFTER images in the section are loaded,
-     then refresh once. This stabilizes the final page height => footer is reachable.
-  -----------------------------------------------------------------*/
+  /* ---------------- GSAP SETUP ---------------- */
   useEffect(() => {
-    let isCancelled = false;
-
-    const buildAnimations = async () => {
-      // Wait for images in THIS section to finish (or time out)
+    let cancelled = false;
+    const run = async () => {
       await waitForImages(sectionRef.current, 2500);
-      if (isCancelled) return;
-
-      // Kill old triggers before creating new ones
+      if (cancelled) return;
       ScrollTrigger.getAll().forEach((t) => t.kill());
 
-      // Header fade-in
       if (headerRef.current) {
         gsap.fromTo(
           headerRef.current,
@@ -189,7 +180,6 @@ export const BlogGridSection = (): JSX.Element => {
         );
       }
 
-      // Grid cards
       if (gridRef.current) {
         gsap.fromTo(
           gridRef.current.children,
@@ -198,7 +188,7 @@ export const BlogGridSection = (): JSX.Element => {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 1.2,
+            duration: 1.1,
             stagger: 0.15,
             ease: "power3.out",
             scrollTrigger: {
@@ -210,17 +200,14 @@ export const BlogGridSection = (): JSX.Element => {
         );
       }
 
-      // Heading hover SplitText (build once)
       if (!headingSplitRef.current && headingRef.current && headingWrapperRef.current) {
         const split = new SplitText(headingRef.current, { type: "chars,words" });
         headingSplitRef.current = split;
-
         const wrapper = headingWrapperRef.current;
-        const moveHandler = (e: MouseEvent) => {
+        const move = (e: MouseEvent) => {
           const rect = wrapper.getBoundingClientRect();
           const x = (e.clientX - rect.left) / rect.width;
           const y = (e.clientY - rect.top) / rect.height;
-
           gsap.to(split.chars, {
             duration: 0.5,
             y: (i) => (y - 0.5) * 15 * Math.sin((i + 1) * 0.5),
@@ -231,58 +218,41 @@ export const BlogGridSection = (): JSX.Element => {
             stagger: { amount: 0.3, from: "center" },
           });
         };
-        const leaveHandler = () => {
+        const leave = () => {
           gsap.to(split.chars, {
             duration: 1,
             y: 0,
             x: 0,
             rotationY: 0,
             rotationX: 0,
-            ease: "elastic.out(1, 0.3)",
+            ease: "elastic.out(1,0.3)",
             stagger: { amount: 0.3, from: "center" },
           });
         };
-        wrapper.addEventListener("mousemove", moveHandler);
-        wrapper.addEventListener("mouseleave", leaveHandler);
-
-        // Cleanup handlers when this effect re-runs/unmounts
-        const cleanup = () => {
-          wrapper.removeEventListener("mousemove", moveHandler);
-          wrapper.removeEventListener("mouseleave", leaveHandler);
+        wrapper.addEventListener("mousemove", move);
+        wrapper.addEventListener("mouseleave", leave);
+        (headingSplitRef as any).cleanup = () => {
+          wrapper.removeEventListener("mousemove", move);
+          wrapper.removeEventListener("mouseleave", leave);
           split.revert();
           headingSplitRef.current = null;
         };
-        // Store cleanup on the ref for later
-        (headingSplitRef as any).cleanup = cleanup;
       }
 
-      // Final refresh, delayed a touch to ensure layout is fully stable
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          ScrollTrigger.refresh(true);
-          // Make absolutely sure global scroll isn’t locked
-          document.body.style.overflowY = "auto";
-          document.documentElement.style.overflowY = "auto";
-        }, 120);
-      });
+      requestAnimationFrame(() => setTimeout(() => ScrollTrigger.refresh(true), 120));
     };
-
-    buildAnimations();
-
+    run();
     return () => {
-      isCancelled = true;
-      // clean up splittext handlers if we created them in this run
+      cancelled = true;
       if ((headingSplitRef as any).cleanup) {
         (headingSplitRef as any).cleanup();
         (headingSplitRef as any).cleanup = undefined;
       }
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
-  }, [posts.length]); // re-run when list length changes (new content appended)
+  }, [posts.length]);
 
-  const handleBlogDetailsClick = (slug: string) => {
-    navigate(`/blog/${slug}`);
-  };
+  const handleBlogDetailsClick = (slug: string) => navigate(`/blog/${slug}`);
 
   const getCategoryColor = (category?: string) => {
     const colors: Record<string, string> = {
@@ -296,7 +266,6 @@ export const BlogGridSection = (): JSX.Element => {
     return colors[category || ""] || "bg-gray-500 text-white";
   };
 
-  /* ---------------- RENDER ---------------- */
   return (
     <section ref={sectionRef} className="py-16 md:py-20 bg-white relative">
       <div className="container mx-auto px-4 max-w-7xl">
@@ -315,106 +284,124 @@ export const BlogGridSection = (): JSX.Element => {
               className="text-2xl md:text-3xl lg:text-4xl font-medium font-fahkwang text-[#01190c] mb-6"
               style={{ transformStyle: "preserve-3d", transform: "translateZ(0)" }}
             >
-              Get Interesting Insights into <span className="text-secondary">Interior Designs</span>
+              Get Interesting Insights into{" "}
+              <span className="text-secondary">Interior Designs</span>
             </h2>
           </div>
           <p className="text-lg font-fahkwang text-[#626161] max-w-3xl mx-auto leading-relaxed">
-            Discover the latest trends, tips, and inspiration for creating beautiful spaces that reflect your unique style.
+            Discover the latest trends, tips, and inspiration for creating beautiful spaces
+            that reflect your unique style.
           </p>
         </div>
 
         {/* Posts grid */}
-        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-12 md:mb-16">
-          {posts.map((post, index) => (
-            <motion.article
-              key={`blog-${post.slug}-${post.id ?? index}`}
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group cursor-pointer"
-              onClick={() => handleBlogDetailsClick(post.slug)}
-            >
-              <div className="relative overflow-hidden rounded-lg mb-6 bg-gray-200 aspect-[4/3]">
-                <img
-                  src={
-                    post.featuredImage?.url
-                      ? post.featuredImage.url.startsWith("http")
-                        ? post.featuredImage.url
-                        : `${CMS_ORIGIN}${post.featuredImage.url}`
-                      : "/a-residential-interior-image.png"
-                  }
-                  alt={post.featuredImage?.alt || post.title}
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                  loading={index < PAGE_SIZE ? "eager" : "lazy"}
-                  onLoad={() => {
-                    // micro refresh for each image load; throttled by the main effect anyway
-                    requestAnimationFrame(() => ScrollTrigger.refresh());
-                  }}
-                />
-                {post.category?.title && (
-                  <div className="absolute top-4 left-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold font-fahkwang ${getCategoryColor(
-                        post.category.title
-                      )}`}
-                    >
-                      {post.category.title}
-                    </span>
+        <div
+          ref={gridRef}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-12 md:mb-16"
+        >
+          {posts.map((post, index) => {
+            const img =
+              post.featuredImage?.sizes?.medium?.url ||
+              post.featuredImage?.sizes?.small?.url ||
+              post.featuredImage?.url ||
+              "/a-residential-interior-image.png";
+            const imgSrc = img.startsWith("http") ? img : `${CMS_ORIGIN}${img}`;
+            const blur =
+              post.featuredImage?.sizes?.blur?.url &&
+              `${CMS_ORIGIN}${post.featuredImage.sizes.blur.url}`;
+
+            return (
+              <motion.article
+                key={`blog-${post.slug}-${post.id ?? index}`}
+                layout
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group cursor-pointer"
+                style={{ willChange: "transform, opacity" }}
+                onClick={() => handleBlogDetailsClick(post.slug)}
+              >
+                <div className="relative overflow-hidden rounded-lg mb-6 aspect-[4/3] bg-gray-200">
+                  {blur && (
+                    <img
+                      src={blur}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover blur-md scale-105"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <img
+                    src={imgSrc.replace(/\.(jpg|jpeg|png)$/i, ".webp")}
+                    onError={(e) => (e.currentTarget.src = imgSrc)}
+                    alt={post.featuredImage?.alt || post.title}
+                    className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                    loading={index < PAGE_SIZE ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                  {post.category?.title && (
+                    <div className="absolute top-4 left-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold font-fahkwang ${getCategoryColor(
+                          post.category.title
+                        )}`}
+                      >
+                        {post.category.title}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-4 text-sm text-[#626161] font-fahkwang">
+                    <div className="flex items-center space-x-1">
+                      <User className="w-4 h-4" />
+                      <span>{post.author || "Admin"}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Calendar className="w-4 h-4" />
+                      <span>{formatDate(post.publishedDate)}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Clock className="w-4 h-4" />
+                      <span>{post.readTime || "5 min"}</span>
+                    </div>
                   </div>
-                )}
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center space-x-4 text-sm text-[#626161] font-fahkwang">
-                  <div className="flex items-center space-x-1">
-                    <User className="w-4 h-4" />
-                    <span>{post.author || "Admin"}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Calendar className="w-4 h-4" />
-                    <span>{formatDate(post.publishedDate)}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Clock className="w-4 h-4" />
-                    <span>{post.readTime || "5 min"}</span>
+
+                  <h3 className="text-xl md:text-2xl font-medium font-fahkwang text-[#01190c] leading-tight transition-colors duration-300 group-hover:text-primary">
+                    {post.title}
+                  </h3>
+                  <p className="text-[#626161] font-fahkwang leading-relaxed line-clamp-3">
+                    {post.shortDescription}
+                  </p>
+
+                  <div className="flex items-center space-x-2 text-sm text-primary font-fahkwang font-medium group-hover:text-secondary transition-colors duration-300">
+                    <span>Read More</span>
+                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>
-                <h3 className="text-xl md:text-2xl font-medium font-fahkwang text-[#01190c] leading-tight transition-colors duration-300 group-hover:text-primary">
-                  {post.title}
-                </h3>
-                <p className="text-[#626161] font-fahkwang leading-relaxed line-clamp-3">
-                  {post.shortDescription}
-                </p>
-                <div className="flex items-center space-x-2 text-sm text-primary font-fahkwang font-medium group-hover:text-secondary transition-colors duration-300">
-                  <span>Read More</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </div>
-              </div>
-            </motion.article>
-          ))}
+              </motion.article>
+            );
+          })}
         </div>
 
-        {/* Sentinel + Spacer */}
         <div ref={loadMoreRef} className="h-4 w-full" />
         {!hasMore && <div className="h-24 md:h-40" />}
 
-        {/* Loading shimmer */}
         {loading && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {Array.from({ length: PAGE_SIZE }).map((_, i) => (
               <div key={`skeleton-${page}-${i}`} className="animate-pulse">
-                <div className="bg-gray-200 rounded-lg aspect-[4/3] mb-6"></div>
+                <div className="bg-gray-200 rounded-lg aspect-[4/3] mb-6" />
                 <div className="space-y-3">
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-6 bg-gray-200 rounded"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-3/4" />
+                  <div className="h-6 bg-gray-200 rounded" />
+                  <div className="h-4 bg-gray-200 rounded w-1/2" />
                 </div>
               </div>
             ))}
           </div>
         )}
 
-        {/* End or Error feedback */}
         {!hasMore && !loading && posts.length > 0 && (
           <div className="text-center">
             <div className="text-sm text-[#626161] font-fahkwang mb-4">

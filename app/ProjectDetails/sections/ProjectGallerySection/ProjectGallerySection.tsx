@@ -18,8 +18,13 @@ type PhotoItem = {
   alt: string;
   full: string;
   thumb: string;
+  blur?: string;
 };
 type VideoItem = { id: string; videoUrl: string; title: string };
+
+const CMS_ORIGIN = "https://interiorvillabd.com";
+const absolutize = (u: string) =>
+  /^https?:\/\//i.test(u) ? u : new URL(u, CMS_ORIGIN).href;
 
 const getYouTubeId = (u?: string) => {
   if (!u) return "";
@@ -45,29 +50,33 @@ export const ProjectGallerySection = (): JSX.Element => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
-  /* map from ProjectContext.gallery (already normalized) */
+  /* ---- map photos/plans with adaptive sizes ---- */
+  const mapImage = (p: any, i: number, type: "photo" | "plan"): PhotoItem => {
+    const getSize = () => {
+      const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+      const size = isMobile
+        ? p?.sizes?.small?.url || p?.sizes?.square?.url
+        : p?.sizes?.medium?.url || p?.sizes?.large?.url;
+      return absolutize(size || p?.url || p?.src || "");
+    };
+    return {
+      id: p.id ?? `${type}-${i}`,
+      type,
+      alt: p.alt || title || type,
+      full: getSize(),
+      thumb: getSize(),
+      blur: p?.sizes?.blur?.url ? absolutize(p.sizes.blur.url) : undefined,
+    };
+  };
+
   const photoItems: PhotoItem[] = useMemo(
-    () =>
-      gallery.photos.map((p, i) => ({
-        id: p.id ?? `photo-${i}`,
-        type: "photo",
-        alt: p.alt || title || "Photo",
-        full: p.src,
-        thumb: p.src,
-      })),
+    () => (gallery.photos || []).map((p, i) => mapImage(p, i, "photo")),
     [gallery.photos, title]
   );
 
   const planItems: PhotoItem[] = useMemo(
-    () =>
-      gallery.plans.map((p, i) => ({
-        id: p.id ?? `plan-${i}`,
-        type: "plan",
-        alt: p.alt || "Plan",
-        full: p.src,
-        thumb: p.src,
-      })),
-    [gallery.plans]
+    () => (gallery.plans || []).map((p, i) => mapImage(p, i, "plan")),
+    [gallery.plans, title]
   );
 
   const videoItems: VideoItem[] = useMemo(
@@ -83,58 +92,102 @@ export const ProjectGallerySection = (): JSX.Element => {
     [gallery.videos, title]
   );
 
-  /* Fancybox bind (use watch URLs and let Fancybox handle embeds) */
+  /* ---- Fancybox ---- */
   useEffect(() => {
+  Fancybox.destroy();
+
+  const hasAny =
+    (activeTab === "photos" && photoItems.length) ||
+    (activeTab === "plans" && planItems.length) ||
+    (activeTab === "videos" && videoItems.length);
+
+  if (!hasAny) return;
+
+  const t = setTimeout(() => {
+    Fancybox.bind('[data-fancybox^="gallery-"]', {
+      animated: true,
+      dragToClose: true,
+      showClass: "fancybox-fadeIn",
+      hideClass: "fancybox-fadeOut",
+      l10n: { CLOSE: "×" },
+      Hash: false,
+      Thumbs: {
+        autoStart: false,
+      },
+      Toolbar: {
+        display: {
+          left: [],
+          middle: [],
+          right: ["zoom", "slideshow", "thumbs", "close"],
+        },
+      },
+      Images: {
+        protected: true,
+        zoom: true,
+        Panzoom: {
+          maxScale: 3,
+          friction: 0.85,
+          decelFriction: 0.9,
+        },
+      },
+      wheel: "slide",
+      transitionEffect: "zoom-in-out",
+      transitionDuration: 300,
+      preload: 2, // Preload next 2 slides for instant navigation
+      idle: 2500, // Auto-hide UI after 2.5s idle
+      animatedSlideShow: true,
+      touch: {
+        vertical: true,
+        momentum: true,
+        velocity: 0.9,
+      },
+      Iframe: {
+        preload: true,
+        attr: {
+          allow:
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen",
+          allowfullscreen: "true",
+          referrerpolicy: "strict-origin-when-cross-origin",
+        },
+      },
+      // GPU-optimized fade transitions
+      on: {
+        reveal: (fancybox, slide) => {
+          const el = slide.$content?.firstElementChild as HTMLElement | null;
+          if (el) {
+            el.style.willChange = "transform, opacity";
+          }
+        },
+        done: (fancybox, slide) => {
+          const el = slide.$content?.firstElementChild as HTMLElement | null;
+          if (el) {
+            el.style.willChange = "auto";
+          }
+        },
+      },
+    });
+
+    // Prefetch thumbnails for smoother transitions
+    const imgs = Array.from(document.querySelectorAll<HTMLImageElement>('img[loading="lazy"]'));
+    imgs.forEach((img) => {
+      if (img.decoding === "async" && img.dataset.prefetched !== "true") {
+        const prefetch = new Image();
+        prefetch.src = img.src;
+        img.dataset.prefetched = "true";
+      }
+    });
+  }, 0);
+
+  return () => {
+    clearTimeout(t);
     Fancybox.destroy();
+  };
+}, [activeTab, photoItems.length, planItems.length, videoItems.length]);
 
-    const hasAny =
-      (activeTab === "photos" && photoItems.length) ||
-      (activeTab === "plans" && planItems.length) ||
-      (activeTab === "videos" && videoItems.length);
 
-    if (!hasAny) return;
-
-    const t = setTimeout(() => {
-      Fancybox.bind('[data-fancybox^="gallery-"]', {
-        animated: true,
-        showClass: "fancybox-fadeIn",
-        hideClass: "fancybox-fadeOut",
-        dragToClose: true,
-        Toolbar: {
-          display: {
-            left: [],
-            middle: [],
-            right: ["zoom", "slideshow", "thumbs", "close"],
-          },
-        },
-        // Make images harder to save (disables right-click & drag on images)
-        Images: {
-          protected: true,
-        },
-        wheel: "slide",
-        touch: { vertical: true, momentum: true },
-        Iframe: {
-          preload: true,
-          attr: {
-            allow:
-              "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen",
-            allowfullscreen: "true",
-            referrerpolicy: "strict-origin-when-cross-origin",
-          },
-        },
-      });
-    }, 0);
-
-    return () => {
-      clearTimeout(t);
-      Fancybox.destroy();
-    };
-  }, [activeTab, photoItems.length, planItems.length, videoItems.length]);
-
-  /* entrance animations */
+  /* ---- animations ---- */
   useEffect(() => {
     if (!sectionRef.current) return;
-
     if (headingRef.current) {
       gsap.fromTo(
         headingRef.current,
@@ -152,7 +205,6 @@ export const ProjectGallerySection = (): JSX.Element => {
         }
       );
     }
-
     if (gridRef.current) {
       gsap.fromTo(
         gridRef.current.children,
@@ -172,18 +224,17 @@ export const ProjectGallerySection = (): JSX.Element => {
         }
       );
     }
-
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
   }, [activeTab]);
 
+  /* ---- Tabs ---- */
   const tabs = [
     { id: "photos" as const, label: `Photos (${photoItems.length})` },
     { id: "videos" as const, label: `Videos (${videoItems.length})` },
     { id: "plans" as const, label: `Plans (${planItems.length})` },
   ];
 
+  /* ---- Renders ---- */
   const renderThumb = (item: PhotoItem, idx: number) => (
     <a
       key={item.id}
@@ -193,20 +244,33 @@ export const ProjectGallerySection = (): JSX.Element => {
       className="block w-full cursor-pointer group"
       onMouseEnter={() => setHovered(item.id)}
       onMouseLeave={() => setHovered(null)}
+      style={{ willChange: "transform, opacity" }}
     >
-      <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl shadow-lg group-hover:shadow-2xl transition-all duration-500">
-        <img
-          src={item.thumb}
-          alt={item.alt}
-          className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-          loading={idx < 3 ? "eager" : "lazy"}
-          decoding="async"
-        />
+      <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl shadow-lg transition-all duration-500 ease-out group-hover:shadow-2xl">
+        <picture>
+          <source srcSet={item.full.replace(/\.(jpg|jpeg|png)$/i, ".webp")} type="image/webp" />
+          <img
+            src={item.thumb}
+            alt={item.alt}
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+            loading={idx < 3 ? "eager" : "lazy"}
+            decoding="async"
+            style={{
+              filter: item.blur ? "blur(10px)" : "none",
+              transition: "filter 0.4s ease",
+            }}
+            onLoad={(e) => {
+              e.currentTarget.style.filter = "none";
+            }}
+          />
+        </picture>
+
         <div className="absolute top-3 left-3 z-20">
           <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-xs font-semibold text-gray-800 rounded-full shadow-sm">
             {item.type === "photo" ? "Photo" : "Plan"}
           </span>
         </div>
+
         <div
           className="absolute inset-0 flex items-center justify-center transition-all duration-500 z-20"
           style={{
@@ -215,11 +279,22 @@ export const ProjectGallerySection = (): JSX.Element => {
           }}
         >
           <div className="w-14 h-14 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-xl border border-white/20">
-            <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+            <svg
+              className="w-6 h-6 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+              />
             </svg>
           </div>
         </div>
+
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-20">
           <h4 className="text-white font-medium text-sm [font-family:'Fahkwang',Helvetica] truncate">
             {item.alt}
@@ -242,8 +317,9 @@ export const ProjectGallerySection = (): JSX.Element => {
         data-type="iframe"
         data-caption={v.title}
         className="block w-full cursor-pointer group"
+        style={{ willChange: "transform, opacity" }}
       >
-        <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl shadow-lg group-hover:shadow-2xl transition-all duration-500">
+        <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl shadow-lg transition-all duration-500 ease-out group-hover:shadow-2xl">
           {!!thumb && (
             <img
               src={thumb}
@@ -283,7 +359,7 @@ export const ProjectGallerySection = (): JSX.Element => {
           )}
         </div>
 
-        {/* tabs */}
+        {/* Tabs */}
         <div className="flex justify-center mb-16">
           <div className="relative bg-white rounded-2xl p-2 shadow-lg border border-gray-100 inline-flex space-x-2">
             {tabs.map((t) => (
@@ -302,7 +378,7 @@ export const ProjectGallerySection = (): JSX.Element => {
           </div>
         </div>
 
-        {/* grid */}
+        {/* Grid */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
