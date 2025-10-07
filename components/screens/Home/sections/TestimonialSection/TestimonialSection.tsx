@@ -344,22 +344,27 @@ export const TestimonialSection = (): JSX.Element => {
                       />
 
                       {/* Play button linked to Fancybox */}
-                      <a
+                     <a
                         href={getYouTubeEmbedUrl(t.video)}
                         data-fancybox="testimonial-videos"
                         data-caption={t.title}
+                        aria-label={`Play testimonial video: ${t.title || "Client testimonial video"}`}
                         className={`relative w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full border-3 border-white flex items-center justify-center transition-all duration-500 z-10 ${
-                          hoveredCard === t.id
-                            ? "bg-white scale-110"
-                            : "bg-white/20 backdrop-blur-sm"
+                          hoveredCard === t.id ? "bg-white scale-110" : "bg-white/20 backdrop-blur-sm"
                         }`}
                       >
+                        <span className="sr-only">
+                          {`Play testimonial video: ${t.title || "Client testimonial video"}`}
+                        </span>
+
                         <PlayIcon
+                          aria-hidden="true"
                           className={`w-7 h-7 md:w-9 md:h-9 lg:w-11 lg:h-11 transition-all duration-500 ${
                             hoveredCard === t.id ? "text-primary" : "text-white"
                           }`}
                         />
                       </a>
+
 
                       {/* Text */}
                       <div className="absolute bottom-6 left-6 right-6 text-white">
