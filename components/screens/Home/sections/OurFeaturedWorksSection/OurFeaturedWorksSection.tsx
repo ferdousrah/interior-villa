@@ -69,7 +69,7 @@ const getOptimizedImageUrl = (img?: Media | null): string => {
 
   // Prefer medium, then small, then original
   const url =
-    img.sizes?.medium?.url ||
+    img.sizes?.square?.url ||
     img.sizes?.small?.url ||
     img.url;
 

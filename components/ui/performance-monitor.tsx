@@ -27,7 +27,7 @@ export const PerformanceMonitor: React.FC = () => {
     const preloadCriticalResources = () => {
       const criticalImages = [
         '/interior-villa-dark.png',
-        '/image.png'
+        '/image.webp'
       ];
 
       criticalImages.forEach(src => {

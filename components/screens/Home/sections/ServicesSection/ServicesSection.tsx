@@ -13,7 +13,7 @@ gsap.registerPlugin(ScrollTrigger, SplitText);
 const services = [
   {
     title: "Residential interior",
-    icon: "home.png",
+    icon: "home.webp",
     description:
       "Sustainable living. Luxurious design. We specialize in creating intelligent, eco-friendly homes, from single-family residences to multi-housing solutions.",
     iconBg: "#f5fdfd",
@@ -32,7 +32,7 @@ const services = [
   },
   {
     title: "Commercial Interior",
-    icon: "/create-a-svg-long-stroied-building-icon.png",
+    icon: "/create-a-svg-long-stroied-building-icon.webp",
     description:
       "Experience the difference. Our minimalist designs transform your workplace into an inspiring and productive environment, whether it's a factory or a corporate office.",
     iconBg: "#f5fdfd",
@@ -51,7 +51,7 @@ const services = [
   },
   {
     title: "Architectural consultancy",
-    icon: "/create-a-svg-geometry-icon.png",
+    icon: "/create-a-svg-geometry-icon.webp",
     description:
       "Stand out from the competition with innovative designs. Our architects specialize in a wide range of projects, from small-scale rentals to large-scale developments, ensuring your vision comes to life.",
     iconBg: "#f5fdfd",

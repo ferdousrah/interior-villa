@@ -156,7 +156,7 @@ export const BlogSection = (): JSX.Element => {
                   src={
                     featured.featuredImage?.url
                       ? `${CMS_ORIGIN}${featured.featuredImage.url}`
-                      : "/a-residential-interior-image.png"
+                      : "/a-residential-interior-image.webp"
                   }
                   loading="lazy"
                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 600px, 900px"
