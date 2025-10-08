@@ -28,6 +28,13 @@ interface HeroImageSliderProps {
   imageSize?: 'small' | 'medium' | 'large' | 'full';
 }
 
+/** Rewrites CMS URLs to public domain */
+function rewriteToPublicURL(url: string): string {
+  if (!url) return '';
+  return url.replace('https://cms.interiorvillabd.com', 'https://interiorvillabd.com');
+}
+
+
 const CMS_BASE_URL = 'https://interiorvillabd.com';
 
 export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
@@ -58,7 +65,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
         const mapped: SlideImage[] = data.docs.map((item: any) => {
           const img = item.slider?.image;
           const rawUrl = img?.sizes?.large?.url || img?.url || '';
-          const fullUrl = `${rawUrl}`;
+          const fullUrl = rewriteToPublicURL(rawUrl);
           const webpUrl = fullUrl.replace(/\.(jpg|jpeg|png)(\?.*)?$/i, '.webp$2');
 
           return {
@@ -68,7 +75,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
             alt: img?.alt || item.slider.title || 'Slide',
             title: item.slider.title,
             subtitle: item.slider.subtitle,
-            blurPlaceholder: img?.sizes?.blur?.url ? `${img.sizes.blur.url}` : undefined,
+            blurPlaceholder: img?.sizes?.blur?.url ? rewriteToPublicURL(img.sizes.blur.url) : undefined,
           };
         });
 
