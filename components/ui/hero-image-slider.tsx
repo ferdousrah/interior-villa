@@ -37,6 +37,15 @@ function rewriteToPublicURL(url: string): string {
 
 const CMS_BASE_URL = 'https://interiorvillabd.com';
 
+const FALLBACK_FIRST_SLIDE: SlideImage = {
+  id: 0,
+  src: 'https://interiorvillabd.com/api/media/file/H-1-1.webp',
+  fallbackSrc: 'https://interiorvillabd.com/api/media/file/H-1-1.jpg',
+  alt: 'Luxury Interior Design',
+  title: 'Luxury Interior Design',
+  subtitle: 'Transform your space with expert design',
+};
+
 export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
   className = '',
   autoPlay = true,
@@ -46,11 +55,12 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
   transitionEffect = 'fade',
   imageSize = 'large',
 }) => {
-  const [slides, setSlides] = useState<SlideImage[]>([]);
+  const [slides, setSlides] = useState<SlideImage[]>([FALLBACK_FIRST_SLIDE]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(autoPlay);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [direction, setDirection] = useState(0);
   const [isDarkImage, setIsDarkImage] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const intervalRef = useRef<number | null>(null);
@@ -79,24 +89,31 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
           };
         });
 
-        setSlides(mapped);
+        if (mapped.length > 0) {
+          setSlides(mapped);
+          setIsLoaded(true);
+          setIsPlaying(autoPlay);
+        }
       } catch (err) {
         console.error('Failed to load slides:', err);
+        setIsLoaded(true);
       }
     };
 
     fetchSlides();
-  }, []);
+  }, [autoPlay]);
 
   /* ---------- Preload first hero image ---------- */
   useEffect(() => {
     if (slides.length > 0) {
       const first = slides[0];
+
       const link = document.createElement('link');
       link.rel = 'preload';
       link.as = 'image';
       link.href = first.src;
       link.fetchPriority = 'high';
+      link.type = 'image/webp';
       document.head.appendChild(link);
 
       const preconnect = document.createElement('link');
@@ -104,6 +121,10 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
       preconnect.href = CMS_BASE_URL;
       preconnect.crossOrigin = '';
       document.head.appendChild(preconnect);
+
+      const img = new Image();
+      img.src = first.src;
+      img.decode?.().catch(() => {});
     }
   }, [slides]);
 
@@ -159,7 +180,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
 
   /* ---------- Animate text with GSAP (depth reveal) ---------- */
   useEffect(() => {
-    if (!titleRef.current) return;
+    if (!titleRef.current || !isLoaded) return;
     const split = new SplitType(titleRef.current, { types: 'chars' });
     gsap.fromTo(
       split.chars,
@@ -175,7 +196,7 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
       }
     );
     return () => split.revert();
-  }, [currentIndex]);
+  }, [currentIndex, isLoaded]);
 
   const goToSlide = (index: number) => {
     setDirection(index > currentIndex ? 1 : -1);
@@ -238,20 +259,23 @@ export const HeroImageSlider: React.FC<HeroImageSliderProps> = ({
           key={currentIndex}
           custom={direction}
           variants={variants}
-          initial="enter"
+          initial={isLoaded ? "enter" : "center"}
           animate="center"
           exit="exit"
-          transition={{ duration: 1, ease: 'easeInOut' }}
+          transition={{ duration: isLoaded ? 1 : 0, ease: 'easeInOut' }}
           className="absolute inset-0 w-full h-full"
         >
           <PerformanceImage
             src={slide.src}
             alt={slide.alt}
+            priority={currentIndex === 0}
+            fetchpriority={currentIndex === 0 ? 'high' : 'low'}
             blurDataURL={slide.blurPlaceholder}
             placeholder="blur"
-            priority={currentIndex === 0}
             loading={currentIndex === 0 ? 'eager' : 'lazy'}
             fallbackSrc={slide.fallbackSrc}
+            width={1920}
+            height={900}
             className="w-full h-full object-cover object-center"
           />
 
