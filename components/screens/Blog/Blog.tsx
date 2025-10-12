@@ -19,7 +19,7 @@ interface BlogData {
 }
 
 const Blog = (): JSX.Element => {
-  const [data, setData] = useState<BlogData | null>(null);
+  const [data, setData] = useState<any>(null);
 
   useEffect(() => {
     fetch("https://interiorvillabd.com/api/globals/blog?depth=1&draft=false")
@@ -33,31 +33,34 @@ const Blog = (): JSX.Element => {
 
   return (
     <main className="flex flex-col w-full items-start relative bg-white overflow-x-hidden min-h-screen">
+      {/* Custom Cursor */}
+      <CustomCursor className="custom-cursor" />
+
       {/* ✅ Dynamic SEO */}
       {seo && (
         <SEO
           title={seo.metaTitle}
           description={seo.metaDescription}
-          keywords={seo.metaKey}
-          url="https://interiorvillabd.com/blog"
+          keywords={seo.metaKey}          
           extraJsonLd={seo.seoStructuredData}
+          url="https://interiorvillabd.com/blog"
+          type="BlogPage"
         />
       )}
 
-      {/* Custom Cursor */}
-      <CustomCursor className="custom-cursor" />
+      
 
-      {/* PageHero (CMS-driven) */}
+{/* Hero Section from CMS */}
       <PageHero
         title={hero?.title || "Blog"}
         bgImage={
-          hero?.heroImage?.url
-            ? hero.heroImage.url.replace(/\.(jpg|png)$/i, ".webp")
-            : "/image.png"
+          hero?.heroImage?.sizes?.large?.url
+            ? `${hero.heroImage.sizes.large.url.replace(/\.[^.]+$/, ".webp")}`
+            : "/image.webp" // ✅ fallback also in webp
         }
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "Blog", isActive: true },
+          { label: "Blog", href: "/blog", isActive: true },
         ]}
       />      
 
