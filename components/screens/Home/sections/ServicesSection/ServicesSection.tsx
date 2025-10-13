@@ -288,50 +288,31 @@ export const ServicesSection = (): JSX.Element => {
     };
   }, []);
 
-  // Setup videos on mount
-  useEffect(() => {
-    videoRefs.current.forEach((video) => {
-      if (video) {
-        video.muted = true;
-        video.playsInline = true;
-        video.defaultMuted = true;
-      }
-    });
-  }, []);
-
   // Handle card hover for video playback
   const handleCardHover = (index: number, isHovering: boolean) => {
     setHoveredCard(isHovering ? index : null);
-
+    
     const video = videoRefs.current[index];
-
+    
     if (isHovering && video) {
       // Stop any currently playing video
       if (activeVideo && activeVideo !== video) {
         activeVideo.pause();
-        activeVideo.currentTime = 0;
       }
-
-      // Reset and play
+      
+      // Play the new video
       video.currentTime = 0;
-
-      // Use requestAnimationFrame to ensure smooth playback
-      requestAnimationFrame(() => {
-        video.play().then(() => {
-          setActiveVideo(video);
-        }).catch((error) => {
-          console.warn('Video play failed:', error.message);
-        });
+      video.play().catch((error) => {
+        // Silently handle AbortError and other play interruptions
+        if (error.name !== 'AbortError') {
+          console.error('Video play error:', error);
+        }
       });
+      setActiveVideo(video);
     } else {
-      // Pause and reset video
+      // Pause video
       if (video) {
         video.pause();
-        video.currentTime = 0;
-      }
-      if (activeVideo && activeVideo !== video) {
-        activeVideo.pause();
-        activeVideo.currentTime = 0;
       }
       setActiveVideo(null);
     }
@@ -359,16 +340,12 @@ export const ServicesSection = (): JSX.Element => {
             style={{
               opacity: hoveredCard === index ? 1 : 0,
               transform: hoveredCard === index ? 'scale(1.05)' : 'scale(1)',
-              transition: 'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
-              pointerEvents: 'none'
+              transition: 'opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.5s cubic-bezier(0.4, 0, 0.2, 1)'
             }}
             muted
-            playsInline
             loop
-            preload="auto"
-            autoPlay={false}
-            controls={false}
-            webkit-playsinline="true"
+            playsInline
+            preload="metadata"
           >
             <source src={service.video} type="video/mp4" />
           </video>
