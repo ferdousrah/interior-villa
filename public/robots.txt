@@ -15,4 +15,4 @@ Disallow: /*.ts$
 Disallow: /*.tsx$
 
 # Sitemap
-Sitemap: https://interiorvillabd.com/sitemap.xml
+Sitemap: https://www.interiorvillabd.com/sitemap.xml
