@@ -303,7 +303,7 @@ export const BlogContentSection = (): JSX.Element => {
                 return (
                   <Link
                     key={cat.id}
-                    to={`/blog/category/${cat.slug}`}
+                    to={`#`} // to={`/blog/category/${cat.slug}`}
                     className={`flex items-center justify-between p-3 rounded-lg cursor-pointer transition-colors duration-300 ${
                       isActive
                         ? "bg-primary text-white"
