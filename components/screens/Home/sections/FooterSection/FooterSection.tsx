@@ -537,7 +537,7 @@ export const FooterSection = (): JSX.Element => {
 
           <div className="flex items-center gap-4 mt-4 sm:mt-0">
             <div className="[font-family:'Fahkwang',Helvetica] font-normal text-white text-sm tracking-[0] leading-6">
-              Design & Developed by <a href="https://technocratsbd.com" target="_blank">Technocrats</a>
+              
             </div>
           </div>
         </div>
