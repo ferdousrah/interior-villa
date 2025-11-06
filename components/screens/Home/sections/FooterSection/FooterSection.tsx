@@ -24,9 +24,9 @@ export const FooterSection = (): JSX.Element => {
   const bottomSectionRef = useRef<HTMLDivElement>(null);
   const backgroundElementsRef = useRef<HTMLDivElement>(null);
 
-  // Wait for fonts to load before using SplitText
   const [fontsReady, setFontsReady] = useState(false);
-  
+  const [serviceAreas, setServiceAreas] = useState<any[]>([]);
+
   useEffect(() => {
     const checkFonts = async () => {
       try {
@@ -35,11 +35,21 @@ export const FooterSection = (): JSX.Element => {
         }
         setFontsReady(true);
       } catch (error) {
-        // Fallback if fonts API not available
         setTimeout(() => setFontsReady(true), 1000);
       }
     };
     checkFonts();
+  }, []);
+
+  useEffect(() => {
+    fetch('https://interiorvillabd.com/api/service-areas?limit=100')
+      .then(res => res.json())
+      .then(data => {
+        if (data?.docs) {
+          setServiceAreas(data.docs);
+        }
+      })
+      .catch(err => console.error('Failed to fetch service areas:', err));
   }, []);
 
   // Add hover animation for footer heading
@@ -181,8 +191,8 @@ export const FooterSection = (): JSX.Element => {
       // Footer menus animation
       if (footerMenusRef.current) {
         const menuColumns = footerMenusRef.current.children;
-        
-        gsap.fromTo(menuColumns,
+
+        const animation = gsap.fromTo(menuColumns,
           {
             opacity: 0,
             y: 80,
@@ -204,6 +214,12 @@ export const FooterSection = (): JSX.Element => {
           }
         );
 
+        setTimeout(() => {
+          if (menuColumns) {
+            gsap.set(menuColumns, { opacity: 1, y: 0, scale: 1 });
+          }
+        }, 3000);
+
         // Parallax for footer menus
         gsap.to(footerMenusRef.current, {
           yPercent: -6,
@@ -220,7 +236,8 @@ export const FooterSection = (): JSX.Element => {
 
       // Bottom section animation
       if (bottomSectionRef.current) {
-        gsap.fromTo(bottomSectionRef.current,
+        const bottomSection = bottomSectionRef.current;
+        gsap.fromTo(bottomSection,
           {
             opacity: 0,
             y: 40
@@ -231,13 +248,17 @@ export const FooterSection = (): JSX.Element => {
             duration: 1,
             ease: "power2.out",
             scrollTrigger: {
-              trigger: bottomSectionRef.current,
+              trigger: bottomSection,
               start: "top 98%",
               end: "top 75%",
               toggleActions: "play none none none",
             }
           }
         );
+
+        setTimeout(() => {
+          gsap.set(bottomSection, { opacity: 1, y: 0 });
+        }, 3000);
       }
 
       // Background elements parallax
@@ -363,6 +384,51 @@ export const FooterSection = (): JSX.Element => {
                 <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                 18/10-A, Block-F, Ring Road, Mohammadpur, Dhaka-1207.
               </div>
+              
+              <div className="flex items-center gap-4 mt-4">
+              {[
+                { icon: Facebook, name: "Facebook", color: "#1877F2", url: "https://www.facebook.com/interiorvila" },
+                { icon: Instagram, name: "Instagram", color: "#1DA1F2", url: "https://www.instagram.com/interiorvillabd/" },
+                { icon: Youtube, name: "Youtube", color: "#FF0000", url: "https://www.youtube.com/@InteriorVilla-BD" },
+                { icon: Linkedin, name: "LinkedIn", color: "#0A66C2", url: "https://www.linkedin.com/company/interiorvilla" }
+              ].map((social, index) => {
+                const IconComponent = social.icon;
+                return (
+                  <a
+                    key={index}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={social.name}
+                    className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 cursor-pointer relative overflow-hidden group transform-gpu transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 flex items-center justify-center"
+                  >
+                    {/* Glow effect */}
+                    <div
+                      className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-sm scale-110"
+                      style={{ backgroundColor: social.color }}
+                    ></div>
+
+                    {/* Ripple effect */}
+                    <div
+                      className="absolute inset-0 rounded-xl border-2 opacity-0 group-hover:opacity-100 group-hover:scale-150 transition-all duration-700 ease-out"
+                      style={{ borderColor: social.color }}
+                    ></div>
+
+                    {/* Shine effect */}
+                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out"></div>
+
+                    {/* Icon */}
+                    <IconComponent
+                      className="w-5 h-5 text-white transition-all duration-500 ease-out group-hover:rotate-12 group-hover:scale-110 relative z-10"
+                      style={{
+                        filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))"
+                      }}
+                    />
+                  </a>
+                );
+              })}
+              </div>
+              
             </div>
           </div>
 
@@ -441,57 +507,28 @@ export const FooterSection = (): JSX.Element => {
             </div>
           </div>
 
-          {/* Follow Us Column */}
+          {/* Service Areas Column */}
           <div ref={socialSectionRef} className="flex flex-col items-start gap-6">
             <h4 className="[font-family:'Fahkwang',Helvetica] font-medium text-white text-lg tracking-[0] leading-[26px]">
-              Follow Us
+              Service Areas
             </h4>
-            
+
             {/* Divider */}
             <div className="w-full h-px bg-white/30 -mt-2"></div>
-            
-            <div className="flex items-center gap-4">
-              {[
-                { icon: Facebook, name: "Facebook", color: "#1877F2", url: "https://www.facebook.com/interiorvila" },
-                { icon: Instagram, name: "Instagram", color: "#1DA1F2", url: "https://www.instagram.com/interiorvillabd/" },
-                { icon: Youtube, name: "Youtube", color: "#FF0000", url: "https://www.youtube.com/@InteriorVilla-BD" },
-                { icon: Linkedin, name: "LinkedIn", color: "#0A66C2", url: "https://www.linkedin.com/company/interiorvilla" }
-              ].map((social, index) => {
-                const IconComponent = social.icon;
-                return (
-                  <a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={social.name}
-                    className="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 cursor-pointer relative overflow-hidden group transform-gpu transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 flex items-center justify-center"
+
+            {/* Scrollable Service Areas Container */}
+            <div className="w-full h-[200px] overflow-y-auto pr-2 service-areas-scroll">
+              <div className="flex flex-wrap gap-2">
+                {serviceAreas.map((area) => (
+                  <Link
+                    key={area.id}
+                    to={`/service-areas/${area.slug}`}
+                    className="inline-flex items-center px-3 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white text-xs [font-family:'Fahkwang',Helvetica] font-normal transition-all duration-300 hover:bg-primary hover:border-primary hover:scale-105 hover:shadow-lg hover:shadow-primary/20"
                   >
-                    {/* Glow effect */}
-                    <div
-                      className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 blur-sm scale-110"
-                      style={{ backgroundColor: social.color }}
-                    ></div>
-
-                    {/* Ripple effect */}
-                    <div
-                      className="absolute inset-0 rounded-xl border-2 opacity-0 group-hover:opacity-100 group-hover:scale-150 transition-all duration-700 ease-out"
-                      style={{ borderColor: social.color }}
-                    ></div>
-
-                    {/* Shine effect */}
-                    <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000 ease-out"></div>
-
-                    {/* Icon */}
-                    <IconComponent
-                      className="w-5 h-5 text-white transition-all duration-500 ease-out group-hover:rotate-12 group-hover:scale-110 relative z-10"
-                      style={{
-                        filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))"
-                      }}
-                    />
-                  </a>
-                );
-              })}
+                    {area.areaName}
+                  </Link>
+                ))}
+              </div>
             </div>
 
           </div>

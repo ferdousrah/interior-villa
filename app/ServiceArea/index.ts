@@ -1,0 +1,1 @@
+export { ServiceAreaDetails } from "./ServiceArea";
